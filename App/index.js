@@ -7,7 +7,8 @@ import React from 'react';
 // import Home from './screens/Home';
 // import Notification from './screens/Notification';
 // import Categories from './screens/Categories';
-import Catalog from './screens/Catalog';
+// import Catalog from './screens/Catalog';
+import Search from './screens/Search';
 import {StyledContainer} from './styles/globalStyles';
 
 class App extends React.Component {
@@ -21,7 +22,8 @@ class App extends React.Component {
         {/* <Home /> */}
         {/* <Notification /> */}
         {/* <Categories /> */}
-        <Catalog />
+        {/* <Catalog /> */}
+        <Search />
       </StyledContainer>
     );
   }
