@@ -6,7 +6,8 @@ import React from 'react';
 
 // import Home from './screens/Home';
 // import Notification from './screens/Notification';
-import Categories from './screens/Categories';
+// import Categories from './screens/Categories';
+import Catalog from './screens/Catalog';
 import {StyledContainer} from './styles/globalStyles';
 
 class App extends React.Component {
@@ -19,7 +20,8 @@ class App extends React.Component {
         {/* <ResetPass /> */}
         {/* <Home /> */}
         {/* <Notification /> */}
-        <Categories />
+        {/* <Categories /> */}
+        <Catalog />
       </StyledContainer>
     );
   }
