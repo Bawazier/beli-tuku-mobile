@@ -13,7 +13,8 @@ import React from 'react';
 // import Product from './screens/Product';
 // import Review from './screens/Review';
 
-import Cart from './screens/Cart';
+// import Cart from './screens/Cart';
+import Checkout from './screens/Checkout';
 import {StyledContainer} from './styles/globalStyles';
 
 class App extends React.Component {
@@ -31,7 +32,8 @@ class App extends React.Component {
         {/* <Search /> */}
         {/* <Product /> */}
         {/* <Review /> */}
-        <Cart />
+        {/* <Cart /> */}
+        <Checkout />
       </StyledContainer>
     );
   }
