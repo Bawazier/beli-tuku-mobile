@@ -15,7 +15,9 @@ import React from 'react';
 
 // import Cart from './screens/Cart';
 // import Checkout from './screens/Checkout';
-import ShippingAddress from './screens/ShippingAddress';
+// import ShippingAddress from './screens/ShippingAddress';
+
+import Profile from './screens/Profile';
 import {StyledContainer} from './styles/globalStyles';
 
 class App extends React.Component {
@@ -35,7 +37,8 @@ class App extends React.Component {
         {/* <Review /> */}
         {/* <Cart /> */}
         {/* <Checkout /> */}
-        <ShippingAddress />
+        {/* <ShippingAddress /> */}
+        <Profile />
       </StyledContainer>
     );
   }
