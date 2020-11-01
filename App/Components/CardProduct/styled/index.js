@@ -18,7 +18,9 @@ export const StyledCardItem = styled(CardItem)`
   padding: 0px;
 `;
 
-export const StyledBody = styled(Body)``;
+export const StyledBody = styled(Body)`
+  padding: 5px 5px;
+`;
 
 export const StyledH3 = styled(H3)`
   font-size: 11px;
@@ -37,12 +39,14 @@ export const StyledImageBackground = styled(ImageBackground)`
   width: 100%;
   height: 180px;
   resize-mode: center;
+  border-radius: 25px;
 `;
 
 export const StyledH2 = styled(H2)`
   font-size: 16px;
   line-height: 16px;
   color: #222222;
+  margin: 3px 0;
 `;
 
 export const StyledBadge = styled(Badge)`
@@ -55,4 +59,9 @@ export const StyledWhiteH2 = styled(H2)`
   line-height: 11px;
   text-align: center;
   color: #ffffff;
+`;
+
+export const Row = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;

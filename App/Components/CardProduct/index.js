@@ -1,4 +1,5 @@
 import React from 'react';
+import StarRating from 'react-native-star-rating';
 import {
   StyledH2,
   StyledH3,
@@ -10,6 +11,7 @@ import {
   StyledBadge,
   StyledWhiteH2,
   StyledTouchableOpacity,
+  Row,
 } from './styled';
 
 const index = () => {
@@ -25,6 +27,19 @@ const index = () => {
         </StyledCardItem>
         <StyledCardItem>
           <StyledBody>
+            <Row>
+              <StarRating
+                disabled={true}
+                maxStars={5}
+                rating={2.5}
+                // selectedStar={(rating) => this.onStarRatingPress(rating)}
+                starSize={15}
+                containerStyle={{marginRight: 4, marginBottom: 4}}
+                fullStarColor={'yellow'}
+              />
+              <StyledText>(2.5)</StyledText>
+            </Row>
+
             <StyledText>Mango Boy</StyledText>
             <StyledH2>T-shirt Sailling</StyledH2>
             <StyledH3>10$</StyledH3>
