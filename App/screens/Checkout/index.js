@@ -5,6 +5,7 @@ import {
   StyledText,
   StyledViewCard,
   Row,
+  Col,
   StyledTextCard,
   StyledButton,
   StyledTextButton,
@@ -18,12 +19,10 @@ import {
 import {Icon} from 'native-base';
 
 //Component
-import Header from '../../Components/Header';
 
 const Checkout = () => {
   return (
     <>
-      <Header />
       <StyledContent>
         <StyledContainer>
           <StyledText>Shipping address</StyledText>
@@ -44,12 +43,19 @@ const Checkout = () => {
           <StyledText>Payment</StyledText>
           {[...Array(3)].map((item) => (
             <StyledRow>
-              <StyledViewCard>
-                <StyledImage source={require('../../assets/Logo-GoPay.png')} />
-              </StyledViewCard>
-              <StyledTextCard>Gopay</StyledTextCard>
+              <Col>
+                <StyledViewCard>
+                  <StyledImage
+                    source={require('../../assets/Logo-GoPay.png')}
+                  />
+                </StyledViewCard>
+                <StyledTextCard>Gopay</StyledTextCard>
+              </Col>
               <StyledButton transparent small>
-                <Icon name="md-pencil" color="white" />
+                <Icon
+                  name={true ? 'check-box' : 'check-box-outline-blank'}
+                  type="MaterialIcons"
+                />
               </StyledButton>
             </StyledRow>
           ))}

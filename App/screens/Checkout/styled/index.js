@@ -7,7 +7,7 @@ export const StyledContainer = styled(Container)`
   height: auto;
   background: transparent;
   padding: 0 16px;
-  margin: 40px 0;
+  margin: 20px 0;
 `;
 
 export const StyledText = styled.Text`
@@ -22,12 +22,19 @@ export const StyledViewCard = styled.View`
   box-shadow: 0px 1px 25px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   padding: 18px 20px;
+  margin-right: 20px;
 `;
 
 export const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+`;
+
+export const Col = styled.View`
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 export const StyledTextCard = styled.Text`
