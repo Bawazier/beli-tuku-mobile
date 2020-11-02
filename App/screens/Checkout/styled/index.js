@@ -23,6 +23,7 @@ export const StyledViewCard = styled.View`
   border-radius: 8px;
   padding: 18px 20px;
   margin-right: 20px;
+  elevation: 5;
 `;
 
 export const Row = styled.View`
