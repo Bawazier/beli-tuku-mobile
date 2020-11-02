@@ -12,13 +12,10 @@ import {
 import {List, ListItem, Left, Right, Icon, View} from 'native-base';
 
 //Component
-import Header from '../../Components/Header';
-import BottomTabs from '../../Components/BottomTabs';
 
 const Profile = () => {
   return (
     <>
-      <Header />
       <StyledContent>
         <StyledContainer>
           <StyledText>My profile</StyledText>
@@ -42,7 +39,7 @@ const Profile = () => {
                 </View>
               </Left>
               <Right>
-                <Icon name="arrow-forward" />
+                <Icon name="angle-right" type="FontAwesome" />
               </Right>
             </ListItem>
             <ListItem noIndent>
@@ -53,7 +50,7 @@ const Profile = () => {
                 </View>
               </Left>
               <Right>
-                <Icon name="arrow-forward" />
+                <Icon name="angle-right" type="FontAwesome" />
               </Right>
             </ListItem>
             <ListItem noIndent>
@@ -66,13 +63,12 @@ const Profile = () => {
                 </View>
               </Left>
               <Right>
-                <Icon name="arrow-forward" />
+                <Icon name="angle-right" type="FontAwesome" />
               </Right>
             </ListItem>
           </List>
         </StyledContainer>
       </StyledContent>
-      <BottomTabs />
     </>
   );
 };
