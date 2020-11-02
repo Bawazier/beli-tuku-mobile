@@ -12,10 +12,10 @@ import {
   StyledTextWhite,
 } from './styled';
 import {Icon} from 'native-base';
+import {ScrollView} from 'react-native';
 
 // Components
 import CardProduct from '../../Components/CardProduct';
-import BottomTabs from '../../Components/BottomTabs';
 
 const Home = () => {
   return (
@@ -25,7 +25,7 @@ const Home = () => {
           <Row>
             <StyledTextWhite>Street clothes</StyledTextWhite>
             <StyledButton>
-              <Icon name="md-bell" />
+              <Icon name="bell-o" type="FontAwesome" />
             </StyledButton>
           </Row>
         </StyledImageBackground>
@@ -41,9 +41,11 @@ const Home = () => {
           </Col>
         </Row>
         <Row>
-          {[...Array(8)].map((item) => (
-            <CardProduct />
-          ))}
+          <ScrollView horizontal>
+            {[...Array(8)].map((item) => (
+              <CardProduct />
+            ))}
+          </ScrollView>
         </Row>
         <Row>
           <Col>
@@ -55,12 +57,13 @@ const Home = () => {
           </Col>
         </Row>
         <Row>
-          {[...Array(8)].map((item) => (
-            <CardProduct />
-          ))}
+          <ScrollView horizontal>
+            {[...Array(8)].map((item) => (
+              <CardProduct />
+            ))}
+          </ScrollView>
         </Row>
       </StyledContent>
-      <BottomTabs />
     </>
   );
 };
