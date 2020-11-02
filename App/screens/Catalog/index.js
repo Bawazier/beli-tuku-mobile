@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  StyledTextHeader,
   StyledTextTab,
   StyledViewTab,
   StyleButtondTab,
@@ -9,23 +8,39 @@ import {
 import {Icon, Content} from 'native-base';
 
 //Components
-import Header from '../../Components/Header';
-import BottomTabs from '../../Components/BottomTabs';
 import CardProduct from '../../Components/CardProduct';
 
 const Catalog = () => {
   return (
     <>
-      <Header body={<StyledTextHeader>Women's tops</StyledTextHeader>} />
       <StyledViewTab>
         <StyleButtondTab transparent>
+          <Icon
+            name="filter"
+            type="FontAwesome"
+            color="#222222"
+            fontSize={20}
+          />
           <StyledTextTab>Filters</StyledTextTab>
         </StyleButtondTab>
-        <StyleButtondTab transparent style={{flexGrow: 2}}>
+        <StyleButtondTab
+          transparent
+          style={{flexBasis: 100, justifyContent: 'flex-end'}}>
+          <Icon
+            name="sort-amount-desc"
+            type="FontAwesome"
+            color="#222222"
+            fontSize={20}
+          />
           <StyledTextTab>Price: lowest to high</StyledTextTab>
         </StyleButtondTab>
         <StyleButtondTab transparent>
-          <StyledTextTab>Icon</StyledTextTab>
+          <Icon
+            name={false ? 'view-list' : 'view-module'}
+            type="MaterialIcons"
+            color="#222222"
+            fontSize={20}
+          />
         </StyleButtondTab>
       </StyledViewTab>
       <Content>
@@ -35,7 +50,6 @@ const Catalog = () => {
           ))}
         </StyledViewContent>
       </Content>
-      <BottomTabs />
     </>
   );
 };
