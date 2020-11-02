@@ -2,19 +2,21 @@ import React from 'react';
 import {StyledText, StyledContent, StyledContainer} from './styled';
 
 //Component
-import Header from '../../Components/Header';
-import BottomTabs from '../../Components/BottomTabs';
+import CardOrderDetails from '../../Components/CardOrderDetails';
 
 const Orders = () => {
   return (
     <>
-      <Header left={true} />
       <StyledContent>
         <StyledContainer>
           <StyledText>My Orders</StyledText>
         </StyledContainer>
+        <StyledContainer>
+          {[...Array(4)].map((item) => (
+            <CardOrderDetails />
+          ))}
+        </StyledContainer>
       </StyledContent>
-      <BottomTabs />
     </>
   );
 };
