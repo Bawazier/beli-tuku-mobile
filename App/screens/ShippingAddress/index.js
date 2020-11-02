@@ -15,18 +15,15 @@ import {
 import {Icon} from 'native-base';
 
 //Component
-import Header from '../../Components/Header';
 
 const ShippingAddress = () => {
   return (
     <>
-      <Header />
       <StyledContent>
         <StyledContainer>
           <StyledItem>
-            <Icon name="ios-search" />
+            <Icon name="search" type="FontAwesome" />
             <StyledInput placeholder="Search" />
-            <Icon name="ios-people" />
           </StyledItem>
         </StyledContainer>
         <StyledContainer>
@@ -45,8 +42,6 @@ const ShippingAddress = () => {
               </StyledTextCard>
             </StyledViewCard>
           ))}
-        </StyledContainer>
-        <StyledContainer>
           <StyledButton block bordered dark rounded>
             <StyledTextBlockButton>ADD NEW ADDRESS</StyledTextBlockButton>
           </StyledButton>

@@ -48,8 +48,8 @@ export const StyledTextCard = styled.Text`
 export const StyledButton = styled(Button)``;
 
 export const StyledTextButton = styled.Text`
-  font-size: 14px;
   color: #42d86c;
+  font-size: 14px;
   border: 1px solid #ffffff;
 `;
 
