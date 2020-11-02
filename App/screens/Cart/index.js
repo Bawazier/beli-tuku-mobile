@@ -12,16 +12,19 @@ import {
 import {Content} from 'native-base';
 
 //Component
-import Header from '../../Components/Header';
-import BottomTabs from '../../Components/BottomTabs';
+import CardOrders from '../../Components/CardOrders';
 
 const Cart = () => {
   return (
     <>
-      <Header />
       <Content>
         <StyledView>
           <StyledText>My Bag</StyledText>
+        </StyledView>
+        <StyledView>
+          {[...Array(10)].map((item) => (
+            <CardOrders />
+          ))}
         </StyledView>
       </Content>
       <StyledFooter>
@@ -33,7 +36,6 @@ const Cart = () => {
           <StyledTextButton>CHECK OUT</StyledTextButton>
         </StyledButton>
       </StyledFooter>
-      <BottomTabs />
     </>
   );
 };

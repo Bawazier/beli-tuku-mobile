@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {Footer, Button} from 'native-base';
+import {Button} from 'native-base';
 
 export const StyledText = styled.Text`
   font-weight: bold;
@@ -7,12 +7,11 @@ export const StyledText = styled.Text`
   color: #222222;
 `;
 
-export const StyledView = styled.View`
-  margin: 40px 0;
-  padding: 0 10px;
+export const StyledView = styled.ScrollView`
+  padding: 10px;
 `;
 
-export const StyledFooter = styled(Footer)`
+export const StyledFooter = styled.View`
   flex-direction: column;
   background: transparent;
   border: none;
