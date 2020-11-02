@@ -1,21 +1,22 @@
 import styled from 'styled-components/native';
-import {Content, Footer, Button, Text} from 'native-base';
+import {Content, Button, Text} from 'native-base';
 
 export const StyledContent = styled(Content)`
   background: transparent;
 `;
 
-export const StyledFooter = styled(Footer)`
+export const StyledFooter = styled.View`
   background-color: #ffff;
-  padding: 0 20px;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  elevation: 30;
 `;
 
 export const StyledButton = styled(Button)`
   width: 100%;
   align-self: center;
+  elevation: 10;
 `;
 export const StyledTextButton = styled(Text)`
   font-size: 14px;
@@ -24,9 +25,9 @@ export const StyledTextButton = styled(Text)`
 `;
 
 export const StyledImage = styled.Image`
-  width: 100%;
-  height: 336px;
-  resize-mode: stretch;
+  width: null;
+  height: 450px;
+  resize-mode: cover;
   margin-bottom: -15px;
 `;
 export const Row = styled.View`
@@ -45,7 +46,7 @@ export const StyledViewContent = styled.View`
   padding: 10px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
+  elevation: 20;
 `;
 export const StyledTextProduct = styled.Text`
   font-size: 24px;
@@ -66,6 +67,7 @@ export const StyledTextDescription = styled.Text`
   line-height: 21px;
   letter-spacing: -0.15px;
   color: #222222;
+  margin-bottom: 10px;
 `;
 export const StyledTextPrice = styled.Text`
   font-style: normal;
@@ -107,8 +109,9 @@ export const StyledColor = styled(Button)`
 export const StyledViewAnotherProduct = styled.View`
   background: #f9f9f9;
   padding: 10px;
-  border: 0.4px solid #9b9b9b;
-  box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
+  border-top-width: 0.4px;
+  border-top-color: #9b9b9b;
+  elevation: 20;
 `;
 
 export const StyledRow = styled.View`
@@ -131,4 +134,11 @@ export const StyledTextSecondary = styled.Text`
   line-height: 11px;
   text-align: right;
   color: #9b9b9b;
+`;
+
+export const StyledViewInfo = styled.View`
+  elevation: 2;
+  background-color: #ffff;
+  border-radius: 5px;
+  margin: 10px -5px;
 `;
