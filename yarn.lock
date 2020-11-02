@@ -6118,6 +6118,11 @@ react-native-button@^2.3.0:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-clean-project@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-clean-project/-/react-native-clean-project-3.4.0.tgz#a5ce4e1d49195326ad9d8129369eed9da0a10e8a"
+  integrity sha512-5kgu6OMFJwNKvZG5nG1OoNXfI+9XBt2vY5Yy73NJKtE3/N+Bcvg7jVyC9jFmG+OHGnni84FF11P0fHl0BrgPAQ==
+
 react-native-drawer@2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/react-native-drawer/-/react-native-drawer-2.5.1.tgz#08b9314184f48c724f1b467f8859797369798654"
