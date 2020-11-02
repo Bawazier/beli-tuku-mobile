@@ -1,35 +1,20 @@
 import React from 'react';
 import {
-  StyledTextHeader,
   StyledTextButton,
   StyledViewButton,
   StyledTextCategory,
   StyledText,
   StyledTouchableOpacity,
 } from './styled';
-import {Icon, Button, Content, List, ListItem} from 'native-base';
+import {Button, Content, List, ListItem} from 'native-base';
 
 //COmponent
-import Header from '../../Components/Header';
 
 const Categories = () => {
   return (
     <>
-      <Header
-        left={
-          <Button transparent>
-            <Icon
-              name="chevron-left"
-              type="FontAwesome5"
-              color="#222222"
-              size={20}
-            />
-          </Button>
-        }
-        body={<StyledTextHeader>Categories</StyledTextHeader>}
-      />
       <StyledViewButton>
-        <Button block rounded success>
+        <Button block rounded success style={{elevation: 10}}>
           <StyledTextButton>VIEW ALL ITEMS</StyledTextButton>
         </Button>
       </StyledViewButton>
