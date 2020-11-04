@@ -10,10 +10,12 @@ import {
   StyledTextSecondary,
 } from './styled';
 import {List, ListItem, Left, Right, Icon, View} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 
 //Component
 
 const Profile = () => {
+  const navigation = useNavigation();
   return (
     <>
       <StyledContent>
@@ -29,7 +31,7 @@ const Profile = () => {
         </StyledContainer>
         <StyledContainer>
           <List>
-            <ListItem noIndent>
+            <ListItem noIndent onPress={() => navigation.navigate('Orders')}>
               <Left>
                 <View>
                   <StyledTextPrimary>My orders</StyledTextPrimary>
@@ -42,7 +44,9 @@ const Profile = () => {
                 <Icon name="angle-right" type="FontAwesome" />
               </Right>
             </ListItem>
-            <ListItem noIndent>
+            <ListItem
+              noIndent
+              onPress={() => navigation.navigate('ShippingAddress')}>
               <Left>
                 <View>
                   <StyledTextPrimary>Shipping addresses</StyledTextPrimary>
@@ -53,7 +57,7 @@ const Profile = () => {
                 <Icon name="angle-right" type="FontAwesome" />
               </Right>
             </ListItem>
-            <ListItem noIndent>
+            <ListItem noIndent onPress={() => navigation.navigate('Setting')}>
               <Left>
                 <View>
                   <StyledTextPrimary>Settings</StyledTextPrimary>

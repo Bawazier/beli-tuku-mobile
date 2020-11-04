@@ -6,11 +6,14 @@ import {
   StyledViewContent,
 } from './styled';
 import {Icon, Content} from 'native-base';
+import BottomSheet from 'reanimated-bottom-sheet';
 
 //Components
 import CardProduct from '../../Components/CardProduct';
+import SortList from '../../Components/BottomSheet/SortList';
 
 const Catalog = () => {
+  const sheetRef = React.useRef(null);
   return (
     <>
       <StyledViewTab>
@@ -25,7 +28,8 @@ const Catalog = () => {
         </StyleButtondTab>
         <StyleButtondTab
           transparent
-          style={{flexBasis: 100, justifyContent: 'flex-end'}}>
+          style={{flexBasis: 100, justifyContent: 'flex-end'}}
+          onPress={() => sheetRef.current.snapTo(0)}>
           <Icon
             name="sort-amount-desc"
             type="FontAwesome"
@@ -50,6 +54,14 @@ const Catalog = () => {
           ))}
         </StyledViewContent>
       </Content>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[280, 0]}
+        borderRadius={10}
+        renderContent={SortList}
+        initialSnap={1}
+        enabledGestureInteraction={true}
+      />
     </>
   );
 };

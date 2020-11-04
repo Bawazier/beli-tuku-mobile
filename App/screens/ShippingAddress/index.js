@@ -12,11 +12,14 @@ import {
   StyledInput,
   StyledTextBlockButton,
 } from './styled';
-import {Icon} from 'native-base';
+import {Icon, Button} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
+
 
 //Component
 
 const ShippingAddress = () => {
+  const navigation = useNavigation();
   return (
     <>
       <StyledContent>
@@ -32,7 +35,10 @@ const ShippingAddress = () => {
             <StyledViewCard>
               <Row>
                 <StyledTextCard>Jane Doe</StyledTextCard>
-                <StyledButton transparent small>
+                <StyledButton
+                  transparent
+                  small
+                  onPress={() => navigation.navigate('ChangeAddress')}>
                   <StyledTextButton>Change</StyledTextButton>
                 </StyledButton>
               </Row>
@@ -42,7 +48,12 @@ const ShippingAddress = () => {
               </StyledTextCard>
             </StyledViewCard>
           ))}
-          <StyledButton block bordered dark rounded>
+          <StyledButton
+            block
+            bordered
+            dark
+            rounded
+            onPress={() => navigation.navigate('AddingAddress')}>
             <StyledTextBlockButton>ADD NEW ADDRESS</StyledTextBlockButton>
           </StyledButton>
         </StyledContainer>

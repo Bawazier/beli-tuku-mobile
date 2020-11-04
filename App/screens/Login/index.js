@@ -10,7 +10,7 @@ import {
   StyledLabel,
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Form, Text} from 'native-base';
+import {Button, Form, Text, Item} from 'native-base';
 
 // Components
 import Header from '../../Components/Header';
@@ -30,12 +30,14 @@ const Login = () => {
       </StyledView>
       <StyledContent>
         <Form>
-          <StyledItem>
+          <StyledItem stackedLabel>
             <StyledLabel>Email</StyledLabel>
-            <StyledInput />
-            <Icon active name="check" size={20} color="#2AA952" />
+            <Item>
+              <StyledInput autoCompleteType="email" autoCorrect={true} />
+              <Icon active name="check" size={20} color="#2AA952" />
+            </Item>
           </StyledItem>
-          <StyledItem>
+          <StyledItem stackedLabel>
             <StyledLabel>Password</StyledLabel>
             <StyledInput />
           </StyledItem>

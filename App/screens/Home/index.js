@@ -12,19 +12,22 @@ import {
   StyledTextWhite,
 } from './styled';
 import {Icon} from 'native-base';
-import {ScrollView} from 'react-native';
+import {ScrollView, TouchableOpacity} from 'react-native';
+
+import {useNavigation} from '@react-navigation/native';
 
 // Components
 import CardProduct from '../../Components/CardProduct';
 
 const Home = () => {
+  const navigation = useNavigation();
   return (
     <>
       <StyledView>
         <StyledImageBackground source={require('../../assets/homeProduct.png')}>
           <Row>
             <StyledTextWhite>Street clothes</StyledTextWhite>
-            <StyledButton>
+            <StyledButton onPress={() => navigation.navigate('Notification')}>
               <Icon name="bell-o" type="FontAwesome" />
             </StyledButton>
           </Row>
@@ -43,7 +46,9 @@ const Home = () => {
         <Row>
           <ScrollView horizontal>
             {[...Array(8)].map((item) => (
-              <CardProduct />
+              <TouchableOpacity onPress={() => navigation.navigate('Product')}>
+                <CardProduct />
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </Row>
@@ -59,7 +64,9 @@ const Home = () => {
         <Row>
           <ScrollView horizontal>
             {[...Array(8)].map((item) => (
-              <CardProduct />
+              <TouchableOpacity onPress={() => navigation.navigate('Product')}>
+                <CardProduct />
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </Row>

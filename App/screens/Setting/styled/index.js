@@ -2,13 +2,16 @@ import styled from 'styled-components';
 import {Container, Content, Label} from 'native-base';
 
 export const StyledText = styled.Text`
+  font-weight: bold;
   font-size: 34px;
   color: #222222;
 `;
 
 export const StyledTextPrimary = styled.Text`
+  font-weight: bold;
   font-size: 16px;
   color: #222222;
+  margin-top: 10px;
 `;
 
 export const StyledTextSubPrimary = styled.Text`
@@ -23,6 +26,8 @@ export const StyledTextSecondary = styled.Text`
 
 export const StyledContainer = styled(Container)`
   height: auto;
+  background: transparent;
+  margin: 20px 0;
 `;
 
 export const Row = styled.View`
@@ -30,6 +35,7 @@ export const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
 export const StyledContent = styled(Content)`
@@ -40,6 +46,10 @@ export const StyledCardInput = styled.View`
   background: #ffffff;
   elevation: 5;
   border-radius: 4px;
+  height: auto;
+  width: 100%;
+  margin-top: 10px;
+  padding: 0 10px;
 `;
 
 export const StyledLabel = styled(Label)`

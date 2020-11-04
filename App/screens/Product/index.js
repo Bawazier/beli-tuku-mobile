@@ -24,11 +24,13 @@ import {
 import {ListItem, Text, Body, Right, Icon} from 'native-base';
 import {ScrollView} from 'react-native';
 import StarRating from 'react-native-star-rating';
+import {useNavigation} from '@react-navigation/native';
 
 //Component
 import CardProduct from '../../Components/CardProduct';
 
 const Product = () => {
+  const navigation = useNavigation();
   return (
     <>
       <StyledContent>
@@ -75,7 +77,7 @@ const Product = () => {
                 <Icon name="caret-right" type="FontAwesome" />
               </Right>
             </ListItem>
-            <ListItem icon>
+            <ListItem icon onPress={() => navigation.navigate('Review')}>
               <Body>
                 <Text>Shipping Info</Text>
               </Body>

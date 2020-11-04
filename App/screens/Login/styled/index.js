@@ -21,15 +21,13 @@ export const StyledContent = styled(Content)`
 
 export const StyledItem = styled(Item)`
   background: #ffffff;
-  box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-  padding: 5px 20px 5px 20px;
+  border-radius: 5px;
+  padding: 0 10px;
   margin: 4px 0px;
 `;
 
 export const StyledInput = styled(Input)`
   font-size: 14px;
-  line-height: 20px;
   color: #2d2d2d;
 `;
 

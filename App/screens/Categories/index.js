@@ -4,13 +4,14 @@ import {
   StyledViewButton,
   StyledTextCategory,
   StyledText,
-  StyledTouchableOpacity,
 } from './styled';
 import {Button, Content, List, ListItem} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 
 //COmponent
 
 const Categories = () => {
+  const navigation = useNavigation();
   return (
     <>
       <StyledViewButton>
@@ -22,11 +23,9 @@ const Categories = () => {
         <StyledText>Choose category</StyledText>
         <List>
           {[...Array(10)].map((item) => (
-            <StyledTouchableOpacity>
-              <ListItem>
-                <StyledTextCategory>Aaron Bennet</StyledTextCategory>
-              </ListItem>
-            </StyledTouchableOpacity>
+            <ListItem onPress={() => navigation.navigate('Catalog')}>
+              <StyledTextCategory>Aaron Bennet</StyledTextCategory>
+            </ListItem>
           ))}
         </List>
       </Content>
