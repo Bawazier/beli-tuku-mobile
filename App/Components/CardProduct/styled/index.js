@@ -50,6 +50,7 @@ export const StyledH2 = styled(H2)`
 `;
 
 export const StyledBadge = styled(Badge)`
+  display: ${(props) => (props.displayBadge ? 'flex' : 'none')};
   background-color: #222222;
   margin: 10px;
 `;

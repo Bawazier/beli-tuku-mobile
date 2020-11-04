@@ -3,7 +3,7 @@ const initialState = {
   imagesPrimary: [],
   isLoading: false,
   isError: false,
-  alertMessage: '',
+  alertMsg: '',
 };
 
 export default (state = initialState, action) => {

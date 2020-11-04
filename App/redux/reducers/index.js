@@ -1,15 +1,15 @@
 import {combineReducers} from 'redux';
 
-import productsNew from './Home/productsNew';
-import productsPopuler from './Home/productsPopuler';
+import productNews from './Home/productNews';
+import productPopular from './Home/productPopular';
 import categories from './Home/categories';
 import searchProducts from './Home/searchProducts';
-import productsCategory from './Home/productsCategory';
+import productCategory from './Home/productCategory';
 
 export default combineReducers({
-  productsNew,
-  productsPopuler,
+  productNews,
+  productPopular,
   categories,
   searchProducts,
-  productsCategory,
+  productCategory,
 });

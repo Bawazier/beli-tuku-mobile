@@ -10,7 +10,7 @@ export default {
     payload: http().get('home/products/new'),
   }),
   populer: () => ({
-    type: 'GET_PRODUCTS_POPULER',
+    type: 'GET_PRODUCTS_POPULAR',
     payload: http().get('home/products/populer'),
   }),
   search: (search) => ({

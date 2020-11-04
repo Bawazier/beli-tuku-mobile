@@ -2,7 +2,7 @@ const initialState = {
   data: [],
   isLoading: false,
   isError: false,
-  alertMessage: '',
+  alertMsg: '',
 };
 
 export default (state = initialState, action) => {
