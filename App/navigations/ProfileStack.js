@@ -9,16 +9,63 @@ import Setting from '../screens/Setting';
 
 import {createStackNavigator} from '@react-navigation/stack';
 
+import {Icon, Button} from 'native-base';
+
 const Stack = createStackNavigator();
 const BagStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Orders" component={Orders} />
-      <Stack.Screen name="ShippingAddress" component={ShippingAddress} />
-      <Stack.Screen name="ChangeAddress" component={ChangeAddress} />
-      <Stack.Screen name="Setting" component={Setting} />
-      <Stack.Screen name="AddingAddress" component={AddingAddress} />
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          title: '',
+          headerRight: () => (
+            <Button transparent>
+              <Icon name="search" type="FontAwesome" />
+            </Button>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Orders"
+        component={Orders}
+        options={{
+          title: '',
+          headerRight: () => (
+            <Button transparent>
+              <Icon name="search" type="FontAwesome" />
+            </Button>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="ShippingAddress"
+        component={ShippingAddress}
+        options={{title: 'Shipping Address'}}
+      />
+      <Stack.Screen
+        name="ChangeAddress"
+        component={ChangeAddress}
+        options={{title: 'Change Address'}}
+      />
+      <Stack.Screen
+        name="Setting"
+        component={Setting}
+        options={{
+          title: '',
+          headerRight: () => (
+            <Button transparent>
+              <Icon name="search" type="FontAwesome" />
+            </Button>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="AddingAddress"
+        component={AddingAddress}
+        options={{title: 'Adding Shipping Address'}}
+      />
     </Stack.Navigator>
   );
 };

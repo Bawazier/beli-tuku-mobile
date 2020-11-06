@@ -11,10 +11,18 @@ const Stack = createStackNavigator();
 const BagStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="ForgotPass" component={ForgotPass} />
-      <Stack.Screen name="ResetPass" component={ResetPass} />
+      <Stack.Screen name="Login" component={Login} options={{title: ''}} />
+      <Stack.Screen name="SignUp" component={SignUp} options={{title: ''}} />
+      <Stack.Screen
+        name="ForgotPass"
+        component={ForgotPass}
+        options={{title: ''}}
+      />
+      <Stack.Screen
+        name="ResetPass"
+        component={ResetPass}
+        options={{title: ''}}
+      />
     </Stack.Navigator>
   );
 };

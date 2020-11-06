@@ -11,10 +11,22 @@ const Stack = createStackNavigator();
 const HomeStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Notification" component={Notification} />
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
+        options={{title: 'Notification'}}
+      />
       <Stack.Screen name="Product" component={Product} />
-      <Stack.Screen name="Review" component={Review} />
+      <Stack.Screen
+        name="Review"
+        component={Review}
+        options={{title: 'Rating and reviews'}}
+      />
     </Stack.Navigator>
   );
 };
