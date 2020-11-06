@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyledContent,
   StyledContainer,
@@ -21,6 +21,12 @@ import {Icon} from 'native-base';
 //Component
 
 const Checkout = () => {
+  const [check, setCheck] = useState(false);
+
+  const toggleCheck = () => {
+    setCheck(!check);
+  };
+
   return (
     <>
       <StyledContent>
@@ -51,9 +57,9 @@ const Checkout = () => {
                 </StyledViewCard>
                 <StyledTextCard>Gopay</StyledTextCard>
               </Col>
-              <StyledButton transparent small>
+              <StyledButton transparent small onPress={() => toggleCheck()}>
                 <Icon
-                  name={true ? 'check-box' : 'check-box-outline-blank'}
+                  name={check ? 'check-box' : 'check-box-outline-blank'}
                   type="MaterialIcons"
                 />
               </StyledButton>

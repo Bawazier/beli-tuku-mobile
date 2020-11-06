@@ -1,4 +1,5 @@
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {
   StyledText,
   StyledView,
@@ -15,6 +16,7 @@ import {Content} from 'native-base';
 import CardOrders from '../../Components/CardOrders';
 
 const Cart = () => {
+  const navigation = useNavigation();
   return (
     <>
       <Content>
@@ -32,7 +34,11 @@ const Cart = () => {
           <StyledTextSecondary>Total amount:</StyledTextSecondary>
           <StyledTextPrice>112$</StyledTextPrice>
         </Row>
-        <StyledButton block rounded success>
+        <StyledButton
+          block
+          rounded
+          success
+          onPress={() => navigation.navigate('Checkout')}>
           <StyledTextButton>CHECK OUT</StyledTextButton>
         </StyledButton>
       </StyledFooter>

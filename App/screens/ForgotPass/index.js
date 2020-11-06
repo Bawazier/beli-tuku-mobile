@@ -13,18 +13,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Button, Form, Text} from 'native-base';
 
 // Components
-import Header from '../../Components/Header';
 
 const Login = () => {
   return (
     <>
-      <Header
-        left={
-          <Button transparent>
-            <Icon name="chevron-left" color="black" size={20} />
-          </Button>
-        }
-      />
       <StyledView>
         <StyledText>Forgot password</StyledText>
       </StyledView>

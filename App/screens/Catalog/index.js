@@ -1,4 +1,6 @@
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import {
   StyledTextTab,
   StyledViewTab,
@@ -6,14 +8,21 @@ import {
   StyledViewContent,
 } from './styled';
 import {Icon, Content} from 'native-base';
+import {TouchableOpacity} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 
 //Components
 import CardProduct from '../../Components/CardProduct';
+import NotFound from '../../Components/NotFound';
 import SortList from '../../Components/BottomSheet/SortList';
 
 const Catalog = () => {
+  const productCategory = useSelector((state) => state.productCategory);
+  const searchProducts = useSelector((state) => state.searchProducts);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const sheetRef = React.useRef(null);
+
   return (
     <>
       <StyledViewTab>
@@ -49,8 +58,32 @@ const Catalog = () => {
       </StyledViewTab>
       <Content>
         <StyledViewContent>
-          {[...Array(10)].map((ittem) => (
-            <CardProduct />
+          {/* {productCategory.isLoading &&
+            !productCategory.isError &&
+            [...Array(8)].map((item) => (
+              <CardProduct
+                productName="...."
+                productPrice="...."
+                productRating="...."
+              />
+            ))}
+          {!productCategory.isLoading && productCategory.isError && (
+            <NotFound notifMessage={productCategory.alertMsg} />
+          )} */}
+          {productCategory.data.map((item) => (
+            <TouchableOpacity onPress={() => navigation.navigate('Product')}>
+              <CardProduct
+                // productImage={
+                //   item.imagesPrimary.map((i) =>
+                //     i.id_product === item.id ? i.URL_image : '',
+                //   )[0]
+                // }
+                productName={item.name}
+                productPrice={item.price}
+                productRating={item.rating}
+                displayBadge={true}
+              />
+            </TouchableOpacity>
           ))}
         </StyledViewContent>
       </Content>
