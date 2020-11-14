@@ -30,3 +30,10 @@ export const StyledTextButton = styled.Text`
   font-size: 14px;
   color: #ffffff;
 `;
+
+export const StyledTextAlert = styled.Text`
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  color: #f01f0e;
+`;

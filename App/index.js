@@ -6,6 +6,14 @@ import SplashScreen from 'react-native-splash-screen';
 
 import Screens from './navigations';
 
+// import Login from './screens/Login';
+// import Signup from './screens/SignUp';
+// import ResetPass from './screens/ResetPass';
+// import ForgotPass from './screens/ForgotPass';
+// import Setting from './screens/Setting';
+// import AddingAddress from './screens/ShippingAddress/AddingAddress';
+import ChangeAddress from './screens/ShippingAddress/ChangeAddress';
+
 class App extends React.Component {
   componentDidMount() {
     // do stuff while splash screen is shown
@@ -14,11 +22,14 @@ class App extends React.Component {
   }
   render() {
     return (
-      <Provider store={store}>
-        <StyledContainer>
-          <Screens />
-        </StyledContainer>
-      </Provider>
+      // <Provider store={store}>
+      //   <StyledContainer>
+      //     <Screens />
+      //   </StyledContainer>
+      // </Provider>
+      <StyledContainer>
+        <ChangeAddress />
+      </StyledContainer>
     );
   }
 }

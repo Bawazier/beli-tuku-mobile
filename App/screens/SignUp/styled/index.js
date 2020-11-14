@@ -65,3 +65,10 @@ export const StyledText = styled.Text`
   font-size: 34px;
   line-height: 34px;
 `;
+
+export const StyledTextAlert = styled.Text`
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  color: #f01f0e;
+`;
