@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -7,8 +7,8 @@ import {
   StyleButtondTab,
   StyledViewContent,
 } from './styled';
-import {Icon, Content} from 'native-base';
-import {TouchableOpacity} from 'react-native';
+import {Icon, Content, Spinner, View} from 'native-base';
+import {TouchableOpacity, FlatList} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 
 //Components
@@ -17,10 +17,35 @@ import NotFound from '../../Components/NotFound';
 import SortList from '../../Components/BottomSheet/SortList';
 
 const Catalog = () => {
-  const productCategory = useSelector((state) => state.productCategory);
-  const searchProducts = useSelector((state) => state.searchProducts);
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState([
+    {
+      name: 'Minyak Angin',
+      price: 5000,
+      rating: 3,
+    },
+    {
+      name: 'Minyak Angin',
+      price: 5000,
+      rating: 3,
+    },
+  ]);
+  const [nextData, setNextData] = useState([
+    {
+      name: 'Minyak Telon',
+      price: 555000,
+      rating: 5,
+    },
+    {
+      name: 'Minyak Telon',
+      price: 555000,
+      rating: 5,
+    },
+  ]);
+  // const productCategory = useSelector((state) => state.productCategory);
+  // const searchProducts = useSelector((state) => state.searchProducts);
+  // const dispatch = useDispatch();
+  // const navigation = useNavigation();
   const sheetRef = React.useRef(null);
 
   return (
@@ -57,8 +82,38 @@ const Catalog = () => {
         </StyleButtondTab>
       </StyledViewTab>
       <Content>
-        <StyledViewContent>
-          {/* {productCategory.isLoading &&
+        <FlatList
+          refreshing={refreshing}
+          onRefresh={true}
+          onEndReachedThreshold={0.5}
+          onEndReached={({distanceFromEnd}) => {
+            setRefreshing(true);
+            if (distanceFromEnd >= 0) {
+              setData([...data, ...nextData]);
+              setRefreshing(false);
+            }
+            console.log('on end reached ', distanceFromEnd);
+          }}
+          data={data}
+          renderItem={({item}) => (
+            <CardProduct
+              productName={item.name}
+              productPrice={item.price}
+              productRating={item.rating}
+            />
+          )}
+          columnWrapperStyle={{justifyContent: 'center'}}
+          numColumns={2}
+          horizontal={false}
+          keyExtractor={(item) => item._id}
+          ListFooterComponent={
+            <View style={{alignItems: 'center', width: '100%'}}>
+              <Spinner color="green" />
+            </View>
+          }
+        />
+        {/* <StyledViewContent>
+          {productCategory.isLoading &&
             !productCategory.isError &&
             [...Array(8)].map((item) => (
               <CardProduct
@@ -69,15 +124,15 @@ const Catalog = () => {
             ))}
           {!productCategory.isLoading && productCategory.isError && (
             <NotFound notifMessage={productCategory.alertMsg} />
-          )} */}
+          )}
           {productCategory.data.map((item) => (
             <TouchableOpacity onPress={() => navigation.navigate('Product')}>
               <CardProduct
-                // productImage={
-                //   item.imagesPrimary.map((i) =>
-                //     i.id_product === item.id ? i.URL_image : '',
-                //   )[0]
-                // }
+                productImage={
+                  item.imagesPrimary.map((i) =>
+                    i.id_product === item.id ? i.URL_image : '',
+                  )[0]
+                }
                 productName={item.name}
                 productPrice={item.price}
                 productRating={item.rating}
@@ -85,7 +140,7 @@ const Catalog = () => {
               />
             </TouchableOpacity>
           ))}
-        </StyledViewContent>
+        </StyledViewContent> */}
       </Content>
       <BottomSheet
         ref={sheetRef}

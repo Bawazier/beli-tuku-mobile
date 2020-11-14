@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyledContent,
   StyledContainer,
@@ -12,14 +12,39 @@ import {
   StyledInput,
   StyledTextBlockButton,
 } from './styled';
-import {Icon, Button} from 'native-base';
+import {TouchableOpacity, FlatList} from 'react-native';
+import {Icon, Button, Spinner, View} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-
 
 //Component
 
 const ShippingAddress = () => {
-  const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState([
+    {
+      nameAddress: 'Jane Doe',
+      address: '3 Newbridge Court',
+      city: 'Chino Hills, CA 91709, United States',
+    },
+    {
+      nameAddress: 'Jane Doe',
+      address: '3 Newbridge Court',
+      city: 'Chino Hills, CA 91709, United States',
+    },
+  ]);
+  const [nextData, setNextData] = useState([
+    {
+      nameAddress: 'Aldo wardana',
+      address: 'Jl. Mulawarman III no 12 ',
+      city: 'Jawa tengah, Semarang, Manyaran',
+    },
+    {
+      nameAddress: 'Aldo wardana',
+      address: 'Jl. Mulawarman III no 12 ',
+      city: 'Jawa tengah, Semarang, Manyaran',
+    },
+  ]);
+  // const navigation = useNavigation();
   return (
     <>
       <StyledContent>
@@ -31,7 +56,40 @@ const ShippingAddress = () => {
         </StyledContainer>
         <StyledContainer>
           <StyledText>Shipping address</StyledText>
-          {[...Array(3)].map((item) => (
+          <FlatList
+            refreshing={refreshing}
+            onRefresh={true}
+            onEndReachedThreshold={0.5}
+            onEndReached={({distanceFromEnd}) => {
+              setRefreshing(true);
+              if (distanceFromEnd >= 0) {
+                setData([...data, ...nextData]);
+                setRefreshing(false);
+              }
+              console.log('on end reached ', distanceFromEnd);
+            }}
+            data={data}
+            renderItem={({item}) => (
+              <StyledViewCard>
+                <Row>
+                  <StyledTextCard>{item.nameAddress}</StyledTextCard>
+                  <StyledButton transparent small>
+                    <StyledTextButton>Change</StyledTextButton>
+                  </StyledButton>
+                </Row>
+                <StyledTextCard>{item.address}</StyledTextCard>
+                <StyledTextCard>{item.city}</StyledTextCard>
+              </StyledViewCard>
+            )}
+            horizontal={false}
+            keyExtractor={(item) => item.id}
+            ListFooterComponent={
+              <View style={{alignItems: 'center', width: '100%'}}>
+                <Spinner color="green" />
+              </View>
+            }
+          />
+          {/* {[...Array(3)].map((item) => (
             <StyledViewCard>
               <Row>
                 <StyledTextCard>Jane Doe</StyledTextCard>
@@ -47,7 +105,7 @@ const ShippingAddress = () => {
                 Chino Hills, CA 91709, United States{' '}
               </StyledTextCard>
             </StyledViewCard>
-          ))}
+          ))} */}
           <StyledButton
             block
             bordered

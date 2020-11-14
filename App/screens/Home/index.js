@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   StyledButton,
@@ -13,8 +13,8 @@ import {
   StyledImageBackground,
   StyledTextWhite,
 } from './styled';
-import {Icon} from 'native-base';
-import {ScrollView, TouchableOpacity} from 'react-native';
+import {Icon, Spinner, View} from 'native-base';
+import {TouchableOpacity, FlatList} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 
@@ -26,6 +26,31 @@ import NotFound from '../../Components/NotFound';
 import HomeActions from '../../redux/actions/home';
 
 const Home = () => {
+  const [refreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState([
+    {
+      name: 'Minyak Angin',
+      price: 5000,
+      rating: 3,
+    },
+    {
+      name: 'Minyak Angin',
+      price: 5000,
+      rating: 3,
+    },
+  ]);
+  const [nextData, setNextData] = useState([
+    {
+      name: 'Minyak Telon',
+      price: 555000,
+      rating: 5,
+    },
+    {
+      name: 'Minyak Telon',
+      price: 555000,
+      rating: 5,
+    },
+  ]);
   const productNews = useSelector((state) => state.productNews);
   const productPopular = useSelector((state) => state.productPopular);
   const dispatch = useDispatch();
@@ -60,8 +85,35 @@ const Home = () => {
           </Col>
         </Row>
         <Row>
-          <ScrollView horizontal>
-            {productNews.isLoading &&
+          <FlatList
+            refreshing={refreshing}
+            onRefresh={true}
+            onEndReachedThreshold={0.5}
+            onEndReached={({distanceFromEnd}) => {
+              setRefreshing(true);
+              if (distanceFromEnd >= 0) {
+                setData([...data, ...nextData]);
+                setRefreshing(false);
+              }
+              console.log('on end reached ', distanceFromEnd);
+            }}
+            data={data}
+            renderItem={({item}) => (
+              <CardProduct
+                productName={item.name}
+                productPrice={item.price}
+                productRating={item.rating}
+              />
+            )}
+            horizontal
+            keyExtractor={(item) => item._id}
+            ListFooterComponent={
+              <View style={{justifyContent: 'center', height: '100%'}}>
+                <Spinner color="green" />
+              </View>
+            }
+          />
+          {/* {productNews.isLoading &&
               !productNews.isError &&
               [...Array(8)].map((item) => (
                 <CardProduct
@@ -87,8 +139,7 @@ const Home = () => {
                   displayBadge={true}
                 />
               </TouchableOpacity>
-            ))}
-          </ScrollView>
+            ))} */}
         </Row>
         <Row>
           <Col>
@@ -100,16 +151,43 @@ const Home = () => {
           </Col>
         </Row>
         <Row>
-          <ScrollView horizontal>
-            {productPopular.isLoading &&
-              !productPopular.isError &&
-              [...Array(8)].map((item) => (
-                <CardProduct
-                  productName="...."
-                  productPrice="...."
-                  productRating="...."
-                />
-              ))}
+          <FlatList
+            refreshing={refreshing}
+            onRefresh={true}
+            onEndReachedThreshold={0.5}
+            onEndReached={({distanceFromEnd}) => {
+              setRefreshing(true);
+              if (distanceFromEnd >= 0) {
+                setData([...data, ...nextData]);
+                setRefreshing(false);
+              }
+              console.log('on end reached ', distanceFromEnd);
+            }}
+            data={data}
+            renderItem={({item}) => (
+              <CardProduct
+                productName={item.name}
+                productPrice={item.price}
+                productRating={item.rating}
+              />
+            )}
+            horizontal
+            keyExtractor={(item) => item._id}
+            ListFooterComponent={
+              <View style={{justifyContent: 'center', height: '100%'}}>
+                <Spinner color="green" />
+              </View>
+            }
+          />
+          {/* {productNews.isLoading &&
+            !productNews.isError &&
+            [...Array(8)].map((item) => (
+              <CardProduct
+                productName="...."
+                productPrice="...."
+                productRating="...."
+              />
+            ))}
             {!productPopular.isLoading && productPopular.isError && (
               <NotFound notifMessage={productPopular.alertMsg} />
             )}
@@ -127,8 +205,7 @@ const Home = () => {
                   displayBadge={false}
                 />
               </TouchableOpacity>
-            ))}
-          </ScrollView>
+            ))} */}
         </Row>
       </StyledContent>
     </>

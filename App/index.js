@@ -12,7 +12,10 @@ import Screens from './navigations';
 // import ForgotPass from './screens/ForgotPass';
 // import Setting from './screens/Setting';
 // import AddingAddress from './screens/ShippingAddress/AddingAddress';
-import ChangeAddress from './screens/ShippingAddress/ChangeAddress';
+// import ChangeAddress from './screens/ShippingAddress/ChangeAddress';
+// import Catalog from './screens/Catalog';
+// import Categories from './screens/Categories';
+// import ShippingAddress from './screens/ShippingAddress';
 
 class App extends React.Component {
   componentDidMount() {
@@ -22,14 +25,11 @@ class App extends React.Component {
   }
   render() {
     return (
-      // <Provider store={store}>
-      //   <StyledContainer>
-      //     <Screens />
-      //   </StyledContainer>
-      // </Provider>
-      <StyledContainer>
-        <ChangeAddress />
-      </StyledContainer>
+      <Provider store={store}>
+        <StyledContainer>
+          <Screens />
+        </StyledContainer>
+      </Provider>
     );
   }
 }
