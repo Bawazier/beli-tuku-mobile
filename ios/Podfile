@@ -3,14 +3,14 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'Ecommerce' do
+target 'BeliTuku' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
-  target 'EcommerceTests' do
+  target 'BeliTukuTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -25,10 +25,10 @@ target 'Ecommerce' do
   end
 end
 
-target 'Ecommerce-tvOS' do
-  # Pods for Ecommerce-tvOS
+target 'BeliTuku-tvOS' do
+  # Pods for BeliTuku-tvOS
 
-  target 'Ecommerce-tvOSTests' do
+  target 'BeliTuku-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
