@@ -24,6 +24,7 @@ import NotFound from '../../Components/NotFound';
 
 //Actions
 import HomeActions from '../../redux/actions/home';
+import ProfileActions from '../../redux/actions/profile';
 
 const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -53,12 +54,14 @@ const Home = () => {
   ]);
   const productNews = useSelector((state) => state.productNews);
   const productPopular = useSelector((state) => state.productPopular);
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   useEffect(() => {
     dispatch(HomeActions.new());
     dispatch(HomeActions.populer());
+    dispatch(ProfileActions.getProfile(auth.token));
   }, []);
 
   return (

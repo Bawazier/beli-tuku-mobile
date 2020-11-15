@@ -1,4 +1,6 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   StyledContent,
   StyledContainer,
@@ -10,22 +12,77 @@ import {
   StyledTextSecondary,
 } from './styled';
 import {List, ListItem, Left, Right, Icon, View} from 'native-base';
+import {TouchableOpacity} from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
 
 //Component
 
+//Actions
+import ProfileActions from '../../redux/actions/profile';
+
 const Profile = () => {
+  const [image, setImage] = useState('');
+  const auth = useSelector((state) => state.auth);
+  const profile = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const selectImage = () => {
+    let options = {
+      title: 'You can choose one image',
+      maxWidth: 256,
+      maxHeight: 256,
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log({response});
+
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        let source = {uri: response.uri};
+        const imageData = new FormData();
+        imageData.append('picture', {
+          uri: response.uri,
+          type: response.type,
+          name: response.fileName,
+          data: response.data,
+        });
+        dispatch(ProfileActions.updateProfile(auth.token, imageData));
+      }
+    });
+    return dispatch(ProfileActions.getProfile(auth.token));
+  };
+
   return (
     <>
       <StyledContent>
         <StyledContainer>
           <StyledText>My profile</StyledText>
           <Row>
-            <StyledImage source={require('../../assets/user.png')} />
+            <TouchableOpacity onPress={selectImage}>
+              <StyledImage
+                source={
+                  profile.data[0].picture
+                    ? {
+                        uri: profile.data[0].URL_image,
+                      }
+                    : require('../../assets/user.png')
+                }
+              />
+            </TouchableOpacity>
+
             <StyledView>
-              <StyledTextPrimary>Matilda Brown</StyledTextPrimary>
-              <StyledTextSecondary>matildabrown@mail.com</StyledTextSecondary>
+              <StyledTextPrimary>{profile.data[0].name}</StyledTextPrimary>
+              <StyledTextSecondary>{profile.data[0].email}</StyledTextSecondary>
             </StyledView>
           </Row>
         </StyledContainer>

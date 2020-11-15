@@ -29,6 +29,8 @@ export const Row = styled.View`
 
 export const StyledImage = styled.Image`
   border-radius: 50px;
+  height: 60px;
+  width: 60px;
 `;
 
 export const StyledTextPrimary = styled.Text`
