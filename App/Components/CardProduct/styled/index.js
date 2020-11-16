@@ -12,19 +12,23 @@ export const StyledCard = styled(Card)`
   width: 150px;
   height: auto;
   margin-right: 16px;
+  border-radius: 10px;
+  overflow: hidden;
 `;
 
 export const StyledCardItem = styled(CardItem)`
+  background: transparent;
   padding: 0px;
 `;
 
 export const StyledBody = styled(Body)`
-  padding: 5px 5px;
+  padding: 5px 0;
+  justify-content: flex-end;
 `;
 
 export const StyledH3 = styled(H3)`
-  font-size: 11px;
-  line-height: 11px;
+  font-size: 14px;
+  line-height: 18px;
   color: #222222;
   text-align: right;
 `;
@@ -43,10 +47,10 @@ export const StyledImageBackground = styled(ImageBackground)`
 `;
 
 export const StyledH2 = styled(H2)`
+  font-weight: bold;
   font-size: 16px;
-  line-height: 16px;
+  line-height: 25px;
   color: #222222;
-  margin: 3px 0;
 `;
 
 export const StyledBadge = styled(Badge)`
@@ -65,4 +69,5 @@ export const StyledWhiteH2 = styled(H2)`
 export const Row = styled.View`
   flex-direction: row;
   align-items: center;
+  justify-content: center;
 `;

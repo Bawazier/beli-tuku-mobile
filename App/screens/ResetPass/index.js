@@ -13,7 +13,7 @@ import {
   StyledTextAlert,
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Form, Text} from 'native-base';
+import {Button, Form, Text, Item} from 'native-base';
 
 // Components
 
@@ -29,10 +29,10 @@ const Login = () => {
 
   return (
     <>
-      <StyledView>
-        <StyledText>Reset password</StyledText>
-      </StyledView>
       <StyledContent>
+        <StyledView>
+          <StyledText>Reset password</StyledText>
+        </StyledView>
         <Formik
           initialValues={{
             newPassword: '',
@@ -55,46 +55,50 @@ const Login = () => {
               <AlertMessage>
                 You need to change your password to activate your account
               </AlertMessage>
-              <StyledItem>
+              <StyledItem stackedLabel>
                 <StyledLabel>New Password</StyledLabel>
-                <StyledInput
-                  name="newPassword"
-                  secureTextEntry={true}
-                  onChangeText={handleChange('newPassword')}
-                  onBlur={handleBlur('newPassword')}
-                  value={values.newPassword}
-                />
-                {touched.newPassword && (
-                  <Icon
-                    active
-                    name={errors.newPassword ? 'close' : 'check'}
-                    size={20}
-                    color={errors.newPassword ? '#F01F0E' : '#2AA952'}
+                <Item>
+                  <StyledInput
+                    name="newPassword"
+                    secureTextEntry={true}
+                    onChangeText={handleChange('newPassword')}
+                    onBlur={handleBlur('newPassword')}
+                    value={values.newPassword}
                   />
-                )}
+                  {touched.newPassword && (
+                    <Icon
+                      active
+                      name={errors.newPassword ? 'close' : 'check'}
+                      size={20}
+                      color={errors.newPassword ? '#F01F0E' : '#2AA952'}
+                    />
+                  )}
+                </Item>
               </StyledItem>
               <StyledTextAlert>
                 {touched.newPassword && errors.newPassword
                   ? errors.newPassword
                   : null}
               </StyledTextAlert>
-              <StyledItem>
+              <StyledItem stackedLabel>
                 <StyledLabel>Confirm Password</StyledLabel>
-                <StyledInput
-                  name="confirmPassword"
-                  secureTextEntry={true}
-                  onChangeText={handleChange('confirmPassword')}
-                  onBlur={handleBlur('confirmPassword')}
-                  value={values.confirmPassword}
-                />
-                {touched.confirmPassword && (
-                  <Icon
-                    active
-                    name={errors.confirmPassword ? 'close' : 'check'}
-                    size={20}
-                    color={errors.confirmPassword ? '#F01F0E' : '#2AA952'}
+                <Item>
+                  <StyledInput
+                    name="confirmPassword"
+                    secureTextEntry={true}
+                    onChangeText={handleChange('confirmPassword')}
+                    onBlur={handleBlur('confirmPassword')}
+                    value={values.confirmPassword}
                   />
-                )}
+                  {touched.confirmPassword && (
+                    <Icon
+                      active
+                      name={errors.confirmPassword ? 'close' : 'check'}
+                      size={20}
+                      color={errors.confirmPassword ? '#F01F0E' : '#2AA952'}
+                    />
+                  )}
+                </Item>
               </StyledItem>
               <StyledTextAlert>
                 {touched.confirmPassword && errors.confirmPassword
@@ -103,7 +107,7 @@ const Login = () => {
               </StyledTextAlert>
               <StyledButton
                 block
-                success
+                style={{backgroundColor: '#128C7E'}}
                 rounded
                 onPress={handleSubmit}
                 title="Submit"

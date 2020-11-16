@@ -10,7 +10,7 @@ import {
   StyledTextAlert,
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Form, Item, Input, Button, Label} from 'native-base';
+import {Form, Item, Input, Button, Label, View} from 'native-base';
 
 const ChangePass = () => {
   const validationSchema = Yup.object({
@@ -47,73 +47,80 @@ const ChangePass = () => {
       }) => (
         <StyledContainer>
           <StyledText>Password Change</StyledText>
-          <Form style={{marginBottom: 20}}>
-            <Item stackedLabel last>
+          <Form style={{marginBottom: 20, backgroundColor: 'white'}}>
+            <Item stackedLabel>
               <Label>Old Password</Label>
-              <Input
-                name="oldPassword"
-                secureTextEntry={true}
-                onChangeText={handleChange('oldPassword')}
-                onBlur={handleBlur('oldPassword')}
-                value={values.oldPassword}
-              />
-              {touched.oldPassword && (
-                <Icon
-                  active
-                  name={errors.oldPassword ? 'close' : 'check'}
-                  size={20}
-                  color={errors.oldPassword ? '#F01F0E' : '#2AA952'}
+              <Item>
+                <Input
+                  name="oldPassword"
+                  secureTextEntry={true}
+                  onChangeText={handleChange('oldPassword')}
+                  onBlur={handleBlur('oldPassword')}
+                  value={values.oldPassword}
                 />
-              )}
+                {touched.oldPassword && (
+                  <Icon
+                    active
+                    name={errors.oldPassword ? 'close' : 'check'}
+                    size={20}
+                    color={errors.oldPassword ? '#F01F0E' : '#2AA952'}
+                  />
+                )}
+              </Item>
             </Item>
             <StyledTextAlert>
               {touched.oldPassword && errors.oldPassword
                 ? errors.oldPassword
                 : null}
             </StyledTextAlert>
-            <Button transparent>
-              <StyledTextSecondary>Forgot Password</StyledTextSecondary>
+            <Button transparent block style={{textAlign: 'right'}}>
+              <StyledTextSecondary>Forgot Password?</StyledTextSecondary>
             </Button>
-            <Item stackedLabel last>
+
+            <Item stackedLabel>
               <Label>New Password</Label>
-              <Input
-                name="newPassword"
-                secureTextEntry={true}
-                onChangeText={handleChange('newPassword')}
-                onBlur={handleBlur('newPassword')}
-                value={values.newPassword}
-              />
-              {touched.newPassword && (
-                <Icon
-                  active
-                  name={errors.newPassword ? 'close' : 'check'}
-                  size={20}
-                  color={errors.newPassword ? '#F01F0E' : '#2AA952'}
+              <Item>
+                <Input
+                  name="newPassword"
+                  secureTextEntry={true}
+                  onChangeText={handleChange('newPassword')}
+                  onBlur={handleBlur('newPassword')}
+                  value={values.newPassword}
                 />
-              )}
+                {touched.newPassword && (
+                  <Icon
+                    active
+                    name={errors.newPassword ? 'close' : 'check'}
+                    size={20}
+                    color={errors.newPassword ? '#F01F0E' : '#2AA952'}
+                  />
+                )}
+              </Item>
             </Item>
             <StyledTextAlert>
               {touched.newPassword && errors.newPassword
                 ? errors.newPassword
                 : null}
             </StyledTextAlert>
-            <Item stackedLabel last>
+            <Item stackedLabel>
               <Label>Repeat New Password</Label>
-              <Input
-                name="repeatPassword"
-                secureTextEntry={true}
-                onChangeText={handleChange('repeatPassword')}
-                onBlur={handleBlur('repeatPassword')}
-                value={values.repeatPassword}
-              />
-              {touched.repeatPassword && (
-                <Icon
-                  active
-                  name={errors.repeatPassword ? 'close' : 'check'}
-                  size={20}
-                  color={errors.repeatPassword ? '#F01F0E' : '#2AA952'}
+              <Item>
+                <Input
+                  name="repeatPassword"
+                  secureTextEntry={true}
+                  onChangeText={handleChange('repeatPassword')}
+                  onBlur={handleBlur('repeatPassword')}
+                  value={values.repeatPassword}
                 />
-              )}
+                {touched.repeatPassword && (
+                  <Icon
+                    active
+                    name={errors.repeatPassword ? 'close' : 'check'}
+                    size={20}
+                    color={errors.repeatPassword ? '#F01F0E' : '#2AA952'}
+                  />
+                )}
+              </Item>
             </Item>
             <StyledTextAlert>
               {touched.repeatPassword && errors.repeatPassword

@@ -27,7 +27,9 @@ export const StyledButton = styled(Button)`
   align-self: flex-start;
 `;
 
-export const StyledContent = styled(Content)``;
+export const StyledContent = styled(Content)`
+  background-color: white;
+`;
 
 export const StyledH1 = styled(H1)`
   font-weight: bold;

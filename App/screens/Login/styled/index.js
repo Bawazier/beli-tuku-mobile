@@ -5,7 +5,7 @@ export const StyledTextButton = styled(Text)`
   font-size: 14px;
   line-height: 20px;
   text-align: right;
-  color: #222222;
+  color: #2eb67d;
   text-align: right;
 `;
 
@@ -15,12 +15,14 @@ export const StyledButton = styled(Button)`
 `;
 
 export const StyledContent = styled(Content)`
+  background-color: #075e54;
   padding: 0px 16px;
   margin: 16px 0px;
 `;
 
 export const StyledItem = styled(Item)`
-  background: #ffffff;
+  background: #fff;
+  border: none;
   border-radius: 5px;
   padding: 0 10px;
   margin: 4px 0px;
@@ -44,12 +46,11 @@ export const StyledHeader = styled(Header)`
 
 export const StyledView = styled.View`
   background-color: transparent;
-  padding: 20px;
-  margin-bottom: 8px;
+  margin-vertical: 15px;
 `;
 
 export const StyledText = styled.Text`
-  color: #222222;
+  color: #fff;
   font-weight: bold;
   font-size: 34px;
   line-height: 34px;

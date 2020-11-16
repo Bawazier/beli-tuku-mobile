@@ -16,7 +16,7 @@ import {API_URL} from '@env';
 
 const index = (props) => {
   return (
-    <StyledCard>
+    <StyledCard transparent>
       <StyledCardItem header>
         <StyledImageBackground
           source={
@@ -37,15 +37,19 @@ const index = (props) => {
               maxStars={5}
               rating={props.productRating}
               // selectedStar={(rating) => this.onStarRatingPress(rating)}
-              starSize={15}
-              containerStyle={{marginRight: 4, marginBottom: 4}}
-              fullStarColor={'yellow'}
+              starSize={18}
+              containerStyle={{marginVertical: 4, marginRight: 5}}
+              fullStarColor={'#075E54'}
             />
-            <StyledText>({props.productRating})</StyledText>
+            <StyledText>( {props.productRating} )</StyledText>
           </Row>
 
           <StyledText>{props.productStore}</StyledText>
-          <StyledH2>{props.productName}</StyledH2>
+          <StyledH2>
+            {props.productName.length < 15
+              ? props.productName
+              : props.productName.substring(0, 15).concat('...')}
+          </StyledH2>
           <StyledH3>{props.productPrice}</StyledH3>
         </StyledBody>
       </StyledCardItem>

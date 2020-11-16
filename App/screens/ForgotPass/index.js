@@ -13,7 +13,7 @@ import {
   StyledButton,
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Form, Text} from 'native-base';
+import {Button, Form, Text, Item} from 'native-base';
 
 // Components
 
@@ -25,10 +25,10 @@ const Login = () => {
   });
   return (
     <>
-      <StyledView>
-        <StyledText>Forgot password</StyledText>
-      </StyledView>
       <StyledContent>
+        <StyledView>
+          <StyledText>Forgot password</StyledText>
+        </StyledView>
         <Formik
           initialValues={{
             email: '',
@@ -51,28 +51,30 @@ const Login = () => {
                 Please, enter your email address. You will receive a link to
                 create a new password via email.
               </AlertMessage>
-              <StyledItem>
+              <StyledItem stackedLabel>
                 <StyledLabel>Email</StyledLabel>
-                <StyledInput
-                  name="email"
-                  keyboardType="email-address"
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                />
-                {touched.email && (
-                  <Icon
-                    active
-                    name={errors.email ? 'close' : 'check'}
-                    size={20}
-                    color={errors.email ? '#F01F0E' : '#2AA952'}
+                <Item>
+                  <StyledInput
+                    name="email"
+                    keyboardType="email-address"
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
                   />
-                )}
+                  {touched.email && (
+                    <Icon
+                      active
+                      name={errors.email ? 'close' : 'check'}
+                      size={20}
+                      color={errors.email ? '#F01F0E' : '#2AA952'}
+                    />
+                  )}
+                </Item>
               </StyledItem>
               <StyledTextAlert>
                 {touched.email && errors.email ? errors.email : null}
               </StyledTextAlert>
-              <StyledButton block success rounded>
+              <StyledButton block style={{backgroundColor: '#128C7E'}} rounded>
                 <Text>SEND</Text>
               </StyledButton>
             </Form>

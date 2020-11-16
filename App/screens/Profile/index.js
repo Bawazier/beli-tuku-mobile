@@ -22,7 +22,6 @@ import {useNavigation} from '@react-navigation/native';
 import ProfileActions from '../../redux/actions/profile';
 
 const Profile = () => {
-  const [image, setImage] = useState('');
   const auth = useSelector((state) => state.auth);
   const profile = useSelector((state) => state.profile);
   const dispatch = useDispatch();

@@ -51,14 +51,13 @@ const Setting = () => {
               values,
               errors,
             }) => (
-              <Form>
+              <Form style={{marginHorizontal: 10}}>
                 <Item stackedLabel>
                   <StyledCardInput>
                     <StyledLabel>Full Name</StyledLabel>
                     <Item>
                       <Input
                         name="fullName"
-                        secureTextEntry={true}
                         onChangeText={handleChange('fullName')}
                         onBlur={handleBlur('fullName')}
                         value={values.fullName}
@@ -84,7 +83,6 @@ const Setting = () => {
                     <Item>
                       <Input
                         name="dateOfBirth"
-                        secureTextEntry={true}
                         onChangeText={handleChange('dateOfBirth')}
                         onBlur={handleBlur('dateOfBirth')}
                         value={values.dateOfBirth}
@@ -117,11 +115,11 @@ const Setting = () => {
               <StyledTextSecondary>Change</StyledTextSecondary>
             </Button>
           </Row>
-          <Form>
-            <Item>
+          <Form style={{marginHorizontal: 10}}>
+            <Item stackedLabel>
               <StyledCardInput>
                 <StyledLabel>Password</StyledLabel>
-                <Input />
+                <Input disabled />
               </StyledCardInput>
             </Item>
           </Form>
@@ -130,7 +128,7 @@ const Setting = () => {
           <StyledTextPrimary>Notification</StyledTextPrimary>
           <Row>
             <StyledTextSubPrimary>Sales</StyledTextSubPrimary>
-            <Switch value={true} />
+            <Switch value={false} />
           </Row>
           <Row>
             <StyledTextSubPrimary>New arrivals</StyledTextSubPrimary>

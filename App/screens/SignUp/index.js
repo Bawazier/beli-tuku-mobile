@@ -13,26 +13,24 @@ import {
   StyledTextAlert,
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Form, Text} from 'native-base';
+import {Button, Form, Text, Item} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 
 // Components
 
 const SignUp = () => {
+  const navigation = useNavigation();
   const validationSchema = Yup.object({
-    name: Yup.string().max(80, 'name cannot be too long'),
-    email: Yup.string()
-      .email('Input must be Email')
-      .required('Email is Required'),
-    password: Yup.string()
-      .max(8, 'Password cannot be more than 8')
-      .required('Password is Required'),
+    name: Yup.string().max(80, 'name cannot be too long').required(),
+    email: Yup.string().email('Input must be Email').required(),
+    password: Yup.string().max(8, 'Password cannot be more than 8').required(),
   });
   return (
     <>
-      <StyledView>
-        <StyledText>Sign Up</StyledText>
-      </StyledView>
       <StyledContent>
+        <StyledView>
+          <StyledText>Sign Up</StyledText>
+        </StyledView>
         <Formik
           initialValues={{
             name: '',
@@ -53,75 +51,86 @@ const SignUp = () => {
             errors,
           }) => (
             <Form>
-              <StyledItem>
+              <StyledItem stackedLabel>
                 <StyledLabel>Name</StyledLabel>
-                <StyledInput
-                  name="name"
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
-                  value={values.name}
-                />
-                {touched.name && (
-                  <Icon
-                    active
-                    name={errors.name ? 'close' : 'check'}
-                    size={20}
-                    color={errors.name ? '#F01F0E' : '#2AA952'}
+                <Item>
+                  <StyledInput
+                    name="name"
+                    onChangeText={handleChange('name')}
+                    onBlur={handleBlur('name')}
+                    value={values.name}
                   />
-                )}
+                  {touched.name && (
+                    <Icon
+                      active
+                      name={errors.name ? 'close' : 'check'}
+                      size={20}
+                      color={errors.name ? '#F01F0E' : '#2AA952'}
+                    />
+                  )}
+                </Item>
               </StyledItem>
               <StyledTextAlert>
                 {touched.name && errors.name ? errors.name : null}
               </StyledTextAlert>
-              <StyledItem>
+              <StyledItem stackedLabel>
                 <StyledLabel>Email</StyledLabel>
-                <StyledInput
-                  name="email"
-                  keyboardType="email-address"
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                />
-                {touched.email && (
-                  <Icon
-                    active
-                    name={errors.email ? 'close' : 'check'}
-                    size={20}
-                    color={errors.email ? '#F01F0E' : '#2AA952'}
+                <Item>
+                  <StyledInput
+                    name="email"
+                    keyboardType="email-address"
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
                   />
-                )}
+                  {touched.email && (
+                    <Icon
+                      active
+                      name={errors.email ? 'close' : 'check'}
+                      size={20}
+                      color={errors.email ? '#F01F0E' : '#2AA952'}
+                    />
+                  )}
+                </Item>
               </StyledItem>
               <StyledTextAlert>
                 {touched.email && errors.email ? errors.email : null}
               </StyledTextAlert>
-              <StyledItem>
+              <StyledItem stackedLabel>
                 <StyledLabel>Password</StyledLabel>
-                <StyledInput
-                  name="password"
-                  secureTextEntry={true}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                />
-                {touched.password && (
-                  <Icon
-                    active
-                    name={errors.password ? 'close' : 'check'}
-                    size={20}
-                    color={errors.password ? '#F01F0E' : '#2AA952'}
+                <Item>
+                  <StyledInput
+                    name="password"
+                    secureTextEntry={true}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
                   />
-                )}
+                  {touched.password && (
+                    <Icon
+                      active
+                      name={errors.password ? 'close' : 'check'}
+                      size={20}
+                      color={errors.password ? '#F01F0E' : '#2AA952'}
+                    />
+                  )}
+                </Item>
               </StyledItem>
               <StyledTextAlert>
                 {touched.password && errors.password ? errors.password : null}
               </StyledTextAlert>
-              <StyledButton iconRight transparent light full>
+              <StyledButton
+                iconRight
+                transparent
+                light
+                full
+                onPress={() => navigation.navigate('Login')}>
                 <StyledTextButton>Already have an account?</StyledTextButton>
-                <Icon name="arrow-right" size={20} color="#2AA952" />
+                <Icon name="arrow-right" size={20} color="#2EB67D" />
               </StyledButton>
               <Button
                 block
-                success
+                style={{backgroundColor: '#128C7E'}}
                 rounded
                 onPress={handleSubmit}
                 title="Submit"

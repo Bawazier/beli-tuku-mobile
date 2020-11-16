@@ -30,7 +30,7 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState([
     {
-      name: 'Minyak Angin',
+      name: '3 Newbridge Court Chino Hills, CA 91709, United States',
       price: 5000,
       rating: 3,
     },
@@ -103,6 +103,7 @@ const Home = () => {
             data={data}
             renderItem={({item}) => (
               <CardProduct
+                productStore="King Plaza"
                 productName={item.name}
                 productPrice={item.price}
                 productRating={item.rating}
@@ -169,6 +170,7 @@ const Home = () => {
             data={data}
             renderItem={({item}) => (
               <CardProduct
+                productStore="King Plaza"
                 productName={item.name}
                 productPrice={item.price}
                 productRating={item.rating}
