@@ -9,9 +9,11 @@ import Setting from '../screens/Setting';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {createStackNavigator} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 const BagStack = () => {
+  const navigation = useNavigation();
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -27,7 +29,14 @@ const BagStack = () => {
             fontWeight: 'bold',
             lineHeight: 40,
           },
-          headerRight: () => <Icon name="search" />,
+          headerRight: () => (
+            <Icon
+              name="search"
+              size={20}
+              color="#fff"
+              onPress={() => navigation.navigate('Search')}
+            />
+          ),
         }}
       />
       <Stack.Screen
@@ -43,7 +52,14 @@ const BagStack = () => {
             fontWeight: 'bold',
             lineHeight: 40,
           },
-          headerRight: () => <Icon name="search" />,
+          headerRight: () => (
+            <Icon
+              name="search"
+              size={20}
+              color="#fff"
+              onPress={() => navigation.navigate('Search')}
+            />
+          ),
         }}
       />
       <Stack.Screen
@@ -74,7 +90,14 @@ const BagStack = () => {
             fontWeight: 'bold',
             lineHeight: 40,
           },
-          headerRight: () => <Icon name="search" />,
+          headerRight: () => (
+            <Icon
+              name="search"
+              size={20}
+              color="#fff"
+              onPress={() => navigation.navigate('Search')}
+            />
+          ),
         }}
       />
       <Stack.Screen
