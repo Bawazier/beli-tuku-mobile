@@ -19,13 +19,46 @@ const HomeStack = () => {
       <Stack.Screen
         name="Notification"
         component={Notification}
-        options={{title: 'Notification'}}
+        options={{
+          title: 'Notification',
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
+        }}
       />
-      <Stack.Screen name="Product" component={Product} />
+      <Stack.Screen
+        name="Product"
+        component={Product}
+        options={{
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
+        }}
+      />
       <Stack.Screen
         name="Review"
         component={Review}
-        options={{title: 'Rating and reviews'}}
+        options={{
+          title: 'Rating and reviews',
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
+        }}
       />
     </Stack.Navigator>
   );

@@ -6,10 +6,9 @@ import AddingAddress from '../screens/ShippingAddress/AddingAddress';
 import Profile from '../screens/Profile';
 import Orders from '../screens/Orders';
 import Setting from '../screens/Setting';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {createStackNavigator} from '@react-navigation/stack';
-
-import {Icon, Button} from 'native-base';
 
 const Stack = createStackNavigator();
 const BagStack = () => {
@@ -20,11 +19,15 @@ const BagStack = () => {
         component={Profile}
         options={{
           title: '',
-          headerRight: () => (
-            <Button transparent>
-              <Icon name="search" type="FontAwesome" />
-            </Button>
-          ),
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
+          headerRight: () => <Icon name="search" />,
         }}
       />
       <Stack.Screen
@@ -32,39 +35,77 @@ const BagStack = () => {
         component={Orders}
         options={{
           title: '',
-          headerRight: () => (
-            <Button transparent>
-              <Icon name="search" type="FontAwesome" />
-            </Button>
-          ),
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
+          headerRight: () => <Icon name="search" />,
         }}
       />
       <Stack.Screen
         name="ShippingAddress"
         component={ShippingAddress}
-        options={{title: 'Shipping Address'}}
-      />
-      <Stack.Screen
-        name="ChangeAddress"
-        component={ChangeAddress}
-        options={{title: 'Change Address'}}
+        options={{
+          title: 'Shipping Address',
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
+        }}
       />
       <Stack.Screen
         name="Setting"
         component={Setting}
         options={{
           title: '',
-          headerRight: () => (
-            <Button transparent>
-              <Icon name="search" type="FontAwesome" />
-            </Button>
-          ),
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
+          headerRight: () => <Icon name="search" />,
+        }}
+      />
+      <Stack.Screen
+        name="ChangeAddress"
+        component={ChangeAddress}
+        options={{
+          title: 'Change Address',
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
         }}
       />
       <Stack.Screen
         name="AddingAddress"
         component={AddingAddress}
-        options={{title: 'Adding Shipping Address'}}
+        options={{
+          title: 'Adding Address',
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
+        }}
       />
     </Stack.Navigator>
   );
