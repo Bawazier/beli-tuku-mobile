@@ -1,4 +1,5 @@
 import http from '../../helper/http';
+import qs from 'qs';
 
 export default {
   getProfile: (token) => ({
@@ -7,6 +8,11 @@ export default {
   }),
 
   updateProfile: (token, data) => ({
+    type: 'UPDATE_PROFILE',
+    payload: http(token).patch('customer/profile/account', qs.stringify(data)),
+  }),
+
+  updateProfileImage: (token, data) => ({
     type: 'UPDATE_PROFILE',
     payload: http(token).patch('customer/profile/account', data),
   }),

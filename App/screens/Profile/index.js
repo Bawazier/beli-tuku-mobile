@@ -33,39 +33,39 @@ const Profile = () => {
     dispatch(AuthActions.logout());
   };
 
-  // const selectImage = () => {
-  //   let options = {
-  //     title: 'You can choose one image',
-  //     maxWidth: 256,
-  //     maxHeight: 256,
-  //     storageOptions: {
-  //       skipBackup: true,
-  //     },
-  //   };
+  const selectImage = () => {
+    let options = {
+      title: 'You can choose one image',
+      maxWidth: 256,
+      maxHeight: 256,
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
 
-  //   ImagePicker.showImagePicker(options, (response) => {
-  //     console.log({response});
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log({response});
 
-  //     if (response.didCancel) {
-  //       console.log('User cancelled photo picker');
-  //     } else if (response.error) {
-  //       console.log('ImagePicker Error: ', response.error);
-  //     } else if (response.customButton) {
-  //       console.log('User tapped custom button: ', response.customButton);
-  //     } else {
-  //       let source = {uri: response.uri};
-  //       const imageData = new FormData();
-  //       imageData.append('picture', {
-  //         uri: response.uri,
-  //         type: response.type,
-  //         name: response.fileName,
-  //         data: response.data,
-  //       });
-  //       dispatch(ProfileActions.updateProfile(auth.token, imageData));
-  //     }
-  //   });
-  //   return dispatch(ProfileActions.getProfile(auth.token));
-  // };
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        let source = {uri: response.uri};
+        const imageData = new FormData();
+        imageData.append('picture', {
+          uri: response.uri,
+          type: response.type,
+          name: response.fileName,
+          path: response.path,
+        });
+        dispatch(ProfileActions.updateProfileImage(auth.token, imageData));
+      }
+    });
+    return dispatch(ProfileActions.getProfile(auth.token));
+  };
 
   return (
     <>
@@ -73,22 +73,21 @@ const Profile = () => {
         <StyledContainer>
           <StyledText>My profile</StyledText>
           <Row>
-            {/* <TouchableOpacity onPress={selectImage}> */}
-            <StyledImage
-              source={
-                // profile.data[0].picture
-                false
-                  ? {
-                      uri: profile.data[0].URL_image,
-                    }
-                  : require('../../assets/primaryImage.png')
-              }
-            />
-            {/* </TouchableOpacity> */}
+            <TouchableOpacity onPress={selectImage}>
+              <StyledImage
+                source={
+                  profile.data[0].picture
+                    ? {
+                        uri: profile.data[0].URL_picture,
+                      }
+                    : require('../../assets/primaryImage.png')
+                }
+              />
+            </TouchableOpacity>
 
             <StyledView>
-              {/* <StyledTextPrimary>{profile.data[0].name}</StyledTextPrimary>
-              <StyledTextSecondary>{profile.data[0].email}</StyledTextSecondary> */}
+              <StyledTextPrimary>{profile.data[0].name}</StyledTextPrimary>
+              <StyledTextSecondary>{profile.data[0].email}</StyledTextSecondary>
             </StyledView>
           </Row>
         </StyledContainer>

@@ -41,7 +41,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        alertMsg: action.payload.data.message,
+        alertMsg: action.payload,
       };
     }
     case 'SIGNUP_FULFILLED': {

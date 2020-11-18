@@ -18,14 +18,15 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        alertMsg: 'Load All PROFILE Fail',
+        alertMsg: 'get profile failed',
       };
     }
     case 'GET_PROFILE_FULFILLED': {
       return {
         ...state,
         isLoading: false,
-        data: action.payload.data.data,
+        isError: false,
+        data: action.payload.data.results,
       };
     }
     case 'UPDATE_PROFILE_PENDING': {
@@ -39,13 +40,14 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        alertMsg: 'Load All PROFILE Fail',
+        alertMsg: 'update profile failled',
       };
     }
     case 'UPDATE_PROFILE_FULFILLED': {
       return {
         ...state,
         isLoading: false,
+        isError: false,
       };
     }
     default: {

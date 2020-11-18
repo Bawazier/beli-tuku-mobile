@@ -1,4 +1,5 @@
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {
@@ -20,7 +21,13 @@ import BottomSheet from 'reanimated-bottom-sheet';
 //Component
 import ChangePass from '../../Components/BottomSheet/ChangePass';
 
+//Actions
+import ProfileActions from '../../redux/actions/profile';
+
 const Setting = () => {
+  const auth = useSelector((state) => state.auth);
+  const profile = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
   const validationSchema = Yup.object({
     fullName: Yup.string().required('Full Name is Required'),
     dateOfBirth: Yup.date(),
@@ -35,12 +42,27 @@ const Setting = () => {
           <StyledTextPrimary>Personal Information</StyledTextPrimary>
           <Formik
             initialValues={{
-              fullName: 'Bayu',
-              dateOfBirth: '2020, 19 02',
+              fullName: profile.data[0].name || '',
+              dateOfBirth: profile.data[0].dateOfBirth || '',
             }}
             validationSchema={validationSchema}
-            onSubmit={(values) => {
-              console.log(values);
+            onSubmit={async (values) => {
+              console.log(values.dateOfBirth);
+              if (values.fullName.length) {
+                await dispatch(
+                  ProfileActions.updateProfile(auth.token, {
+                    name: values.fullName,
+                  }),
+                );
+              }
+              if (values.dateOfBirth.length) {
+                await dispatch(
+                  ProfileActions.updateProfile(auth.token, {
+                    dateOfBirth: values.dateOfBirth,
+                  }),
+                );
+              }
+              dispatch(ProfileActions.getProfile(auth.token));
             }}>
             {({
               handleChange,
@@ -51,7 +73,7 @@ const Setting = () => {
               values,
               errors,
             }) => (
-              <Form style={{marginHorizontal: 10}}>
+              <Form style={{marginRight: 10}}>
                 <Item stackedLabel>
                   <StyledCardInput>
                     <StyledLabel>Full Name</StyledLabel>
@@ -115,11 +137,11 @@ const Setting = () => {
               <StyledTextSecondary>Change</StyledTextSecondary>
             </Button>
           </Row>
-          <Form style={{marginHorizontal: 10}}>
+          <Form style={{marginRight: 10}}>
             <Item stackedLabel>
               <StyledCardInput>
                 <StyledLabel>Password</StyledLabel>
-                <Input disabled />
+                <Input disabled value="password" secureTextEntry={true} />
               </StyledCardInput>
             </Item>
           </Form>
@@ -142,7 +164,7 @@ const Setting = () => {
       </StyledContent>
       <BottomSheet
         ref={sheetRef}
-        snapPoints={[340, 0]}
+        snapPoints={[400, 0]}
         borderRadius={10}
         renderContent={ChangePass}
         initialSnap={1}
