@@ -1,6 +1,6 @@
 const initialState = {
-  token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzksInJvbGVzX2lkIjozLCJpYXQiOjE2MDU0MDc0MDR9.FUMmZQPODj4qFaCiyBnxlMNxh2pcUUaVhas3kWE2KBw',
+  data: [],
+  token: '',
   isLoading: false,
   isError: false,
   alertMsg: '',
@@ -19,13 +19,14 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        alertMsg: 'Load All Categories Fail',
+        alertMsg: action.payload,
       };
     }
     case 'LOGIN_FULFILLED': {
       return {
         ...state,
         isLoading: false,
+        isError: false,
         token: action.payload.data.token,
       };
     }
@@ -40,13 +41,64 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        alertMsg: 'Load All Categories Fail',
+        alertMsg: action.payload.data.message,
       };
     }
     case 'SIGNUP_FULFILLED': {
       return {
         ...state,
         isLoading: false,
+        isError: false,
+      };
+    }
+    case 'FORGOT_PASS_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'FORGOT_PASS_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        alertMsg: action.payload.data.message,
+      };
+    }
+    case 'FORGOT_PASS_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload.data.validate,
+      };
+    }
+    case 'RESET_PASS_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'RESET_PASS_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        alertMsg: action.payload.data.message,
+      };
+    }
+    case 'RESET_PASS_FULFILLED': {
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+      };
+    }
+    case 'LOGOUT': {
+      return {
+        ...state,
+        data: [],
+        token: '',
       };
     }
     default: {
