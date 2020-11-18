@@ -7,21 +7,21 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_PROFILE_PENDING': {
+    case 'GET_ACCOUNT_PENDING': {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case 'GET_PROFILE_REJECTED': {
+    case 'GET_ACCOUNT_REJECTED': {
       return {
         ...state,
         isLoading: false,
         isError: true,
-        alertMsg: 'get profile failed',
+        alertMsg: 'get ACCOUNT failed',
       };
     }
-    case 'GET_PROFILE_FULFILLED': {
+    case 'GET_ACCOUNT_FULFILLED': {
       return {
         ...state,
         isLoading: false,
@@ -29,21 +29,21 @@ export default (state = initialState, action) => {
         data: action.payload.data.results,
       };
     }
-    case 'UPDATE_PROFILE_PENDING': {
+    case 'UPDATE_ACCOUNT_PENDING': {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case 'UPDATE_PROFILE_REJECTED': {
+    case 'UPDATE_ACCOUNT_REJECTED': {
       return {
         ...state,
         isLoading: false,
         isError: true,
-        alertMsg: 'update profile failled',
+        alertMsg: 'update ACCOUNT failled',
       };
     }
-    case 'UPDATE_PROFILE_FULFILLED': {
+    case 'UPDATE_ACCOUNT_FULFILLED': {
       return {
         ...state,
         isLoading: false,

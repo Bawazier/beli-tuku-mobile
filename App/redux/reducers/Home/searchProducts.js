@@ -1,6 +1,5 @@
 const initialState = {
   data: [],
-  imagesPrimary: [],
   isLoading: false,
   isError: false,
   alertMsg: '',
@@ -26,8 +25,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        data: action.payload.data.respone,
-        imagesPrimary: action.payload.data.imagesPrimary,
+        isError: false,
+        data: action.payload.data.rows,
       };
     }
     default: {

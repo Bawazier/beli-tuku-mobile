@@ -8,6 +8,7 @@ import productCategory from './Home/productCategory';
 
 import auth from './Auth/auth';
 import profile from './Profile/profile';
+import address from './Profile/address';
 
 export default combineReducers({
   productNews,
@@ -17,4 +18,5 @@ export default combineReducers({
   productCategory,
   auth,
   profile,
+  address,
 });
