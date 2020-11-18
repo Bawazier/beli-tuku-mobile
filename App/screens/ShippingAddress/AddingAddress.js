@@ -1,22 +1,29 @@
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {StyledViewCard, StyledTextAlert} from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Content, Form, Item, Input, Label, Button, Text} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
+
+//Actions
+import ProfileActions from '../../redux/actions/profile';
 
 const AddingAddress = () => {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const validationSchema = Yup.object({
     fullName: Yup.string().required('Full Name is Required'),
     address: Yup.string().required('Address is Required'),
     city: Yup.string().required('city is Required'),
     region: Yup.string().required('region is Required'),
-    postalCode: Yup.number()
-      .positive()
-      .max(12)
-      .required('postalCode is Required'),
+    postalCode: Yup.number().positive().required('postalCode is Required'),
     Country: Yup.string().required('Country is Required'),
   });
+
   return (
     <Content>
       <Formik
@@ -29,8 +36,19 @@ const AddingAddress = () => {
           Country: '',
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          console.log(values.length);
+          const data = {
+            recipientName: values.fullName,
+            address: values.address,
+            region: values.city + ', ' + values.region + ', ' + values.Country,
+            name: values.fullName,
+            postalCode: values.postalCode,
+            recipientTlp: values.postalCode,
+          };
+          await dispatch(ProfileActions.postAddress(auth.token, data));
+          await dispatch(ProfileActions.getAddress(auth.token));
+          navigation.navigate('ShippingAddress');
         }}>
         {({
           handleChange,
@@ -41,7 +59,7 @@ const AddingAddress = () => {
           values,
           errors,
         }) => (
-          <Form>
+          <Form style={{marginHorizontal: 10, marginVertical: 20}}>
             <StyledViewCard>
               <Item stackedLabel last>
                 <Label>Full Name</Label>
@@ -62,10 +80,11 @@ const AddingAddress = () => {
                   )}
                 </Item>
               </Item>
+              <StyledTextAlert>
+                {touched.fullName && errors.fullName ? errors.fullName : null}
+              </StyledTextAlert>
             </StyledViewCard>
-            <StyledTextAlert>
-              {touched.fullName && errors.fullName ? errors.fullName : null}
-            </StyledTextAlert>
+
             <StyledViewCard>
               <Item stackedLabel last>
                 <Label>Address</Label>
@@ -86,10 +105,11 @@ const AddingAddress = () => {
                   )}
                 </Item>
               </Item>
+              <StyledTextAlert>
+                {touched.address && errors.address ? errors.address : null}
+              </StyledTextAlert>
             </StyledViewCard>
-            <StyledTextAlert>
-              {touched.address && errors.address ? errors.address : null}
-            </StyledTextAlert>
+
             <StyledViewCard>
               <Item stackedLabel last>
                 <Label>City</Label>
@@ -110,10 +130,11 @@ const AddingAddress = () => {
                   )}
                 </Item>
               </Item>
+              <StyledTextAlert>
+                {touched.city && errors.city ? errors.city : null}
+              </StyledTextAlert>
             </StyledViewCard>
-            <StyledTextAlert>
-              {touched.city && errors.city ? errors.city : null}
-            </StyledTextAlert>
+
             <StyledViewCard>
               <Item stackedLabel last>
                 <Label>State/Province/Region</Label>
@@ -134,10 +155,11 @@ const AddingAddress = () => {
                   )}
                 </Item>
               </Item>
+              <StyledTextAlert>
+                {touched.region && errors.region ? errors.region : null}
+              </StyledTextAlert>
             </StyledViewCard>
-            <StyledTextAlert>
-              {touched.region && errors.region ? errors.region : null}
-            </StyledTextAlert>
+
             <StyledViewCard>
               <Item stackedLabel last>
                 <Label>Zip Code (Postal Code)</Label>
@@ -158,12 +180,13 @@ const AddingAddress = () => {
                   )}
                 </Item>
               </Item>
+              <StyledTextAlert>
+                {touched.postalCode && errors.postalCode
+                  ? errors.postalCode
+                  : null}
+              </StyledTextAlert>
             </StyledViewCard>
-            <StyledTextAlert>
-              {touched.postalCode && errors.postalCode
-                ? errors.postalCode
-                : null}
-            </StyledTextAlert>
+
             <StyledViewCard>
               <Item stackedLabel last>
                 <Label>Country</Label>
@@ -184,10 +207,11 @@ const AddingAddress = () => {
                   )}
                 </Item>
               </Item>
+              <StyledTextAlert>
+                {touched.country && errors.country ? errors.country : null}
+              </StyledTextAlert>
             </StyledViewCard>
-            <StyledTextAlert>
-              {touched.country && errors.country ? errors.country : null}
-            </StyledTextAlert>
+
             <Button
               block
               rounded

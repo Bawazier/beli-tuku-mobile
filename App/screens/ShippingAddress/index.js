@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   StyledContent,
   StyledContainer,
@@ -18,94 +19,101 @@ import {useNavigation} from '@react-navigation/native';
 
 //Component
 
+//Actions
+import ProfileActions from '../../redux/actions/profile';
+
 const ShippingAddress = () => {
-  const [refreshing, setRefreshing] = useState(false);
-  const [data, setData] = useState([
-    {
-      nameAddress: 'Jane Doe',
-      address: '3 Newbridge Court',
-      city: 'Chino Hills, CA 91709, United States',
-    },
-    {
-      nameAddress: 'Jane Doe',
-      address: '3 Newbridge Court',
-      city: 'Chino Hills, CA 91709, United States',
-    },
-  ]);
-  const [nextData, setNextData] = useState([
-    {
-      nameAddress: 'Aldo wardana',
-      address: 'Jl. Mulawarman III no 12 ',
-      city: 'Jawa tengah, Semarang, Manyaran',
-    },
-    {
-      nameAddress: 'Aldo wardana',
-      address: 'Jl. Mulawarman III no 12 ',
-      city: 'Jawa tengah, Semarang, Manyaran',
-    },
-  ]);
-  // const navigation = useNavigation();
+  const auth = useSelector((state) => state.auth);
+  const address = useSelector((state) => state.address);
+  const dispatch = useDispatch();
+  const [data, setData] = useState(address.data.length ? address.data : null);
+  const [countInfo, setCountInfo] = useState(
+    address.pageInfo.length ? address.pageInfo[0].count : 0,
+  );
+  const navigation = useNavigation();
+
+  const nextLink = async (info) => {
+    const {count} = address.pageInfo;
+    console.log(info.distanceFromEnd);
+    if (info.distanceFromEnd >= 0) {
+      if (count > 10) {
+        await dispatch(ProfileActions.getAddress(auth.token, '', 10));
+        setData([...data, ...address.data]);
+      }
+    }
+  };
+
+  const searchAddress = async (e) => {
+    console.log(e);
+    await dispatch(ProfileActions.getAddress(auth.token, e.nativeEvent.text));
+    setData(address.data.length ? address.data : null);
+  };
+  const onChangePress = async (id) => {
+    await dispatch(ProfileActions.getAddressId(id, auth.token));
+    navigation.navigate('ChangeAddress');
+    console.log(address.dataById);
+  };
   return (
     <>
       <StyledContent>
         <StyledContainer>
           <StyledItem>
             <Icon name="search" type="FontAwesome" />
-            <StyledInput placeholder="Search" />
+            <StyledInput placeholder="Search" onSubmitEditing={searchAddress} />
           </StyledItem>
         </StyledContainer>
         <StyledContainer>
           <StyledText>Shipping address</StyledText>
           <FlatList
-            refreshing={refreshing}
-            onRefresh={true}
             onEndReachedThreshold={0.5}
-            onEndReached={({distanceFromEnd}) => {
-              setRefreshing(true);
-              if (distanceFromEnd >= 0) {
-                setData([...data, ...nextData]);
-                setRefreshing(false);
-              }
-              console.log('on end reached ', distanceFromEnd);
-            }}
+            onEndReached={nextLink}
             data={data}
             renderItem={({item}) => (
-              <StyledViewCard>
-                <Row>
-                  <StyledTextCard>{item.nameAddress}</StyledTextCard>
-                  <StyledButton transparent small>
-                    <StyledTextButton>Change</StyledTextButton>
-                  </StyledButton>
-                </Row>
-                <StyledTextCard>{item.address}</StyledTextCard>
-                <StyledTextCard>{item.city}</StyledTextCard>
-              </StyledViewCard>
+              <>
+                {address.isLoading && !address.isError && (
+                  <StyledViewCard>
+                    <Row>
+                      <StyledTextCard>.....</StyledTextCard>
+                      <StyledButton transparent small>
+                        <StyledTextButton>......</StyledTextButton>
+                      </StyledButton>
+                    </Row>
+                    <StyledTextCard>......</StyledTextCard>
+                    <StyledTextCard>......</StyledTextCard>
+                  </StyledViewCard>
+                )}
+                {!address.isLoading && address.isError && (
+                  <StyledViewCard>
+                    <StyledText>do not have an address</StyledText>
+                  </StyledViewCard>
+                )}
+                {!address.isLoading && !address.isError && countInfo !== 0 && (
+                  <StyledViewCard>
+                    <Row>
+                      <StyledTextCard>{item.name}</StyledTextCard>
+                      <StyledButton
+                        transparent
+                        small
+                        onPress={() => onChangePress(item.id)}>
+                        <StyledTextButton>Change</StyledTextButton>
+                      </StyledButton>
+                    </Row>
+                    <StyledTextCard>{item.address}</StyledTextCard>
+                    <StyledTextCard>{item.region}</StyledTextCard>
+                  </StyledViewCard>
+                )}
+              </>
             )}
             horizontal={false}
             keyExtractor={(item) => item.id}
-            ListFooterComponent={
-              <View style={{alignItems: 'center', width: '100%'}}>
-                <Spinner color="green" />
-              </View>
-            }
+            // ListFooterComponent={
+            //   <View style={{alignItems: 'center', width: '100%'}}>
+            //     {address.pageInfo && countInfo > 10 && pageInfo < 10 && (
+            //       <Spinner color="green" />
+            //     )}
+            //   </View>
+            // }
           />
-          {/* {[...Array(3)].map((item) => (
-            <StyledViewCard>
-              <Row>
-                <StyledTextCard>Jane Doe</StyledTextCard>
-                <StyledButton
-                  transparent
-                  small
-                  onPress={() => navigation.navigate('ChangeAddress')}>
-                  <StyledTextButton>Change</StyledTextButton>
-                </StyledButton>
-              </Row>
-              <StyledTextCard>3 Newbridge Court </StyledTextCard>
-              <StyledTextCard>
-                Chino Hills, CA 91709, United States{' '}
-              </StyledTextCard>
-            </StyledViewCard>
-          ))} */}
           <StyledButton
             block
             bordered

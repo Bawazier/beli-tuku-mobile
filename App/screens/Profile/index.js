@@ -15,7 +15,7 @@ import {
 import {List, ListItem, Left, Right, Icon, View} from 'native-base';
 import {TouchableOpacity} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
 
 //Component
 
@@ -26,6 +26,7 @@ import AuthActions from '../../redux/actions/auth';
 const Profile = () => {
   const auth = useSelector((state) => state.auth);
   const profile = useSelector((state) => state.profile);
+  const address = useSelector((state) => state.address);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -111,8 +112,11 @@ const Profile = () => {
               onPress={() => navigation.navigate('ShippingAddress')}>
               <Left>
                 <View>
-                  <StyledTextPrimary>Shipping addresses</StyledTextPrimary>
-                  <StyledTextSecondary>3 ddresses</StyledTextSecondary>
+                  <StyledTextPrimary>Shipping address</StyledTextPrimary>
+                  <StyledTextSecondary>
+                    {address.pageInfo.length ? address.pageInfo[0].count : 0}{' '}
+                    address
+                  </StyledTextSecondary>
                 </View>
               </Left>
               <Right>

@@ -1,36 +1,56 @@
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {StyledViewCard, StyledTextAlert} from './styled';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Content, Form, Item, Input, Label, Button, Text} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
+
+//Actions
+import ProfileActions from '../../redux/actions/profile';
 
 const ChangeAddress = () => {
+  const auth = useSelector((state) => state.auth);
+  const address = useSelector((state) => state.address);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const validationSchema = Yup.object({
-    fullName: Yup.string().required('Full Name is Required'),
-    address: Yup.string().required('Address is Required'),
+    fullName: Yup.string(),
+    address: Yup.string(),
     city: Yup.string().required('city is Required'),
-    addressName: Yup.string().required(),
-    postalCode: Yup.number()
-      .positive()
-      .max(12)
-      .required('postalCode is Required'),
-    tlp: Yup.number().positive().lessThan(15).required(),
+    addressName: Yup.string(),
+    postalCode: Yup.number().required('postalCode is Required'),
+    tlp: Yup.number().positive(),
   });
+
   return (
     <Content>
       <Formik
         initialValues={{
-          fullName: '',
-          address: '',
-          city: '',
-          addressName: '',
-          postalCode: '',
-          tlp: '',
+          fullName: address.dataById.recipientName || '',
+          address: address.dataById.address || '',
+          city: address.dataById.region || '',
+          addressName: address.dataById.name || '',
+          postalCode: address.dataById.postalCode || '',
+          tlp: address.dataById.recipientTlp || '',
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          const data = {
+            recipientName: values.fullName || null,
+            address: values.address || null,
+            region: values.city || null,
+            name: values.addressName || null,
+            postalCode: values.postalCode || null,
+            recipientTlp: values.tlp || null,
+          };
+          await dispatch(
+            ProfileActions.updateAddress(address.dataById.id, auth.token, data),
+          );
+          await dispatch(ProfileActions.getAddress(auth.token));
+          navigation.navigate('ShippingAddress');
         }}>
         {({
           handleChange,
@@ -41,7 +61,7 @@ const ChangeAddress = () => {
           values,
           errors,
         }) => (
-          <Form>
+          <Form style={{marginHorizontal: 10, marginVertical: 20}}>
             <StyledViewCard>
               <Item stackedLabel last>
                 <Label>
@@ -144,7 +164,6 @@ const ChangeAddress = () => {
                   <Input
                     name="postalCode"
                     onChangeText={handleChange('postalCode')}
-                    onBlur={handleBlur('postalCode')}
                     value={values.postalCode}
                   />
                   {touched.postalCode && (
@@ -170,7 +189,6 @@ const ChangeAddress = () => {
                   <Input
                     name="tlp"
                     onChangeText={handleChange('tlp')}
-                    onBlur={handleBlur('tlp')}
                     value={values.tlp}
                   />
                   {touched.tlp && (

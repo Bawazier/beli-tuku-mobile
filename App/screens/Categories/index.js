@@ -17,40 +17,37 @@ import {useNavigation} from '@react-navigation/native';
 import HomeActions from '../../redux/actions/home';
 
 const Categories = () => {
-  const [refreshing, setRefreshing] = useState(false);
-  const [data, setData] = useState([
-    {
-      name: 'Minyak Angin',
-    },
-    {
-      name: 'Minyak Angin',
-    },
-  ]);
-  const [nextData, setNextData] = useState([
-    {
-      name: 'Minyak Telon',
-    },
-    {
-      name: 'Minyak Telon',
-    },
-  ]);
-  // const categories = useSelector((state) => state.categories);
-  // const dispatch = useDispatch();
-  // // const navigation = useNavigation();
+  const categories = useSelector((state) => state.categories);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [data, setData] = useState(
+    categories.data.length ? categories.data : null,
+  );
 
-  // useEffect(() => {
-  //   dispatch(HomeActions.findCategories());
-  // }, []);
+  const NextLink = async (info) => {
+    const {count} = categories.pageInfo;
+    console.log(info.distanceFromEnd);
+    if (info.distanceFromEnd >= 0) {
+      if (count > 10) {
+        await dispatch(HomeActions.findCategories(10));
+        setData([...data, ...categories.data]);
+      }
+    }
+  };
 
-  // const onPressItem = async (id) => {
-  //   await dispatch(HomeActions.byCategory(id));
-  //   navigation.navigate('Catalog');
-  // };
+  useEffect(() => {
+    dispatch(HomeActions.findCategories());
+  }, []);
 
-  // const onPressButton = async () => {
-  //   await dispatch(HomeActions.search(''));
-  //   navigation.navigate('Catalog');
-  // };
+  const onPressItem = async (id) => {
+    await dispatch(HomeActions.byCategory(id));
+    navigation.navigate('Catalog');
+  };
+
+  const onPressButton = async () => {
+    await dispatch(HomeActions.search());
+    navigation.navigate('Catalog');
+  };
 
   return (
     <>
@@ -60,40 +57,30 @@ const Categories = () => {
           rounded
           success
           style={{elevation: 10}}
-          // onPress={() => onPressButton()}
-        >
+          onPress={() => onPressButton()}>
           <StyledTextButton>VIEW ALL ITEMS</StyledTextButton>
         </Button>
       </StyledViewButton>
       <Content>
         <StyledText>Choose category</StyledText>
         <FlatList
-          refreshing={refreshing}
-          onRefresh={true}
           onEndReachedThreshold={0.5}
-          onEndReached={({distanceFromEnd}) => {
-            setRefreshing(true);
-            if (distanceFromEnd >= 0) {
-              setData([...data, ...nextData]);
-              setRefreshing(false);
-            }
-            console.log('on end reached ', distanceFromEnd);
-          }}
+          onEndReached={NextLink}
           data={data}
           renderItem={({item}) => (
             <List>
-              <ListItem>
+              <ListItem onPress={() => onPressItem(item.id)}>
                 <StyledTextCategory>{item.name}</StyledTextCategory>
               </ListItem>
             </List>
           )}
           horizontal={false}
           keyExtractor={(item) => item.id}
-          ListFooterComponent={
-            <View style={{alignItems: 'center', width: '100%'}}>
-              <Spinner color="green" />
-            </View>
-          }
+          // ListFooterComponent={
+          //   <View style={{alignItems: 'center', width: '100%'}}>
+          //     <Spinner color="green" />
+          //   </View>
+          // }
         />
         {/* <List>
           {categories.data.map((item) => (

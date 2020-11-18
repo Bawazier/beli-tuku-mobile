@@ -27,41 +27,48 @@ import HomeActions from '../../redux/actions/home';
 import ProfileActions from '../../redux/actions/profile';
 
 const Home = () => {
-  const [refreshing, setRefreshing] = useState(false);
-  const [data, setData] = useState([
-    {
-      name: '3 Newbridge Court Chino Hills, CA 91709, United States',
-      price: 5000,
-      rating: 3,
-    },
-    {
-      name: 'Minyak Angin',
-      price: 5000,
-      rating: 3,
-    },
-  ]);
-  const [nextData, setNextData] = useState([
-    {
-      name: 'Minyak Telon',
-      price: 555000,
-      rating: 5,
-    },
-    {
-      name: 'Minyak Telon',
-      price: 555000,
-      rating: 5,
-    },
-  ]);
   const productNews = useSelector((state) => state.productNews);
   const productPopular = useSelector((state) => state.productPopular);
+  const [dataNews, setDataNews] = useState(
+    productNews.data.length ? productNews.data : null,
+  );
+  const [dataPopular, setDataPopular] = useState(
+    productNews.data.length ? productPopular.data : null,
+  );
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    dispatch(HomeActions.new());
-    dispatch(HomeActions.populer());
-    dispatch(ProfileActions.getProfile(auth.token));
+  const newsNextLink = async (info) => {
+    const {count} = productNews.pageInfo;
+    console.log(info.distanceFromEnd);
+    if (info.distanceFromEnd >= 0) {
+      if (count > 10) {
+        await dispatch(HomeActions.new(10));
+        setDataNews([...dataNews, ...productNews.data]);
+      }
+    }
+  };
+
+  const popularNextLink = async (info) => {
+    const {count} = productPopular.pageInfo;
+    console.log(info.distanceFromEnd);
+    if (info.distanceFromEnd >= 0) {
+      if (count > 10) {
+        await dispatch(HomeActions.popular(10));
+        setDataPopular([...dataPopular, ...productPopular.data]);
+      }
+    }
+  };
+
+  useEffect(async () => {
+    await dispatch(HomeActions.new());
+    await dispatch(HomeActions.popular());
+    await dispatch(ProfileActions.getProfile(auth.token));
+    await dispatch(ProfileActions.getAddress(auth.token));
+    await setDataNews(productNews.data.length ? productNews.data : null);
+    setDataPopular(productPopular.data.length ? productPopular.data : null);
+    console.log(dataNews);
   }, []);
 
   return (
@@ -89,61 +96,28 @@ const Home = () => {
         </Row>
         <Row>
           <FlatList
-            refreshing={refreshing}
-            onRefresh={true}
             onEndReachedThreshold={0.5}
-            onEndReached={({distanceFromEnd}) => {
-              setRefreshing(true);
-              if (distanceFromEnd >= 0) {
-                setData([...data, ...nextData]);
-                setRefreshing(false);
-              }
-              console.log('on end reached ', distanceFromEnd);
-            }}
-            data={data}
+            onEndReached={newsNextLink}
+            data={dataNews}
             renderItem={({item}) => (
-              <CardProduct
-                productStore="King Plaza"
-                productName={item.name}
-                productPrice={item.price}
-                productRating={item.rating}
-              />
-            )}
-            horizontal
-            keyExtractor={(item) => item._id}
-            ListFooterComponent={
-              <View style={{justifyContent: 'center', height: '100%'}}>
-                <Spinner color="green" />
-              </View>
-            }
-          />
-          {/* {productNews.isLoading &&
-              !productNews.isError &&
-              [...Array(8)].map((item) => (
-                <CardProduct
-                  productName="...."
-                  productPrice="...."
-                  productRating="...."
-                />
-              ))}
-            {!productNews.isLoading && productNews.isError && (
-              <NotFound notifMessage={productNews.alertMsg} />
-            )}
-            {productNews.data.map((item) => (
               <TouchableOpacity onPress={() => navigation.navigate('Product')}>
                 <CardProduct
-                  // productImage={
-                  //   item.imagesPrimary.map((i) =>
-                  //     i.id_product === item.id ? i.URL_image : '',
-                  //   )[0]
-                  // }
+                  productImage={item.ProductImages[0].picture}
                   productName={item.name}
                   productPrice={item.price}
-                  productRating={item.rating}
+                  productRating={item.ProductRatings.length}
                   displayBadge={true}
                 />
               </TouchableOpacity>
-            ))} */}
+            )}
+            horizontal
+            keyExtractor={(item) => item._id}
+            // ListFooterComponent={
+            //   <View style={{justifyContent: 'center', height: '100%'}}>
+            //     <Spinner color="green" />
+            //   </View>
+            // }
+          />
         </Row>
         <Row>
           <Col>
@@ -156,61 +130,45 @@ const Home = () => {
         </Row>
         <Row>
           <FlatList
-            refreshing={refreshing}
-            onRefresh={true}
             onEndReachedThreshold={0.5}
-            onEndReached={({distanceFromEnd}) => {
-              setRefreshing(true);
-              if (distanceFromEnd >= 0) {
-                setData([...data, ...nextData]);
-                setRefreshing(false);
-              }
-              console.log('on end reached ', distanceFromEnd);
-            }}
-            data={data}
+            onEndReached={popularNextLink}
+            data={dataPopular}
             renderItem={({item}) => (
-              <CardProduct
-                productStore="King Plaza"
-                productName={item.name}
-                productPrice={item.price}
-                productRating={item.rating}
-              />
+              <>
+                {productPopular.isLoading &&
+                  !productPopular.isError &&
+                  [...Array(8)].map(() => (
+                    <CardProduct
+                      productName="...."
+                      productPrice="...."
+                      productRating="...."
+                    />
+                  ))}
+                {!productPopular.isLoading && productPopular.isError && (
+                  <NotFound notifMessage={productPopular.alertMsg} />
+                )}
+                {!productPopular.isLoading && !productPopular.isError && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Product')}>
+                    <CardProduct
+                      productImage={item.ProductImages[0].picture}
+                      productName={item.name}
+                      productPrice={item.price}
+                      productRating={item.ProductRatings.length}
+                      displayBadge={true}
+                    />
+                  </TouchableOpacity>
+                )}
+              </>
             )}
             horizontal
             keyExtractor={(item) => item._id}
-            ListFooterComponent={
-              <View style={{justifyContent: 'center', height: '100%'}}>
-                <Spinner color="green" />
-              </View>
-            }
+            // ListFooterComponent={
+            //   <View style={{justifyContent: 'center', height: '100%'}}>
+            //     <Spinner color="green" />
+            //   </View>
+            // }
           />
-          {/* {productNews.isLoading &&
-            !productNews.isError &&
-            [...Array(8)].map((item) => (
-              <CardProduct
-                productName="...."
-                productPrice="...."
-                productRating="...."
-              />
-            ))}
-            {!productPopular.isLoading && productPopular.isError && (
-              <NotFound notifMessage={productPopular.alertMsg} />
-            )}
-            {productPopular.data.map((item) => (
-              <TouchableOpacity onPress={() => navigation.navigate('Product')}>
-                <CardProduct
-                  // productImage={
-                  //   item.imagesPrimary.map((i) =>
-                  //     i.id_product === item.id ? i.URL_image : '',
-                  //   )[0]
-                  // }
-                  productName={item.name}
-                  productPrice={item.price}
-                  productRating={item.rating}
-                  displayBadge={false}
-                />
-              </TouchableOpacity>
-            ))} */}
         </Row>
       </StyledContent>
     </>
