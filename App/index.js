@@ -3,19 +3,10 @@ import {StyledContainer} from './styles/globalStyles';
 import {Provider} from 'react-redux';
 import store from './redux/store';
 import SplashScreen from 'react-native-splash-screen';
+import {persistStore} from 'redux-persist';
+import {PersistGate} from 'redux-persist/es/integration/react';
 
 import Screens from './navigations';
-
-// import Login from './screens/Login';
-// import Signup from './screens/SignUp';
-// import ResetPass from './screens/ResetPass';
-// import ForgotPass from './screens/ForgotPass';
-// import Setting from './screens/Setting';
-// import AddingAddress from './screens/ShippingAddress/AddingAddress';
-// import ChangeAddress from './screens/ShippingAddress/ChangeAddress';
-// import Catalog from './screens/Catalog';
-// import Categories from './screens/Categories';
-// import ShippingAddress from './screens/ShippingAddress';
 
 class App extends React.Component {
   componentDidMount() {
@@ -24,11 +15,14 @@ class App extends React.Component {
     SplashScreen.hide();
   }
   render() {
+    const persitedStore = persistStore(store);
     return (
       <Provider store={store}>
-        <StyledContainer>
-          <Screens />
-        </StyledContainer>
+        <PersistGate loading={null} persistor={persitedStore}>
+          <StyledContainer>
+            <Screens />
+          </StyledContainer>
+        </PersistGate>
       </Provider>
     );
   }
