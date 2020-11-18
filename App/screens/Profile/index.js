@@ -10,6 +10,7 @@ import {
   StyledImage,
   StyledTextPrimary,
   StyledTextSecondary,
+  StyledTextAlert,
 } from './styled';
 import {List, ListItem, Left, Right, Icon, View} from 'native-base';
 import {TouchableOpacity} from 'react-native';
@@ -20,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 
 //Actions
 import ProfileActions from '../../redux/actions/profile';
+import AuthActions from '../../redux/actions/auth';
 
 const Profile = () => {
   const auth = useSelector((state) => state.auth);
@@ -27,39 +29,43 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const selectImage = () => {
-    let options = {
-      title: 'You can choose one image',
-      maxWidth: 256,
-      maxHeight: 256,
-      storageOptions: {
-        skipBackup: true,
-      },
-    };
-
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log({response});
-
-      if (response.didCancel) {
-        console.log('User cancelled photo picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        let source = {uri: response.uri};
-        const imageData = new FormData();
-        imageData.append('picture', {
-          uri: response.uri,
-          type: response.type,
-          name: response.fileName,
-          data: response.data,
-        });
-        dispatch(ProfileActions.updateProfile(auth.token, imageData));
-      }
-    });
-    return dispatch(ProfileActions.getProfile(auth.token));
+  const pressLogout = () => {
+    dispatch(AuthActions.logout());
   };
+
+  // const selectImage = () => {
+  //   let options = {
+  //     title: 'You can choose one image',
+  //     maxWidth: 256,
+  //     maxHeight: 256,
+  //     storageOptions: {
+  //       skipBackup: true,
+  //     },
+  //   };
+
+  //   ImagePicker.showImagePicker(options, (response) => {
+  //     console.log({response});
+
+  //     if (response.didCancel) {
+  //       console.log('User cancelled photo picker');
+  //     } else if (response.error) {
+  //       console.log('ImagePicker Error: ', response.error);
+  //     } else if (response.customButton) {
+  //       console.log('User tapped custom button: ', response.customButton);
+  //     } else {
+  //       let source = {uri: response.uri};
+  //       const imageData = new FormData();
+  //       imageData.append('picture', {
+  //         uri: response.uri,
+  //         type: response.type,
+  //         name: response.fileName,
+  //         data: response.data,
+  //       });
+  //       dispatch(ProfileActions.updateProfile(auth.token, imageData));
+  //     }
+  //   });
+  //   return dispatch(ProfileActions.getProfile(auth.token));
+  // };
 
   return (
     <>
@@ -67,21 +73,22 @@ const Profile = () => {
         <StyledContainer>
           <StyledText>My profile</StyledText>
           <Row>
-            <TouchableOpacity onPress={selectImage}>
-              <StyledImage
-                source={
-                  profile.data[0].picture
-                    ? {
-                        uri: profile.data[0].URL_image,
-                      }
-                    : require('../../assets/user.png')
-                }
-              />
-            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={selectImage}> */}
+            <StyledImage
+              source={
+                // profile.data[0].picture
+                false
+                  ? {
+                      uri: profile.data[0].URL_image,
+                    }
+                  : require('../../assets/primaryImage.png')
+              }
+            />
+            {/* </TouchableOpacity> */}
 
             <StyledView>
-              <StyledTextPrimary>{profile.data[0].name}</StyledTextPrimary>
-              <StyledTextSecondary>{profile.data[0].email}</StyledTextSecondary>
+              {/* <StyledTextPrimary>{profile.data[0].name}</StyledTextPrimary>
+              <StyledTextSecondary>{profile.data[0].email}</StyledTextSecondary> */}
             </StyledView>
           </Row>
         </StyledContainer>
@@ -120,6 +127,19 @@ const Profile = () => {
                   <StyledTextSecondary>
                     Notifications, password
                   </StyledTextSecondary>
+                </View>
+              </Left>
+              <Right>
+                <Icon name="angle-right" type="FontAwesome" />
+              </Right>
+            </ListItem>
+            <ListItem noIndent onPress={pressLogout}>
+              <Left>
+                <View>
+                  <StyledTextPrimary>Logout</StyledTextPrimary>
+                  <StyledTextAlert>
+                    are you are sure to log out of this app?
+                  </StyledTextAlert>
                 </View>
               </Left>
               <Right>

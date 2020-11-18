@@ -41,3 +41,10 @@ export const StyledTextSecondary = styled.Text`
   font-size: 11px;
   color: #9b9b9b;
 `;
+
+export const StyledTextAlert = styled.Text`
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  color: #f01f0e;
+`;

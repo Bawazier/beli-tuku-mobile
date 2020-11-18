@@ -1,4 +1,5 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {
@@ -14,10 +15,16 @@ import {
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Button, Form, Text, Item} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 
 // Components
 
+//Actions
+import AuthActions from '../../redux/actions/auth';
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const validationSchema = Yup.object({
     email: Yup.string()
       .email('Input must be Email')
@@ -34,8 +41,12 @@ const Login = () => {
             email: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log(values);
+          onSubmit={async (values) => {
+            const data = {
+              email: values.email,
+            };
+            await dispatch(AuthActions.forgotPass(data));
+            navigation.navigate('ResetPass');
           }}>
           {({
             handleChange,
@@ -74,7 +85,13 @@ const Login = () => {
               <StyledTextAlert>
                 {touched.email && errors.email ? errors.email : null}
               </StyledTextAlert>
-              <StyledButton block style={{backgroundColor: '#128C7E'}} rounded>
+              <StyledButton
+                block
+                style={{backgroundColor: '#128C7E'}}
+                rounded
+                onPress={handleSubmit}
+                title="Submit"
+                {...(isSubmitting ? 'disabled' : null)}>
                 <Text>SEND</Text>
               </StyledButton>
             </Form>

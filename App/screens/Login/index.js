@@ -1,4 +1,5 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {
@@ -19,7 +20,11 @@ import {useNavigation} from '@react-navigation/native';
 
 // Components
 
+//Actions
+import AuthActions from '../../redux/actions/auth';
+
 const Login = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -43,7 +48,12 @@ const Login = () => {
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            console.log(values);
+            const data = {
+              name: values.name,
+              email: values.email,
+              password: values.password,
+            };
+            dispatch(AuthActions.login(data));
           }}>
           {({
             handleChange,

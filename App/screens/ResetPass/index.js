@@ -1,4 +1,5 @@
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {
@@ -14,10 +15,17 @@ import {
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Button, Form, Text, Item} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 
 // Components
 
+//Actions
+import AuthActions from '../../redux/actions/auth';
+
 const Login = () => {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const validationSchema = Yup.object({
     newPassword: Yup.string()
       .max(8, 'New Password cannot be more than 8')
@@ -39,8 +47,14 @@ const Login = () => {
             confirmPassword: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log(values);
+          onSubmit={async (values) => {
+            console.log(auth.data[0].id);
+            const data = {
+              newPassword: values.newPassword,
+              confirmNewPassword: values.confirmNewPassword,
+            };
+            await dispatch(AuthActions.resetPass(auth.data[0].id, data));
+            navigation.navigate('Login');
           }}>
           {({
             handleChange,
