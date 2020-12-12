@@ -24,6 +24,7 @@
     "react-hook-form": "^6.10.1",
     "react-native": "0.63.3",
     "react-native-clean-project": "^3.4.0",
+    "react-native-dialog": "^6.1.2",
     "react-native-dotenv": "^2.4.2",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-image-picker": "^2.3.4",
