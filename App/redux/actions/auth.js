@@ -4,22 +4,25 @@ import qs from 'qs';
 export default {
   login: (data) => ({
     type: 'LOGIN',
-    payload: http().post('auth/login', qs.stringify(data)),
+    payload: http().post('/auth/signin', qs.stringify(data)),
   }),
 
-  signup: (data) => ({
+  signup: (data, id_roles = 3) => ({
     type: 'SIGNUP',
-    payload: http().post('auth/signup', qs.stringify(data)),
+    payload: http().post(`/auth/signup/${id_roles}`, qs.stringify(data)),
   }),
 
-  forgotPass: (data) => ({
+  validateForgotPass: (data) => ({
+    type: 'VALIDATE_FORGOT_PASS',
+    payload: http().patch('/auth/forgot/password', qs.stringify(data)),
+  }),
+
+  forgotPass: (id_user, data) => ({
     type: 'FORGOT_PASS',
-    payload: http().patch('auth/forgot/password', qs.stringify(data)),
-  }),
-
-  resetPass: (id, data) => ({
-    type: 'RESET_PASS',
-    payload: http().patch(`auth/change/password/${id}`, qs.stringify(data)),
+    payload: http().patch(
+      `/auth/forgot/password/${id_user}`,
+      qs.stringify(data),
+    ),
   }),
 
   logout: () => ({

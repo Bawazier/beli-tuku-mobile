@@ -1,30 +1,57 @@
 import http from '../../helper/http';
 
 export default {
-  findCategories: (search = '', page = 0, limit = 10) => ({
-    type: 'GET_CATEGORIES',
-    payload: http().get(
-      `home/categories/?search=${search}&page=${page}&limit=${limit}`,
-    ),
-  }),
-  new: (page = 0, limit = 10) => ({
+  newProducts: (page = 0, limit = 30) => ({
     type: 'GET_PRODUCTS_NEW',
-    payload: http().get(`home/product/news/?page=${page}&limit=${limit}`),
+    payload: http().get(`/public/products/?page=${page}&limit=${limit}`),
   }),
-  popular: (page = 0, limit = 10) => ({
+  popularProducts: (page = 0, limit = 30) => ({
     type: 'GET_PRODUCTS_POPULAR',
-    payload: http().get(`home/product/news/?page=${page}&limit=${limit}`),
+    payload: http().get(`/public/products/?page=${page}&limit=${limit}`),
   }),
-  search: (search = '', page = 0, limit = 10) => ({
-    type: 'SEARCH_PRODUCTS',
+  listCategories: (search = '', page = 0, limit = 30) => ({
+    type: 'GET_LIST_CATEGORIES',
     payload: http().get(
-      `home/product/search/?search=${search}&page=${page}&limit=${limit}`,
+      `/public/categories/?search=${search}&page=${page}&limit=${limit}`,
     ),
   }),
-  byCategory: (id, page = 0, limit = 10) => ({
-    type: 'GET_PRODUCTS_CATEGORY',
-    payload: http().get(
-      `home/product/category/${id}?page=${page}&limit=${limit}`,
+  catalogSearch: (
+    searchName = '',
+    searchCategory = '',
+    searchColor = '',
+    searchSize = '',
+    searchStore = '',
+    searchStatus = '',
+  ) => ({
+    type: 'CATALOG_RESULTS',
+    pyaload: http().get(
+      '/public/products/' +
+        `?/search=${searchName || ''}&searchColor=${
+          searchColor || ''
+        }&searchSize=${searchSize || ''}&searchStore=${
+          searchStore || ''
+        }&searchCategory=${searchCategory || ''}&searchStatus=${
+          searchStatus || ''
+        }`,
     ),
+  }),
+  catalogSort: (sortBy = 'createdAt', sortType = 'DESC') => ({
+    type: 'CATALOG_RESULTS',
+    pyaload: http().get(
+      '/public/products/' + `?/sortBy=${sortBy}&sortType=${sortType}`,
+    ),
+  }),
+  // catalogFilter: () => ({
+  //   type: 'CATALOG_RESULTS',
+  //   payload: http().get('/public/products/' + `?/color[${index}]=${values}`),
+  // }),
+  detailProduct: (id_product) => ({
+    type: 'GET_DETAIL_PRODUCT',
+    payload: http().get(`/public/products/${id_product}`),
+  }),
+
+  detailProductReviews: (id_product) => ({
+    type: 'GET_DETAIL_PRODUCT_REVIEWS',
+    payload: http().get(`/public/product/reviews/${id_product}`),
   }),
 };
