@@ -1,5 +1,6 @@
 const initialState = {
   data: [],
+  pageInfo: {},
   isLoading: false,
   isError: false,
   alertMsg: '',
@@ -7,26 +8,27 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'SEARCH_PRODUCTS_PENDING': {
+    case 'CATALOG_RESULTS_PENDING': {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case 'SEARCH_PRODUCTS_REJECTED': {
+    case 'CATALOG_RESULTS_REJECTED': {
       return {
         ...state,
         isLoading: false,
         isError: true,
-        alertMsg: 'Load Search Products Fail',
+        alertMsg: action.payload,
       };
     }
-    case 'SEARCH_PRODUCTS_FULFILLED': {
+    case 'CATALOG_RESULTS_FULFILLED': {
       return {
         ...state,
         isLoading: false,
         isError: false,
-        data: action.payload.data.rows,
+        data: action.payload.data.results,
+        pageInfo: action.payload.data.pageInfo,
       };
     }
     default: {

@@ -1,12 +1,36 @@
 const initialState = {
   data: [],
   isLoading: false,
-  isError: false,
   alertMsg: '',
+
+  isGetError: false,
+  isUpdateError: false,
+  isChangePassError: false,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'CHANGE_PASSWORD_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'CHANGE_PASSWORD_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isChangePassError: true,
+        alertMsg: action.payload,
+      };
+    }
+    case 'CHANGE_PASSWORD_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isChangePassError: false,
+      };
+    }
     case 'GET_ACCOUNT_PENDING': {
       return {
         ...state,
@@ -17,15 +41,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        isError: true,
-        alertMsg: 'get ACCOUNT failed',
+        isGetError: true,
+        alertMsg: action.payload,
       };
     }
     case 'GET_ACCOUNT_FULFILLED': {
       return {
         ...state,
         isLoading: false,
-        isError: false,
+        isGetError: false,
         data: action.payload.data.results,
       };
     }
@@ -39,15 +63,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        isError: true,
-        alertMsg: 'update ACCOUNT failled',
+        isUpdateError: true,
+        alertMsg: action.payload,
       };
     }
     case 'UPDATE_ACCOUNT_FULFILLED': {
       return {
         ...state,
         isLoading: false,
-        isError: false,
+        isUpdateError: false,
       };
     }
     default: {

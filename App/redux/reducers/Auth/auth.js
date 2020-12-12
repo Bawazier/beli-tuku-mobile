@@ -1,9 +1,15 @@
 const initialState = {
-  data: [],
   token: '',
   isLoading: false,
   isError: false,
   alertMsg: '',
+
+  isSignupError: false,
+
+  isForgotPassError: false,
+
+  emailValidData: [],
+  isEmailError: false,
 };
 
 export default (state = initialState, action) => {
@@ -40,7 +46,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        isError: true,
+        isSignupError: true,
         alertMsg: action.payload,
       };
     }
@@ -48,7 +54,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        isError: false,
+        isSignupError: false,
       };
     }
     case 'FORGOT_PASS_PENDING': {
@@ -61,7 +67,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        isError: true,
+        isForgotPassError: true,
         alertMsg: action.payload.data.message,
       };
     }
@@ -69,37 +75,33 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        isError: false,
-        data: action.payload.data.validate,
+        isForgotPassError: false,
       };
     }
-    case 'RESET_PASS_PENDING': {
+    case 'VALIDATE_FORGOT_PASS_PENDING': {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case 'RESET_PASS_REJECTED': {
+    case 'VALIDATE_FORGOT_PASS_REJECTED': {
       return {
         ...state,
         isLoading: false,
-        isError: true,
+        isEmailError: true,
         alertMsg: action.payload.data.message,
       };
     }
-    case 'RESET_PASS_FULFILLED': {
+    case 'VALIDATE_FORGOT_PASS_FULFILLED': {
       return {
         ...state,
-        isError: false,
+        isEmailError: false,
         isLoading: false,
+        emailValidData: action.payload.data.validate,
       };
     }
     case 'LOGOUT': {
-      return {
-        ...state,
-        data: [],
-        token: '',
-      };
+      return initialState;
     }
     default: {
       return state;

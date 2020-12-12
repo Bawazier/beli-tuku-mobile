@@ -1,59 +1,18 @@
 const initialState = {
-  data: [],
-  dataById: {},
-  pageInfo: [],
+  dataList: [],
+  dataGet: {},
   isLoading: false,
-  isError: false,
   alertMsg: '',
+
+  isPostError: false,
+  isUpdateError: false,
+  isGetError: false,
+  isListError: false,
+  isDeleteError: false,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_ADDRESS_PENDING': {
-      return {
-        ...state,
-        isLoading: true,
-      };
-    }
-    case 'GET_ADDRESS_REJECTED': {
-      return {
-        ...state,
-        isLoading: false,
-        isError: true,
-        alertMsg: 'get ADDRESS failed',
-      };
-    }
-    case 'GET_ADDRESS_FULFILLED': {
-      return {
-        ...state,
-        isLoading: false,
-        isError: false,
-        data: action.payload.data.rows,
-        pageInfo: action.payload.data.pageInfo,
-      };
-    }
-    case 'GET_ADDRESS_ID_PENDING': {
-      return {
-        ...state,
-        isLoading: true,
-      };
-    }
-    case 'GET_ADDRESS_ID_REJECTED': {
-      return {
-        ...state,
-        isLoading: false,
-        isError: true,
-        alertMsg: 'get ID ADDRESS failed',
-      };
-    }
-    case 'GET_ADDRESS_ID_FULFILLED': {
-      return {
-        ...state,
-        isLoading: false,
-        isError: false,
-        dataById: action.payload.data.results,
-      };
-    }
     case 'POST_ADDRESS_PENDING': {
       return {
         ...state,
@@ -64,15 +23,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        isError: true,
-        alertMsg: 'post ADDRESS failed',
+        isPostError: true,
+        alertMsg: action.payload,
       };
     }
     case 'POST_ADDRESS_FULFILLED': {
       return {
         ...state,
         isLoading: false,
-        isError: false,
+        isPostError: false,
       };
     }
     case 'UPDATE_ADDRESS_PENDING': {
@@ -85,15 +44,80 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        isError: true,
-        alertMsg: 'UPDATE ADDRESS failed',
+        isUpdateError: true,
+        alertMsg: action.payload,
       };
     }
     case 'UPDATE_ADDRESS_FULFILLED': {
       return {
         ...state,
         isLoading: false,
-        isError: false,
+        isUpdateError: false,
+      };
+    }
+    case 'GET_ADDRESS_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'GET_ADDRESS_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isGetError: true,
+        alertMsg: action.payload,
+      };
+    }
+    case 'GET_ADDRESS_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isGetError: false,
+        dataGet: action.payload.data.results,
+      };
+    }
+    case 'LIST_ADDRESS_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'LIST_ADDRESS_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isListError: true,
+        alertMsg: action.payload,
+      };
+    }
+    case 'LIST_ADDRESS_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isListError: false,
+        dataList: action.payload.data.results,
+      };
+    }
+    case 'DELETE_ADDRESS_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'DELETE_ADDRESS_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isDeleteError: true,
+        alertMsg: action.payload,
+      };
+    }
+    case 'DELETE_ADDRESS_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isDeleteError: false,
       };
     }
     default: {

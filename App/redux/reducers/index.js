@@ -1,22 +1,39 @@
 import {combineReducers} from 'redux';
 
-import productNews from './Home/productNews';
-import productPopular from './Home/productPopular';
-import categories from './Home/categories';
-import searchProducts from './Home/searchProducts';
-import productCategory from './Home/productCategory';
-
 import auth from './Auth/auth';
-import profile from './Profile/profile';
+
+import catalogResults from './Home/catalogResults';
+import detailProduct from './Home/detailProduct';
+import listCategories from './Home/listCategories';
+import listNewProducts from './Home/listNewProducts';
+import listPopularProducts from './Home/listPopularProducts';
+
+import account from './Profile/account';
 import address from './Profile/address';
 
+import postProductRating from './Rating/postProductRating';
+
+import cart from './Transaction/cart';
+import order from './Transaction/order';
+import topup from './Transaction/topup';
+import quantityCounter from './Transaction/quantityCounter';
+
 export default combineReducers({
-  productNews,
-  productPopular,
-  categories,
-  searchProducts,
-  productCategory,
   auth,
-  profile,
+
+  catalogResults,
+  detailProduct,
+  listCategories,
+  listNewProducts,
+  listPopularProducts,
+
+  account,
   address,
+
+  postProductRating,
+
+  cart,
+  order,
+  topup,
+  quantityCounter,
 });

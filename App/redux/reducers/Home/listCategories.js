@@ -1,5 +1,6 @@
 const initialState = {
   data: [],
+  pageInfo: {},
   isLoading: false,
   isError: false,
   alertMsg: '',
@@ -7,26 +8,27 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_PRODUCTS_NEW_PENDING': {
+    case 'LIST_CATEGORIES_PENDING': {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case 'GET_PRODUCTS_NEW_REJECTED': {
+    case 'LIST_CATEGORIES_REJECTED': {
       return {
         ...state,
         isLoading: false,
         isError: true,
-        alertMsg: 'Load News Products Fail',
+        alertMsg: action.payload,
       };
     }
-    case 'GET_PRODUCTS_NEW_FULFILLED': {
+    case 'LIST_CATEGORIES_FULFILLED': {
       return {
         ...state,
         isLoading: false,
         isError: false,
-        data: action.payload.data.rows,
+        data: action.payload.data.results,
+        pageInfo: action.payload.data.pageInfo,
       };
     }
     default: {
