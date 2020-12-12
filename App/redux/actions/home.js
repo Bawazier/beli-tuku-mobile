@@ -2,15 +2,15 @@ import http from '../../helper/http';
 
 export default {
   newProducts: (page = 0, limit = 30) => ({
-    type: 'GET_PRODUCTS_NEW',
+    type: 'LIST_NEW_PRODUCTS',
     payload: http().get(`/public/products/?page=${page}&limit=${limit}`),
   }),
   popularProducts: (page = 0, limit = 30) => ({
-    type: 'GET_PRODUCTS_POPULAR',
+    type: 'LIST_POPULAR_PRODUCTS',
     payload: http().get(`/public/products/?page=${page}&limit=${limit}`),
   }),
   listCategories: (search = '', page = 0, limit = 30) => ({
-    type: 'GET_LIST_CATEGORIES',
+    type: 'LIST_CATEGORIES',
     payload: http().get(
       `/public/categories/?search=${search}&page=${page}&limit=${limit}`,
     ),

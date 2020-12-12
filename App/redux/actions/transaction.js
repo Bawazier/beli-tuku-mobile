@@ -62,16 +62,28 @@ export default {
 
   orderByCredit: (token) => ({
     type: 'POST_ORDER',
-    payload: http(token).post('customer/order'),
+    payload: http(token).post('/customer/order'),
   }),
 
   getOrder: (token, id_order) => ({
     type: 'GET_ORDER',
-    payload: http(token).get(`customer/order/${id_order}`),
+    payload: http(token).get(`/customer/order/${id_order}`),
   }),
 
   listOrder: (token, id_order) => ({
     type: 'LIST_ORDER',
-    payload: http(token).get('customer/order'),
+    payload: http(token).get('/customer/order'),
+  }),
+
+  increment: () => ({
+    type: 'INCREMENT',
+  }),
+
+  decrement: () => ({
+    type: 'DECREMENT',
+  }),
+
+  reset: () => ({
+    type: 'RESET',
   }),
 };

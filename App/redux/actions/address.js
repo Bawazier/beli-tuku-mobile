@@ -21,7 +21,7 @@ export default {
   }),
 
   listAddress: (token) => ({
-    type: 'GET_List_ADDRESS',
+    type: 'LIST_ADDRESS',
     payload: http(token).get('/customer/adderss'),
   }),
 
