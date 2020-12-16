@@ -10,7 +10,7 @@ export const StyledTouchableOpacity = styled.TouchableOpacity`
 
 export const StyledCard = styled(Card)`
   width: 150px;
-  height: auto;
+  height: 300px;
   margin-right: 16px;
   border-radius: 10px;
   overflow: hidden;
@@ -27,8 +27,8 @@ export const StyledBody = styled(Body)`
 `;
 
 export const StyledH3 = styled(H3)`
-  font-size: 14px;
-  line-height: 18px;
+  font-weight: bold;
+  font-size: 15px;
   color: #222222;
   text-align: right;
 `;
@@ -46,10 +46,8 @@ export const StyledImageBackground = styled(ImageBackground)`
   border-radius: 25px;
 `;
 
-export const StyledH2 = styled(H2)`
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 25px;
+export const StyledH2 = styled(Text)`
+  font-size: 14px;
   color: #222222;
 `;
 

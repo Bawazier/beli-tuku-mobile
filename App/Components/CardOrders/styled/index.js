@@ -30,7 +30,7 @@ export const Col = styled.View`
 `;
 
 export const StyledCard = styled(Card)`
-  height: auto;
+  height: 140px;
   padding: 0;
   border-radius: 10px;
   overflow: hidden;
@@ -46,13 +46,13 @@ export const StyledBody = styled(Body)`
 `;
 
 export const StyledImage = styled.Image`
-  width: 100px;
-  height: 100%;
+  width: 120px;
+  height: 180px;
 `;
 
 export const StyledTextPrimary = styled.Text`
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   color: #222222;
 `;
 
@@ -72,6 +72,8 @@ export const StyledView = styled.View`
 `;
 
 export const StyledButtonCircle = styled(Button)`
+  width: 50px;
+  height: 50px;
   border-radius: 50px;
   background-color: transparent;
 `;

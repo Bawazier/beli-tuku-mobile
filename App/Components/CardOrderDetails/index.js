@@ -9,29 +9,42 @@ import {
   Row,
   StyledRow,
 } from './styled';
+import numeral from 'numeral';
+import {format} from 'date-fns';
 
-const CardOrderDetails = () => {
+const CardOrderDetails = (props) => {
   return (
     <StyledCard>
       <StyledCardItem>
         <StyledBody>
           <Row>
-            <StyledTextPrimary>Order No.1947034</StyledTextPrimary>
-            <StyledTextSecondary>05-12-2019</StyledTextSecondary>
+            <StyledTextPrimary>
+              Order No.
+              {props.noOrder.replace('.', '').substring(0, 8)}
+            </StyledTextPrimary>
+            <StyledTextSecondary>
+              {format(new Date(props.createdAt), 'yyyy-MM-dd')}
+            </StyledTextSecondary>
           </Row>
           <StyledRow>
             <StyledTextSecondary>Tracking number:</StyledTextSecondary>
-            <StyledTextPrimary>IW3475453455</StyledTextPrimary>
+            <StyledTextPrimary>{props.noTracking}</StyledTextPrimary>
           </StyledRow>
           <StyledRow>
             <StyledTextSecondary>Quantity:</StyledTextSecondary>
-            <StyledTextPrimary>3</StyledTextPrimary>
+            <StyledTextPrimary>{props.Quantity}</StyledTextPrimary>
           </StyledRow>
           <StyledRow>
             <StyledTextSecondary>Total Amount:</StyledTextSecondary>
-            <StyledTextPrimary>112$</StyledTextPrimary>
+            <StyledTextPrimary>
+              Rp
+              {numeral(props.totalAmount)
+                .format(0, 0)
+                .toString()
+                .replace(',', '.')}
+            </StyledTextPrimary>
           </StyledRow>
-          <StyledTextGreen>Delivered</StyledTextGreen>
+          <StyledTextGreen>{props.status.toUpperCase()}</StyledTextGreen>
         </StyledBody>
       </StyledCardItem>
     </StyledCard>
