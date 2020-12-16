@@ -12,14 +12,15 @@ export const StyledView = styled.ScrollView`
 `;
 
 export const StyledFooter = styled.View`
-  flex-direction: column;
-  background: transparent;
-  border: none;
-  height: auto;
-  padding: 10px;
+  background-color: #ffff;
+  padding: 10px 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  elevation: 30;
 `;
 
 export const StyledTextPrice = styled.Text`
+  font-weight: bold;
   font-size: 18px;
   text-align: right;
   color: #222222;
@@ -30,7 +31,9 @@ export const StyledTextSecondary = styled.Text`
   color: #9b9b9b;
 `;
 
-export const StyledButton = styled(Button)``;
+export const StyledButton = styled(Button)`
+  color: #9ce47c;
+`;
 
 export const StyledTextButton = styled.Text`
   font-size: 14px;
