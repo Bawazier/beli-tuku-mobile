@@ -20,9 +20,9 @@ export default {
     payload: http(token).get(`/customer/address/${id_address}`),
   }),
 
-  listAddress: (token) => ({
+  listAddress: (token, search = '') => ({
     type: 'LIST_ADDRESS',
-    payload: http(token).get('/customer/adderss'),
+    payload: http(token).get('/customer/address/' + `?/search=${search}`),
   }),
 
   deleteAddress: (token, id_address) => ({

@@ -7,6 +7,10 @@ export default {
     payload: http(token).post('/customer/change/password', qs.stringify(data)),
   }),
 
+  tryAgain: () => ({
+    type: 'CHANGE_PASSWORD_TRY',
+  }),
+
   getAccount: (token) => ({
     type: 'GET_ACCOUNT',
     payload: http(token).get('/customer/account'),

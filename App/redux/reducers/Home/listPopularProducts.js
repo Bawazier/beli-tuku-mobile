@@ -23,11 +23,15 @@ export default (state = initialState, action) => {
       };
     }
     case 'LIST_POPULAR_PRODUCTS_FULFILLED': {
+      const popular = action.payload.data.results.sort(function (a, b) {
+        return a.ratings < b.ratings;
+      });
+      console.log(popular);
       return {
         ...state,
         isLoading: false,
         isError: false,
-        data: action.payload.data.results,
+        data: popular,
         pageInfo: action.payload.data.pageInfo,
       };
     }

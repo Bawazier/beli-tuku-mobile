@@ -5,6 +5,7 @@ const initialState = {
 
   isListTopupError: false,
   isTopupCreditError: false,
+  isTopupCreditLoading: false,
 };
 
 export default (state = initialState, action) => {
@@ -34,13 +35,13 @@ export default (state = initialState, action) => {
     case 'TOPUP_CREDIT_PENDING': {
       return {
         ...state,
-        isLoading: true,
+        isTopupCreditLoading: true,
       };
     }
     case 'TOPUP_CREDIT_REJECTED': {
       return {
         ...state,
-        isLoading: false,
+        isTopupCreditLoading: false,
         isTopupCreditError: true,
         alertMsg: action.payload,
       };
@@ -48,7 +49,7 @@ export default (state = initialState, action) => {
     case 'TOPUP_CREDIT_FULFILLED': {
       return {
         ...state,
-        isLoading: false,
+        isTopupCreditLoading: false,
         isTopupCreditError: false,
       };
     }

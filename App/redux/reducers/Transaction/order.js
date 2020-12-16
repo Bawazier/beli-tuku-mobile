@@ -75,6 +75,7 @@ export default (state = initialState, action) => {
         isLoading: false,
         isListtError: false,
         dataList: action.payload.data.results,
+        pageInfo: action.payload.data.pageInfo,
       };
     }
     default: {

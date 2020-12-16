@@ -5,11 +5,13 @@ const initialState = {
   pageInfo: {},
   isLoading: false,
   alertMsg: '',
+  totalAmount: 0,
 
   isAddCartError: false,
   isCheckoutError: false,
   isDiscardCheckoutError: false,
   isListCartError: false,
+  isListCartLoading: false,
   isListCheckoutCartError: false,
   isListOrderCartError: false,
 };
@@ -52,10 +54,12 @@ export default (state = initialState, action) => {
       };
     }
     case 'CHECKOUT_SHOPPING_CART_FULFILLED': {
+      console.log(state.totalAmount);
       return {
         ...state,
         isLoading: false,
         isCheckoutError: false,
+        totalAmount: state.totalAmount + action.payload.data.results.totalPrice,
       };
     }
     case 'DISCARD_CHECKOUT_SHOPPING_CART_PENDING': {
@@ -77,18 +81,19 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isDiscardCheckoutError: false,
+        totalAmount: 0,
       };
     }
     case 'LIST_CART_PENDING': {
       return {
         ...state,
-        isLoading: true,
+        isListCartLoading: true,
       };
     }
     case 'LIST_CART_REJECTED': {
       return {
         ...state,
-        isLoading: false,
+        isListCartLoading: false,
         isListCartError: true,
         alertMsg: action.payload,
       };
@@ -96,7 +101,7 @@ export default (state = initialState, action) => {
     case 'LIST_CART_FULFILLED': {
       return {
         ...state,
-        isLoading: false,
+        isListCartLoading: false,
         isListCartError: false,
         dataListCart: action.payload.data.results,
         pageInfo: action.payload.data.pageInfo,

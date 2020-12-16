@@ -1,6 +1,7 @@
 const initialState = {
   dataList: [],
   dataGet: {},
+  pageInfo: {},
   isLoading: false,
   alertMsg: '',
 
@@ -97,6 +98,7 @@ export default (state = initialState, action) => {
         isLoading: false,
         isListError: false,
         dataList: action.payload.data.results,
+        pageInfo: action.payload.data.pageInfo,
       };
     }
     case 'DELETE_ADDRESS_PENDING': {

@@ -21,11 +21,9 @@ export default {
   ) => ({
     type: 'ADD_SHOPPING_CART',
     payload: http(token).post(
-      `/customer/cart/${id_product}` + productColorId
-        ? `?/productColorId=${productColorId}`
-        : null + productSizeId
-        ? `?/productSizeId=${productSizeId}`
-        : null,
+      `/customer/cart/${id_product}` +
+        `?/productColorId=${productColorId}` +
+        `&productSizeId=${productSizeId}`,
       qs.stringify({quantity: quantity}),
     ),
   }),
@@ -70,7 +68,7 @@ export default {
     payload: http(token).get(`/customer/order/${id_order}`),
   }),
 
-  listOrder: (token, id_order) => ({
+  listOrder: (token) => ({
     type: 'LIST_ORDER',
     payload: http(token).get('/customer/order'),
   }),

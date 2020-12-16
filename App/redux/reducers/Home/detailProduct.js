@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   isError: false,
   isReviewsError: false,
+  isReviewsLoading: false,
   alertMsg: '',
 };
 
@@ -35,13 +36,13 @@ export default (state = initialState, action) => {
     case 'GET_DETAIL_PRODUCT_REVIEWS_PENDING': {
       return {
         ...state,
-        isLoading: true,
+        isReviewsLoading: true,
       };
     }
     case 'GET_DETAIL_PRODUCT_REVIEWS_REJECTED': {
       return {
         ...state,
-        isLoading: false,
+        isReviewsLoading: false,
         isReviewsError: true,
         alertMsg: action.payload,
       };
@@ -49,7 +50,7 @@ export default (state = initialState, action) => {
     case 'GET_DETAIL_PRODUCT_REVIEWS_FULFILLED': {
       return {
         ...state,
-        isLoading: false,
+        isReviewsLoading: false,
         isReviewsError: false,
         dataReviews: action.payload.data.results,
         pageInfo: action.payload.data.pageInfo,
