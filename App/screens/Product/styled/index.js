@@ -6,17 +6,16 @@ export const StyledContent = styled(Content)`
 `;
 
 export const StyledFooter = styled.View`
+  flex-direction: row;
   background-color: #ffff;
-  padding: 20px 20px;
+  padding: 10px 20px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   elevation: 30;
 `;
 
 export const StyledButton = styled(Button)`
-  width: 100%;
-  align-self: center;
-  elevation: 10;
+  width: auto;
 `;
 export const StyledTextButton = styled(Text)`
   font-size: 14px;
@@ -36,26 +35,22 @@ export const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background: #f9f9f9;
 `;
 export const Col = styled.View`
   height: auto;
 `;
 export const StyledViewContent = styled.View`
   background: #f9f9f9;
-  padding: 10px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   elevation: 20;
 `;
 export const StyledTextProduct = styled.Text`
-  font-size: 24px;
-  line-height: 29px;
+  font-size: 20px;
   color: #222222;
 `;
 export const StyledTextBrand = styled.Text`
-  font-size: 11px;
-  line-height: 11px;
+  font-size: 14px;
   /* identical to box height */
 
   /* Gray */
@@ -71,21 +66,19 @@ export const StyledTextDescription = styled.Text`
 `;
 export const StyledTextPrice = styled.Text`
   font-style: normal;
-  font-weight: 600;
+  font-weight: bold;
   font-size: 24px;
-  line-height: 29px;
   /* identical to box height, or 29px */
 
-  text-align: right;
+  text-align: left;
 
-  color: #42d86c;
+  color: #222;
 `;
 
 export const StyledTextColor = styled.Text`
   font-style: normal;
-  font-weight: 600;
+  font-weight: bold;
   font-size: 16px;
-  line-height: 16px;
   color: #222222;
 `;
 
@@ -98,8 +91,9 @@ export const StyledViewColor = styled.View`
 `;
 
 export const StyledColor = styled(Button)`
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
   margin-right: 10px;
   border-radius: 160px;
   background: ${(props) => props.color};
@@ -119,8 +113,6 @@ export const StyledRow = styled.View`
   height: auto;
   flex-direction: row;
   align-items: center;
-  background: #f9f9f9;
-  margin-top: 10px;
 `;
 
 export const StyledText = styled.Text`
