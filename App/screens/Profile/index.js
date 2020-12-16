@@ -12,27 +12,32 @@ import {
   StyledTextSecondary,
   StyledTextAlert,
 } from './styled';
-import {List, ListItem, Left, Right, Icon, View} from 'native-base';
-import {TouchableOpacity} from 'react-native';
+import {List, ListItem, Left, Right, Icon, View, Text} from 'native-base';
+import {TouchableOpacity, Alert} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import {useNavigation, useIsFocused} from '@react-navigation/native';
+import {API_URL} from '@env';
+import numeral from 'numeral';
 
 //Component
 
 //Actions
-import ProfileActions from '../../redux/actions/profile';
-import AuthActions from '../../redux/actions/auth';
+import authActions from '../../redux/actions/auth';
+import accountActions from '../../redux/actions/account';
+import addressActions from '../../redux/actions/address';
+import transactionActions from '../../redux/actions/transaction';
 
-const Profile = () => {
-  const auth = useSelector((state) => state.auth);
-  const profile = useSelector((state) => state.profile);
+const Profile = ({navigation}) => {
+  const {data, isLoading, isGetError} = useSelector((state) => state.account);
   const address = useSelector((state) => state.address);
+  const order = useSelector((state) => state.order);
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
-  const pressLogout = () => {
-    dispatch(AuthActions.logout());
-  };
+  useEffect(() => {
+    dispatch(accountActions.getAccount(auth.token));
+    dispatch(addressActions.listAddress(auth.token));
+    dispatch(transactionActions.listOrder(auth.token));
+  }, []);
 
   const selectImage = () => {
     let options = {
@@ -44,11 +49,13 @@ const Profile = () => {
       },
     };
 
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker.showImagePicker(options, async (response) => {
       console.log({response});
 
       if (response.didCancel) {
         console.log('User cancelled photo picker');
+      } else if (response.fileSize > 2 * 1024 * 1024) {
+        Alert.alert('Gagal pilih gambar!', 'File gambar harus kurang dari 2MB');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
@@ -62,10 +69,16 @@ const Profile = () => {
           name: response.fileName,
           path: response.path,
         });
-        dispatch(ProfileActions.updateProfileImage(auth.token, imageData));
+        await dispatch(
+          accountActions.updateAccountImage(auth.token, imageData),
+        );
+        dispatch(accountActions.getAccount(auth.token));
       }
     });
-    return dispatch(ProfileActions.getProfile(auth.token));
+  };
+
+  const pressLogout = () => {
+    dispatch(authActions.logout());
   };
 
   return (
@@ -77,18 +90,27 @@ const Profile = () => {
             <TouchableOpacity onPress={selectImage}>
               <StyledImage
                 source={
-                  profile.data[0].picture
-                    ? {
-                        uri: profile.data[0].URL_picture,
-                      }
+                  data.picture
+                    ? {uri: API_URL + '/' + data.picture}
                     : require('../../assets/primaryImage.png')
                 }
               />
             </TouchableOpacity>
 
             <StyledView>
-              <StyledTextPrimary>{profile.data[0].name}</StyledTextPrimary>
-              <StyledTextSecondary>{profile.data[0].email}</StyledTextSecondary>
+              <StyledTextPrimary>{data.name || ''}</StyledTextPrimary>
+              <StyledTextSecondary>{data.email || ''}</StyledTextSecondary>
+              <View style={{flexDirection: 'row'}}>
+                <Text note>Credit : </Text>
+                <Text>
+                  Rp.
+                  {numeral((data.Credit && data.Credit.saldo) || 0)
+                    .format(0, 0)
+                    .toString()
+                    .replace(',', '.')}
+                  ,-
+                </Text>
+              </View>
             </StyledView>
           </Row>
         </StyledContainer>
@@ -99,7 +121,8 @@ const Profile = () => {
                 <View>
                   <StyledTextPrimary>My orders</StyledTextPrimary>
                   <StyledTextSecondary>
-                    Already have 12 orders
+                    Already have {(order.pageInfo && order.pageInfo.count) || 0}{' '}
+                    orders
                   </StyledTextSecondary>
                 </View>
               </Left>
@@ -114,8 +137,7 @@ const Profile = () => {
                 <View>
                   <StyledTextPrimary>Shipping address</StyledTextPrimary>
                   <StyledTextSecondary>
-                    {address.pageInfo.length ? address.pageInfo[0].count : 0}{' '}
-                    address
+                    {(address.pageInfo && address.pageInfo.count) || 0} address
                   </StyledTextSecondary>
                 </View>
               </Left>
