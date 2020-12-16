@@ -76,8 +76,9 @@ export const StyledRow = styled.View`
 export const StyledImage = styled.Image``;
 
 export const StyledFooter = styled.View`
-  background: transparent;
-  flex-direction: column;
-  height: auto;
-  padding: 10px;
+  background-color: #ffff;
+  padding: 10px 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  elevation: 30;
 `;
