@@ -10,18 +10,19 @@ export const StyledTextHeader = styled.Text`
 
 export const StyledTextTab = styled.Text`
   font-style: normal;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 11px;
-  line-height: 11px;
-  text-align: center;
+  text-align: left;
   color: #222222;
 `;
 
 export const StyledViewTab = styled.View`
-  background-color: #fff;
   flex-direction: row;
-  justify-content: space-between;
-  padding: 10px 20px;
+  background-color: #ffff;
+  padding: 10px 0px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  elevation: 30;
 `;
 export const StyleButtondTab = styled(Button)`
   flex: 1;
