@@ -14,45 +14,36 @@ import {
   StyledTextBlockButton,
 } from './styled';
 import {TouchableOpacity, FlatList} from 'react-native';
-import {Icon, Button, Spinner, View} from 'native-base';
+import {Icon, Button, Spinner, View, Text} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 
 //Component
 
 //Actions
-import ProfileActions from '../../redux/actions/profile';
+import addressActions from '../../redux/actions/address';
 
 const ShippingAddress = () => {
   const auth = useSelector((state) => state.auth);
   const address = useSelector((state) => state.address);
   const dispatch = useDispatch();
-  const [data, setData] = useState(address.data.length ? address.data : null);
-  const [countInfo, setCountInfo] = useState(
-    address.pageInfo.length ? address.pageInfo[0].count : 0,
-  );
   const navigation = useNavigation();
 
-  const nextLink = async (info) => {
-    const {count} = address.pageInfo;
-    console.log(info.distanceFromEnd);
-    if (info.distanceFromEnd >= 0) {
-      if (count > 10) {
-        await dispatch(ProfileActions.getAddress(auth.token, '', 10));
-        setData([...data, ...address.data]);
-      }
-    }
+  const searchAddress = async (e) => {
+    dispatch(addressActions.listAddress(auth.token, e.nativeEvent.text || ''));
   };
 
-  const searchAddress = async (e) => {
-    console.log(e);
-    await dispatch(ProfileActions.getAddress(auth.token, e.nativeEvent.text));
-    setData(address.data.length ? address.data : null);
-  };
   const onChangePress = async (id) => {
-    await dispatch(ProfileActions.getAddressId(id, auth.token));
+    dispatch(addressActions.getAddress(auth.token, id));
     navigation.navigate('ChangeAddress');
-    console.log(address.dataById);
   };
+
+  const changePrimary = async (id) => {
+    await dispatch(
+      addressActions.updateAddress(auth.token, id, {isPrimary: true}),
+    );
+    dispatch(addressActions.listAddress(auth.token));
+  };
+
   return (
     <>
       <StyledContent>
@@ -64,30 +55,19 @@ const ShippingAddress = () => {
         </StyledContainer>
         <StyledContainer>
           <StyledText>Shipping address</StyledText>
-          <FlatList
-            onEndReachedThreshold={0.5}
-            onEndReached={nextLink}
-            data={data}
-            renderItem={({item}) => (
-              <>
-                {address.isLoading && !address.isError && (
-                  <StyledViewCard>
-                    <Row>
-                      <StyledTextCard>.....</StyledTextCard>
-                      <StyledButton transparent small>
-                        <StyledTextButton>......</StyledTextButton>
-                      </StyledButton>
-                    </Row>
-                    <StyledTextCard>......</StyledTextCard>
-                    <StyledTextCard>......</StyledTextCard>
-                  </StyledViewCard>
-                )}
-                {!address.isLoading && address.isError && (
-                  <StyledViewCard>
-                    <StyledText>do not have an address</StyledText>
-                  </StyledViewCard>
-                )}
-                {!address.isLoading && !address.isError && countInfo !== 0 && (
+          {!address.isLoading && !address.isListError && (
+            <FlatList
+              onEndReachedThreshold={0.5}
+              // onEndReached={nextLink}
+              data={address.dataList}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  onPress={() => changePrimary(item.id)}
+                  style={{
+                    borderRadius: 10,
+                    marginVertical: 4,
+                  }}>
+                  {item.isPrimary && <Text note>Default :</Text>}
                   <StyledViewCard>
                     <Row>
                       <StyledTextCard>{item.name}</StyledTextCard>
@@ -101,26 +81,27 @@ const ShippingAddress = () => {
                     <StyledTextCard>{item.address}</StyledTextCard>
                     <StyledTextCard>{item.region}</StyledTextCard>
                   </StyledViewCard>
-                )}
-              </>
-            )}
-            horizontal={false}
-            keyExtractor={(item) => item.id}
-            // ListFooterComponent={
-            //   <View style={{alignItems: 'center', width: '100%'}}>
-            //     {address.pageInfo && countInfo > 10 && pageInfo < 10 && (
-            //       <Spinner color="green" />
-            //     )}
-            //   </View>
-            // }
-          />
+                </TouchableOpacity>
+              )}
+              horizontal={false}
+              keyExtractor={(item) => item.id}
+              // ListFooterComponent={
+              //   <View style={{alignItems: 'center', width: '100%'}}>
+              //     {address.pageInfo && countInfo > 10 && pageInfo < 10 && (
+              //       <Spinner color="green" />
+              //     )}
+              //   </View>
+              // }
+            />
+          )}
           <StyledButton
             block
             bordered
-            dark
+            warning
             rounded
+            style={{marginVertical: 15}}
             onPress={() => navigation.navigate('AddingAddress')}>
-            <StyledTextBlockButton>ADD NEW ADDRESS</StyledTextBlockButton>
+            <Text>ADD NEW ADDRESS</Text>
           </StyledButton>
         </StyledContainer>
       </StyledContent>

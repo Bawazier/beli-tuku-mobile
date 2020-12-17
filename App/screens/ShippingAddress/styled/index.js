@@ -31,7 +31,6 @@ export const StyledViewCard = styled(Card)`
   box-shadow: 0px 1px 25px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   padding: 18px 20px;
-  margin-bottom: 10px;
 `;
 
 export const Row = styled.View`

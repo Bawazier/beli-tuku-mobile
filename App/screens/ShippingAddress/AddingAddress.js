@@ -8,7 +8,7 @@ import {Content, Form, Item, Input, Label, Button, Text} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 
 //Actions
-import ProfileActions from '../../redux/actions/profile';
+import addressActions from '../../redux/actions/address';
 
 const AddingAddress = () => {
   const auth = useSelector((state) => state.auth);
@@ -20,8 +20,13 @@ const AddingAddress = () => {
     address: Yup.string().required('Address is Required'),
     city: Yup.string().required('city is Required'),
     region: Yup.string().required('region is Required'),
-    postalCode: Yup.number().positive().required('postalCode is Required'),
-    Country: Yup.string().required('Country is Required'),
+    postalCode: Yup.number().required('postalCode is Required'),
+    country: Yup.string().required('Country is Required'),
+    recipientTlp: Yup.number()
+      .integer('Invalid phone number. Please try again.')
+      .min(1000000000, 'Invalid phone number. Please try again.')
+      .max(99999999999, 'Invalid phone number. Please try again.')
+      .required('Phone number is Required'),
   });
 
   return (
@@ -33,7 +38,8 @@ const AddingAddress = () => {
           city: '',
           region: '',
           postalCode: '',
-          Country: '',
+          country: '',
+          recipientTlp: '',
         }}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
@@ -41,13 +47,13 @@ const AddingAddress = () => {
           const data = {
             recipientName: values.fullName,
             address: values.address,
-            region: values.city + ', ' + values.region + ', ' + values.Country,
+            region: values.city + ', ' + values.region + ', ' + values.country,
             name: values.fullName,
             postalCode: values.postalCode,
-            recipientTlp: values.postalCode,
+            recipientTlp: values.recipientTlp,
           };
-          await dispatch(ProfileActions.postAddress(auth.token, data));
-          await dispatch(ProfileActions.getAddress(auth.token));
+          await dispatch(addressActions.postAddress(auth.token, data));
+          dispatch(addressActions.listAddress(auth.token));
           navigation.navigate('ShippingAddress');
         }}>
         {({
@@ -60,7 +66,7 @@ const AddingAddress = () => {
           errors,
         }) => (
           <Form style={{marginHorizontal: 10, marginVertical: 20}}>
-            <StyledViewCard>
+            <StyledViewCard style={{width: 'auto', height: 'auto'}}>
               <Item stackedLabel last>
                 <Label>Full Name</Label>
                 <Item>
@@ -211,6 +217,32 @@ const AddingAddress = () => {
                 {touched.country && errors.country ? errors.country : null}
               </StyledTextAlert>
             </StyledViewCard>
+            <StyledViewCard>
+              <Item stackedLabel last>
+                <Label>Phone Number</Label>
+                <Item>
+                  <Input
+                    name="recipientTlp"
+                    onChangeText={handleChange('recipientTlp')}
+                    onBlur={handleBlur('recipientTlp')}
+                    value={values.recipientTlp}
+                  />
+                  {touched.recipientTlp && (
+                    <Icon
+                      active
+                      name={errors.recipientTlp ? 'close' : 'check'}
+                      size={20}
+                      color={errors.recipientTlp ? '#F01F0E' : '#2AA952'}
+                    />
+                  )}
+                </Item>
+              </Item>
+              <StyledTextAlert>
+                {touched.recipientTlp && errors.recipientTlp
+                  ? errors.recipientTlp
+                  : null}
+              </StyledTextAlert>
+            </StyledViewCard>
 
             <Button
               block
@@ -218,6 +250,7 @@ const AddingAddress = () => {
               success
               onPress={handleSubmit}
               title="Submit"
+              style={{marginVertical: 10}}
               {...(isSubmitting ? 'disabled' : null)}>
               <Text>SAVE ADDRESS</Text>
             </Button>
