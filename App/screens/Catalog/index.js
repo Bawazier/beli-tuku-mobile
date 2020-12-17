@@ -7,7 +7,18 @@ import {
   StyleButtondTab,
   StyledViewContent,
 } from './styled';
-import {Icon, Content, Spinner, View, Text, Button} from 'native-base';
+import {
+  Icon,
+  Content,
+  Spinner,
+  View,
+  Text,
+  Button,
+  List,
+  ListItem,
+  Left,
+  Right,
+} from 'native-base';
 import {TouchableOpacity, FlatList, ScrollView} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Dialog from 'react-native-dialog';
@@ -27,6 +38,12 @@ const Catalog = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [filter, setFilter] = useState(false);
+  const [sort, setSort] = useState(false);
+  const [sortByPopular, setSortByPopular] = useState(false);
+  const [sortByNewest, setSortByNewest] = useState(false);
+  const [sortByPriceLow, setSortByPriceLow] = useState(false);
+  const [sortByPriceHight, setSortByPriceHight] = useState(false);
+  const [sortBy, setSortBy] = useState('Newest');
 
   const detailProduct = (id_product) => {
     dispatch(HomeActions.detailProduct(id_product));
@@ -43,9 +60,10 @@ const Catalog = () => {
         </StyleButtondTab>
         <StyleButtondTab
           transparent
-          style={{flexBasis: 100, justifyContent: 'flex-end'}}>
+          onPress={() => setSort(!sort)}
+          style={{flexBasis: 100, justifyContent: 'center'}}>
           <Icon name="sort" type="FontAwesome" style={{color: '#9ce47c'}} />
-          <StyledTextTab>Price: lowest to high</StyledTextTab>
+          <StyledTextTab>{sortBy}</StyledTextTab>
         </StyleButtondTab>
         <StyleButtondTab transparent>
           <Icon
@@ -211,8 +229,6 @@ const Catalog = () => {
                     </Button>
                   </View>
                   {data.map((item, index, arr) => {
-                    console.log(index !== 0 ? index - 1 : index);
-                    console.log(arr[index].Category.name);
                     if (index < 5) {
                       return (
                         <View
@@ -336,6 +352,81 @@ const Catalog = () => {
                 </Text>
               </Button>
             </View>
+          </Dialog.Container>
+        </View>
+        <View>
+          <Dialog.Container visible={sort}>
+            <Dialog.Title style={{textAlign: 'center', fontWeight: 'bold'}}>
+              Filters
+            </Dialog.Title>
+            <List>
+              <ListItem
+                noIndent
+                onPress={() => {
+                  setSortByPopular(true);
+                  setSortByNewest(false);
+                  setSortByPriceLow(false);
+                  setSortByPriceHight(false);
+                  dispatch(HomeActions.catalogSort('stock', 'ASC'));
+                  setSort(false);
+                  setSortBy('Popular');
+                }}
+                style={{backgroundColor: sortByPopular ? '#cde1f9' : '#fff'}}>
+                <Left>
+                  <Text>Popular</Text>
+                </Left>
+              </ListItem>
+              <ListItem
+                noIndent
+                onPress={() => {
+                  setSortByPopular(false);
+                  setSortByNewest(true);
+                  setSortByPriceLow(false);
+                  setSortByPriceHight(false);
+                  dispatch(HomeActions.catalogSort());
+                  setSort(false);
+                  setSortBy('Newest');
+                }}
+                style={{backgroundColor: sortByNewest ? '#cde1f9' : '#fff'}}>
+                <Left>
+                  <Text>Newest</Text>
+                </Left>
+              </ListItem>
+              <ListItem
+                noIndent
+                onPress={() => {
+                  setSortByPopular(false);
+                  setSortByNewest(false);
+                  setSortByPriceLow(true);
+                  setSortByPriceHight(false);
+                  dispatch(HomeActions.catalogSort('price', 'ASC'));
+                  setSort(false);
+                  setSortBy('Price: lowest to high');
+                }}
+                style={{backgroundColor: sortByPriceLow ? '#cde1f9' : '#fff'}}>
+                <Left>
+                  <Text>Price: lowest to high</Text>
+                </Left>
+              </ListItem>
+              <ListItem
+                noIndent
+                onPress={() => {
+                  setSortByPopular(false);
+                  setSortByNewest(false);
+                  setSortByPriceLow(false);
+                  setSortByPriceHight(true);
+                  dispatch(HomeActions.catalogSort('price', 'DESC'));
+                  setSort(false);
+                  setSortBy('Price: highest to low');
+                }}
+                style={{
+                  backgroundColor: sortByPriceHight ? '#cde1f9' : '#fff',
+                }}>
+                <Left>
+                  <Text>Price: highest to low</Text>
+                </Left>
+              </ListItem>
+            </List>
           </Dialog.Container>
         </View>
       </Content>
