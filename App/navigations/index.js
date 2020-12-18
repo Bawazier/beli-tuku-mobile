@@ -9,7 +9,7 @@ import AuthStack from './AuthStack';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -18,13 +18,11 @@ const Navigations = () => {
   return (
     <NavigationContainer>
       {!auth.token.length ? (
-        <AuthStack />
-      ) : (
         <BottomTabs.Navigator
           tabBarOptions={{
-            activeTintColor: '#fff',
-            inactiveTintColor: '#128C7E',
-            tabStyle: {backgroundColor: '#075E54'},
+            activeTintColor: '#075E54',
+            inactiveTintColor: '#9ce47c',
+            tabStyle: {backgroundColor: '#fff'},
           }}>
           <BottomTabs.Screen
             name="Main"
@@ -42,7 +40,72 @@ const Navigations = () => {
             options={{
               tabBarLabel: 'Shop',
               tabBarIcon: ({color, size}) => (
-                <Icon name="shopping-cart" color={color} size={size} />
+                <Icon
+                  name="shopping-cart"
+                  type="FontAwesome5"
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+          />
+          <BottomTabs.Screen
+            name="Bag"
+            component={AuthStack}
+            options={{
+              tabBarVisible: false,
+              tabBarLabel: 'Bag',
+              tabBarIcon: ({color, size}) => (
+                <Icon
+                  name="shopping-bag"
+                  type="FontAwesome5"
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+          />
+          <BottomTabs.Screen
+            name="Login"
+            component={AuthStack}
+            options={{
+              tabBarVisible: false,
+              tabBarLabel: 'Login',
+              tabBarIcon: ({color, size}) => (
+                <Icon name="sign-in-alt" color={color} size={size} />
+              ),
+            }}
+          />
+        </BottomTabs.Navigator>
+      ) : (
+        <BottomTabs.Navigator
+          tabBarOptions={{
+            activeTintColor: '#075E54',
+            inactiveTintColor: '#9ce47c',
+            tabStyle: {backgroundColor: '#fff'},
+          }}>
+          <BottomTabs.Screen
+            name="Main"
+            component={HomeStack}
+            options={{
+              tabBarLabel: 'Home',
+              tabBarIcon: ({color, size}) => (
+                <Icon name="home" color={color} size={size} />
+              ),
+            }}
+          />
+          <BottomTabs.Screen
+            name="Shop"
+            component={ShopStack}
+            options={{
+              tabBarLabel: 'Shop',
+              tabBarIcon: ({color, size}) => (
+                <Icon
+                  name="shopping-cart"
+                  type="FontAwesome5"
+                  color={color}
+                  size={size}
+                />
               ),
             }}
           />
@@ -52,7 +115,12 @@ const Navigations = () => {
             options={{
               tabBarLabel: 'Bag',
               tabBarIcon: ({color, size}) => (
-                <Icon name="shopping-bag" color={color} size={size} />
+                <Icon
+                  name="shopping-bag"
+                  type="FontAwesome5"
+                  color={color}
+                  size={size}
+                />
               ),
             }}
           />
@@ -62,7 +130,7 @@ const Navigations = () => {
             options={{
               tabBarLabel: 'Profile',
               tabBarIcon: ({color, size}) => (
-                <Icon name="user" color={color} size={size} />
+                <Icon name="user-alt" color={color} size={size} />
               ),
             }}
           />

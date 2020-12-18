@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
-const BagStack = () => {
+const BagStack = ({navigation}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -27,7 +27,15 @@ const BagStack = () => {
             fontWeight: 'bold',
             lineHeight: 40,
           },
-          headerRight: () => <Icon name="search" />,
+          headerRight: () => (
+            <Icon
+              name="search"
+              size={20}
+              color="#fff"
+              onPress={() => navigation.navigate('Search')}
+            />
+          ),
+          headerRightContainerStyle: {marginHorizontal: 15},
         }}
       />
       <Stack.Screen
@@ -54,6 +62,7 @@ const BagStack = () => {
         name="ChangeAddress"
         component={ChangeAddress}
         options={{
+          tabBarVisible: false,
           title: 'Notification',
           headerStyle: {
             backgroundColor: '#075E54',

@@ -38,6 +38,7 @@ const BagStack = () => {
               onPress={() => navigation.navigate('Search')}
             />
           ),
+          headerRightContainerStyle: {marginHorizontal: 15},
         }}
       />
       <Stack.Screen
@@ -61,6 +62,7 @@ const BagStack = () => {
               onPress={() => navigation.navigate('Search')}
             />
           ),
+          headerRightContainerStyle: {marginHorizontal: 15},
         }}
       />
       <Stack.Screen
@@ -114,6 +116,7 @@ const BagStack = () => {
               onPress={() => navigation.navigate('Search')}
             />
           ),
+          headerRightContainerStyle: {marginHorizontal: 15},
         }}
       />
       <Stack.Screen

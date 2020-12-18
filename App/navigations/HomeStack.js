@@ -56,6 +56,7 @@ const HomeStack = ({navigation}) => {
               onPress={() => navigation.navigate('Search')}
             />
           ),
+          headerRightContainerStyle: {marginHorizontal: 15},
         }}
       />
       <Stack.Screen

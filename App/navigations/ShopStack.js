@@ -68,6 +68,7 @@ const ShopStack = () => {
               onPress={() => navigation.navigate('Search')}
             />
           ),
+          headerRightContainerStyle: {marginHorizontal: 15},
         }}
       />
       <Stack.Screen
