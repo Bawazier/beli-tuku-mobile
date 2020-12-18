@@ -34,7 +34,7 @@ const Success = ({navigation}) => {
           block
           rounded
           warning
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => navigation.navigate('Cart')}>
           <Text>CONTINUE SHOPPING</Text>
         </Button>
       </View>
