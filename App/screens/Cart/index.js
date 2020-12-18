@@ -29,6 +29,7 @@ const Cart = () => {
     isListCartError,
     isListCartLoading,
   } = useSelector((state) => state.cart);
+  const quantityCounter = useSelector((state) => state.quantityCounter);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -73,6 +74,7 @@ const Cart = () => {
                 <TouchableOpacity
                   onPress={() => detailProduct(item.DetailProduct.Product.id)}>
                   <CardOrders
+                    idCart={item.id}
                     productName={item.DetailProduct.Product.name}
                     color={item.DetailProduct.ProductColor.name}
                     size={item.DetailProduct.ProductSize.size}
@@ -102,9 +104,11 @@ const Cart = () => {
             ,-
           </StyledTextPrice>
         </Row>
-        <StyledButton block rounded success onPress={checkout}>
-          <StyledTextButton>CHECK OUT</StyledTextButton>
-        </StyledButton>
+        {!isListCartLoading && !isListCartError && (
+          <StyledButton block rounded success onPress={checkout}>
+            <StyledTextButton>CHECK OUT</StyledTextButton>
+          </StyledButton>
+        )}
       </StyledFooter>
     </>
   );

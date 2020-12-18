@@ -56,6 +56,7 @@ const Product = () => {
   const {dataReviews, pageInfo, isReviewsLoading, isReviewsError} = useSelector(
     (state) => state.detailProduct,
   );
+  const {dataListCart} = useSelector((state) => state.cart);
   const catalog = useSelector((state) => state.catalogResults);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -88,6 +89,26 @@ const Product = () => {
     } else {
       navigation.navigate('Login');
     }
+  };
+
+  const buy = async () => {
+    await dispatch(
+      transactionActions.addToCart(
+        auth.token,
+        dataProduct.id,
+        1,
+        choiceColor.id || dataProduct.ProductColors[0].id,
+        choiceSize.id || dataProduct.ProductSizes[0].id,
+      ),
+    );
+    await dispatch(transactionActions.listCart(auth.token));
+    dataListCart.map(async (item) => {
+      if (item.detailProductId === dataProduct.id) {
+        dispatch(transactionActions.checkoutCart(auth.token, item.id));
+      }
+    });
+    navigation.navigate('Checkout');
+    dispatch(transactionActions.listCart(auth.token));
   };
 
   const detailProduct = (id_product) => {
@@ -400,6 +421,8 @@ const Product = () => {
           <StyledButton
             bordered
             warning
+            disabled
+            onPress={buy}
             style={{width: '35%', marginLeft: 5, borderRadius: 10}}>
             <Text>BUY</Text>
           </StyledButton>

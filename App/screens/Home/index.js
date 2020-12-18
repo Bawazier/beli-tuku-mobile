@@ -15,75 +15,64 @@ import {
 } from './styled';
 import {Icon, Spinner, View} from 'native-base';
 import {TouchableOpacity, FlatList} from 'react-native';
-
-import {useNavigation} from '@react-navigation/native';
+import {API_URL} from '@env';
 
 // Components
 import CardProduct from '../../Components/CardProduct';
-import NotFound from '../../Components/NotFound';
 
 //Actions
 import HomeActions from '../../redux/actions/home';
-import ProfileActions from '../../redux/actions/profile';
 
-const Home = () => {
-  const productNews = useSelector((state) => state.productNews);
-  const productPopular = useSelector((state) => state.productPopular);
-  const [dataNews, setDataNews] = useState(
-    productNews.data.length ? productNews.data : null,
-  );
-  const [dataPopular, setDataPopular] = useState(
-    productNews.data.length ? productPopular.data : null,
-  );
-  const auth = useSelector((state) => state.auth);
+const Home = ({navigation}) => {
+  const listNewProducts = useSelector((state) => state.listNewProducts);
+  const listPopularProducts = useSelector((state) => state.listPopularProducts);
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
-  const newsNextLink = async (info) => {
-    const {count} = productNews.pageInfo;
-    console.log(info.distanceFromEnd);
-    if (info.distanceFromEnd >= 0) {
-      if (count > 10) {
-        await dispatch(HomeActions.new(10));
-        setDataNews([...dataNews, ...productNews.data]);
-      }
-    }
-  };
-
-  const popularNextLink = async (info) => {
-    const {count} = productPopular.pageInfo;
-    console.log(info.distanceFromEnd);
-    if (info.distanceFromEnd >= 0) {
-      if (count > 10) {
-        await dispatch(HomeActions.popular(10));
-        setDataPopular([...dataPopular, ...productPopular.data]);
-      }
-    }
-  };
-
-  useEffect(async () => {
-    await dispatch(HomeActions.new());
-    await dispatch(HomeActions.popular());
-    await dispatch(ProfileActions.getProfile(auth.token));
-    await dispatch(ProfileActions.getAddress(auth.token));
-    await setDataNews(productNews.data.length ? productNews.data : null);
-    setDataPopular(productPopular.data.length ? productPopular.data : null);
-    console.log(dataNews);
+  useEffect(() => {
+    dispatch(HomeActions.newProducts());
+    dispatch(HomeActions.popularProducts());
   }, []);
+
+  const detailProduct = (id_product) => {
+    dispatch(HomeActions.detailProduct(id_product));
+    navigation.navigate('Product');
+    dispatch(HomeActions.detailProductReviews(id_product));
+  };
+
+  const viewAll = () => {
+    dispatch(HomeActions.catalogSort());
+    navigation.navigate('Catalog');
+  };
 
   return (
     <>
       <StyledContent>
         <StyledView>
-          <StyledImageBackground
-            source={require('../../assets/homeProduct.png')}>
-            <Row>
-              <StyledTextWhite>Street clothes</StyledTextWhite>
-              <StyledButton onPress={() => navigation.navigate('Notification')}>
-                <Icon name="bell-o" type="FontAwesome" />
-              </StyledButton>
-            </Row>
-          </StyledImageBackground>
+          {/* {!listPopularProducts.isLoading &&
+            !listPopularProducts.isError &&
+            listPopularProducts.data &&
+            listPopularProducts.data[0].ProductImages && (
+              <StyledImageBackground
+                source={
+                  (listPopularProducts.data[0].ProductImages[0].picture && {
+                    uri:
+                      API_URL +
+                      '/' +
+                      listPopularProducts.data[0].ProductImages[0].picture,
+                  }) ||
+                  require('../../assets/homeProduct.png')
+                }>
+                <Row>
+                  <StyledTextWhite>
+                    {listNewProducts.data[0].Category.name || 'Street clothes'}
+                  </StyledTextWhite>
+                  <StyledButton
+                    onPress={() => navigation.navigate('Notification')}>
+                    <Icon name="bell-o" type="FontAwesome" />
+                  </StyledButton>
+                </Row>
+              </StyledImageBackground>
+            )} */}
         </StyledView>
         <Row>
           <Col>
@@ -91,33 +80,51 @@ const Home = () => {
             <StyledText>You’ve never seen it before!</StyledText>
           </Col>
           <Col>
-            <StyledH3>View all</StyledH3>
+            <TouchableOpacity onPress={viewAll}>
+              <StyledH3>View all</StyledH3>
+            </TouchableOpacity>
           </Col>
         </Row>
         <Row>
-          <FlatList
-            onEndReachedThreshold={0.5}
-            onEndReached={newsNextLink}
-            data={dataNews}
-            renderItem={({item}) => (
-              <TouchableOpacity onPress={() => navigation.navigate('Product')}>
-                <CardProduct
-                  productImage={item.ProductImages[0].picture}
-                  productName={item.name}
-                  productPrice={item.price}
-                  productRating={item.ProductRatings.length}
-                  displayBadge={true}
-                />
-              </TouchableOpacity>
-            )}
-            horizontal
-            keyExtractor={(item) => item._id}
-            // ListFooterComponent={
-            //   <View style={{justifyContent: 'center', height: '100%'}}>
-            //     <Spinner color="green" />
-            //   </View>
-            // }
-          />
+          {listNewProducts.isLoading && !listNewProducts.isError && (
+            <TouchableOpacity onPress={() => navigation.navigate('Product')}>
+              <CardProduct
+                productStore="..."
+                productName="..."
+                productPrice="..."
+                productRating="..."
+              />
+            </TouchableOpacity>
+          )}
+          {!listNewProducts.isLoading && listNewProducts.isError && (
+            <StyledH1>{listNewProducts.alertMsg || Error}</StyledH1>
+          )}
+          {!listNewProducts.isLoading && !listNewProducts.isError && (
+            <FlatList
+              onEndReachedThreshold={0.5}
+              // onEndReached={newsNextLink}
+              data={listNewProducts.data}
+              renderItem={({item}) => (
+                <TouchableOpacity onPress={() => detailProduct(item.id)}>
+                  <CardProduct
+                    productImage={item.ProductImages[0].picture}
+                    productStore={item.Store.name}
+                    productName={item.name}
+                    productPrice={item.price}
+                    productRating={item.ratings}
+                    displayBadge={true}
+                  />
+                </TouchableOpacity>
+              )}
+              horizontal
+              keyExtractor={(item) => item.id}
+              // ListFooterComponent={
+              //   <View style={{justifyContent: 'center', height: '100%'}}>
+              //     <Spinner color="green" />
+              //   </View>
+              // }
+            />
+          )}
         </Row>
         <Row>
           <Col>
@@ -125,50 +132,50 @@ const Home = () => {
             <StyledText>You’ve never seen it before!</StyledText>
           </Col>
           <Col>
-            <StyledH3>View all</StyledH3>
+            <TouchableOpacity onPress={() => viewAll('ratings')}>
+              <StyledH3>View all</StyledH3>
+            </TouchableOpacity>
           </Col>
         </Row>
         <Row>
-          <FlatList
-            onEndReachedThreshold={0.5}
-            onEndReached={popularNextLink}
-            data={dataPopular}
-            renderItem={({item}) => (
-              <>
-                {productPopular.isLoading &&
-                  !productPopular.isError &&
-                  [...Array(8)].map(() => (
-                    <CardProduct
-                      productName="...."
-                      productPrice="...."
-                      productRating="...."
-                    />
-                  ))}
-                {!productPopular.isLoading && productPopular.isError && (
-                  <NotFound notifMessage={productPopular.alertMsg} />
-                )}
-                {!productPopular.isLoading && !productPopular.isError && (
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('Product')}>
-                    <CardProduct
-                      productImage={item.ProductImages[0].picture}
-                      productName={item.name}
-                      productPrice={item.price}
-                      productRating={item.ProductRatings.length}
-                      displayBadge={true}
-                    />
-                  </TouchableOpacity>
-                )}
-              </>
-            )}
-            horizontal
-            keyExtractor={(item) => item._id}
-            // ListFooterComponent={
-            //   <View style={{justifyContent: 'center', height: '100%'}}>
-            //     <Spinner color="green" />
-            //   </View>
-            // }
-          />
+          {listPopularProducts.isLoading && !listPopularProducts.isError && (
+            <TouchableOpacity onPress={() => navigation.navigate('Product')}>
+              <CardProduct
+                productStore="..."
+                productName="..."
+                productPrice="..."
+                productRating="..."
+              />
+            </TouchableOpacity>
+          )}
+          {!listPopularProducts.isLoading && listPopularProducts.isError && (
+            <StyledH1>{listPopularProducts.alertMsg || Error}</StyledH1>
+          )}
+          {!listPopularProducts.isLoading && !listPopularProducts.isError && (
+            <FlatList
+              onEndReachedThreshold={0.5}
+              // onEndReached={newsNextLink}
+              data={listPopularProducts.data}
+              renderItem={({item}) => (
+                <TouchableOpacity onPress={() => detailProduct(item.id)}>
+                  <CardProduct
+                    productImage={item.ProductImages[0].picture}
+                    productStore={item.Store.name}
+                    productName={item.name}
+                    productPrice={item.price}
+                    productRating={item.ratings}
+                  />
+                </TouchableOpacity>
+              )}
+              horizontal
+              keyExtractor={(item) => item.id}
+              // ListFooterComponent={
+              //   <View style={{justifyContent: 'center', height: '100%'}}>
+              //     <Spinner color="green" />
+              //   </View>
+              // }
+            />
+          )}
         </Row>
       </StyledContent>
     </>

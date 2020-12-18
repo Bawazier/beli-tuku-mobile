@@ -53,7 +53,9 @@ const Login = () => {
               newPassword: values.newPassword,
               confirmNewPassword: values.confirmNewPassword,
             };
-            await dispatch(AuthActions.resetPass(auth.data[0].id, data));
+            await dispatch(
+              AuthActions.forgotPass(auth.emailValidData[0].id, data),
+            );
             navigation.navigate('Login');
           }}>
           {({

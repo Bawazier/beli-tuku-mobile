@@ -1,24 +1,45 @@
+import {ActionSheet} from 'native-base';
+
 const initialState = {
-  quantity: 0,
+  data: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'INCREMENT':
+    case 'PUSH_DATA': {
       return {
         ...state,
-        quantity: state.quantity + 1,
+        data: [...state.data, ...action.payload],
       };
-    case 'DECREMENT':
-      return {
-        ...state,
-        quantity: state.quantity - 1,
-      };
-    case 'RESET':
-      return {
-        ...state,
-        quantity: 0,
-      };
+    }
+    case 'INCREMENT': {
+      state.data.map((item, index) => {
+        if (item.id === action.id) {
+          console.log(state.data[index].quantity);
+          return state.data[index].quantity + 1;
+        }
+      });
+    }
+    case 'DECREMENT': {
+      state.data.map((item, index) => {
+        if (item.id === action.id) {
+          state.data[index].quantity - 1;
+        }
+        return {
+          ...state,
+        };
+      });
+    }
+    case 'POP_DATA': {
+      state.data.map((item, index) => {
+        if (item.id === action.id) {
+          state.data.slice(index, 1);
+        }
+        return {
+          ...state,
+        };
+      });
+    }
     default: {
       return state;
     }

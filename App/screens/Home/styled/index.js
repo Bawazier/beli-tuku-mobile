@@ -41,7 +41,7 @@ export const StyledH1 = styled(H1)`
 export const StyledH3 = styled(H3)`
   font-size: 11px;
   line-height: 11px;
-  color: #222222;
+  color: #9ce47c;
   text-align: right;
 `;
 

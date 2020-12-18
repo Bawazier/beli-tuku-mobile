@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   StyledContainer,
   Row,
@@ -17,14 +18,50 @@ import {Icon, Text, View} from 'native-base';
 import numeral from 'numeral';
 import {API_URL} from '@env';
 import Dialog from 'react-native-dialog';
+import transactionActions from '../../redux/actions/transaction';
 
 const CardOrders = (props) => {
   const [quantity, setQuantity] = useState(props.quantity);
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const quantityCounter = useSelector((state) => state.quantityCounter);
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const price = props.totalPrice * quantity;
 
-  const handleDelete = () => {
+  useEffect(() => {
+    console.log(props.idCart);
+    dispatch(
+      transactionActions.dataCart([
+        {
+          id: props.idCart,
+          quantity: quantity || 1,
+          price: price,
+        },
+      ]),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const increment = () => {
+    console.log(quantityCounter.data);
+    if (quantity < props.stock) {
+      dispatch(transactionActions.increment(props.idCart));
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const decrement = () => {
+    if (quantity > 1) {
+      dispatch(transactionActions.decrement(props.idCart));
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const handleDelete = async () => {
+    console.log(props.idCart);
     setDeleteDialog(!deleteDialog);
+    await dispatch(transactionActions.deleteCart(auth.token, props.idCart));
+    dispatch(transactionActions.listCart(auth.token));
   };
 
   return (
@@ -82,9 +119,7 @@ const CardOrders = (props) => {
                 <Icon
                   name="minus-square"
                   type="FontAwesome"
-                  onPress={() =>
-                    setQuantity(quantity > 1 ? quantity - 1 : quantity)
-                  }
+                  onPress={decrement}
                   style={{color: '#222222', fontSize: 40}}
                 />
               </StyledRow>
@@ -93,11 +128,7 @@ const CardOrders = (props) => {
                 <Icon
                   name="plus-square"
                   type="FontAwesome"
-                  onPress={() =>
-                    setQuantity(
-                      quantity < props.stock ? quantity + 1 : quantity,
-                    )
-                  }
+                  onPress={increment}
                   style={{color: '#222222', fontSize: 40}}
                 />
               </StyledRow>
@@ -116,7 +147,7 @@ const CardOrders = (props) => {
             label="Cancel"
             onPress={() => setDeleteDialog(false)}
           />
-          <Dialog.Button label="Delete" onPress={handleDelete} />
+          <Dialog.Button label="Delete" onPress={() => handleDelete()} />
         </Dialog.Container>
       </View>
     </StyledContainer>

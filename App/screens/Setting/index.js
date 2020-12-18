@@ -50,13 +50,13 @@ const Setting = () => {
   });
   const changePassSchema = Yup.object({
     oldPassword: Yup.string()
-      .max(8, 'Password cannot be more than 8')
+      .min(8, 'Password cannot be less than 8')
       .required('Password is Required'),
     newPassword: Yup.string()
-      .max(8, 'New Password cannot be more than 8')
+      .min(8, 'New Password cannot be less than 8')
       .required('New Password is Required'),
     confirmNewPassword: Yup.string()
-      .max(8, 'New Password cannot be more than 8')
+      .min(8, 'New Password cannot be less than 8')
       .required('New Password is Required'),
   });
   const [dateOfBirth, setDateOfBirth] = useState(
@@ -188,6 +188,7 @@ const Setting = () => {
                     newPassword: values.newPassword,
                     confirmNewPassword: values.confirmNewPassword,
                   };
+                  console.log(dataChangePass);
                   await dispatch(
                     accountActions.changePass(auth.token, dataChangePass),
                   );

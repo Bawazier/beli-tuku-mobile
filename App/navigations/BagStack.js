@@ -4,6 +4,8 @@ import Cart from '../screens/Cart';
 import Checkout from '../screens/Checkout';
 import ShippingAddress from '../screens/ShippingAddress';
 import ChangeAddress from '../screens/ShippingAddress/ChangeAddress';
+import Topup from '../screens/Topup';
+import Success from '../screens/Success';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {createStackNavigator} from '@react-navigation/stack';
@@ -31,18 +33,7 @@ const BagStack = () => {
       <Stack.Screen
         name="Checkout"
         component={Checkout}
-        options={{
-          title: 'Checkout',
-          headerStyle: {
-            backgroundColor: '#075E54',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            lineHeight: 40,
-          },
-          headerRight: () => <Icon name="search" />,
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="ShippingAddress"
@@ -73,6 +64,25 @@ const BagStack = () => {
             lineHeight: 40,
           },
         }}
+      />
+      <Stack.Screen
+        name="Topup"
+        component={Topup}
+        options={{
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Success"
+        component={Success}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

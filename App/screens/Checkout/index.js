@@ -51,9 +51,10 @@ const Checkout = ({navigation}) => {
     navigation.goBack();
   };
 
-  const submitOrder = () => {
+  const submitOrder = async () => {
     if (data.Credit.saldo >= cart.totalAmount + 20000) {
-      dispatch(transactionActions.orderByCredit(auth.token));
+      await dispatch(transactionActions.orderByCredit(auth.token));
+      navigation.navigate('Success');
     } else {
       setOrder(!order);
     }

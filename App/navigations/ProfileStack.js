@@ -5,6 +5,7 @@ import ChangeAddress from '../screens/ShippingAddress/ChangeAddress';
 import AddingAddress from '../screens/ShippingAddress/AddingAddress';
 import Profile from '../screens/Profile';
 import Orders from '../screens/Orders';
+import OrderDetails from '../screens/OrderDetails';
 import Setting from '../screens/Setting';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -60,6 +61,21 @@ const BagStack = () => {
               onPress={() => navigation.navigate('Search')}
             />
           ),
+        }}
+      />
+      <Stack.Screen
+        name="OrderDetails"
+        component={OrderDetails}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#075E54',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            lineHeight: 40,
+          },
         }}
       />
       <Stack.Screen

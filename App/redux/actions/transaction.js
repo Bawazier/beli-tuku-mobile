@@ -28,6 +28,11 @@ export default {
     ),
   }),
 
+  deleteCart: (token, id_cart) => ({
+    type: 'DELETE_SHOPPING_CART',
+    payload: http(token).delete(`/customer/cart/${id_cart}`),
+  }),
+
   checkoutCart: (token, id_cart, quantity = 1) => ({
     type: 'CHECKOUT_SHOPPING_CART',
     payload: http(token).put(
@@ -73,15 +78,23 @@ export default {
     payload: http(token).get('/customer/order'),
   }),
 
-  increment: () => ({
+  dataCart: (payload) => ({
+    type: 'PUSH_DATA',
+    payload,
+  }),
+
+  increment: (id_cart) => ({
     type: 'INCREMENT',
+    id: id_cart,
   }),
 
-  decrement: () => ({
+  decrement: (id_cart) => ({
     type: 'DECREMENT',
+    id: id_cart,
   }),
 
-  reset: () => ({
-    type: 'RESET',
+  reset: (id_cart) => ({
+    type: 'POP_DATA',
+    id: id_cart,
   }),
 };

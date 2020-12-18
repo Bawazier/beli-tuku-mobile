@@ -3,11 +3,14 @@ const initialState = {
   dataListCartOut: [],
   dataListCartOrder: [],
   pageInfo: {},
+  dataCart: {},
   isLoading: false,
   alertMsg: '',
   totalAmount: 0,
 
   isAddCartError: false,
+  isDeleteCartLoading: false,
+  isDeleteCartError: false,
   isCheckoutError: false,
   isDiscardCheckoutError: false,
   isListCartError: false,
@@ -36,6 +39,32 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+        isAddCartError: false,
+        dataCart: {
+          id: action.payload.data.results.id,
+          quantity: 1,
+          price: action.payload.data.results.price,
+        },
+      };
+    }
+    case 'DELETE_SHOPPING_CART_PENDING': {
+      return {
+        ...state,
+        isDeleteCartLoading: true,
+      };
+    }
+    case 'DELETE_SHOPPING_CART_REJECTED': {
+      return {
+        ...state,
+        isDeleteCartLoading: false,
+        isDeleteCartError: true,
+        alertMsg: action.payload,
+      };
+    }
+    case 'DELETE_SHOPPING_CART_FULFILLED': {
+      return {
+        ...state,
+        isDeleteCartLoading: false,
         isAddCartError: false,
       };
     }

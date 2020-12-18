@@ -37,18 +37,84 @@ const Catalog = () => {
   );
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [refresh, setRefresh] = useState(false);
   const [filter, setFilter] = useState(false);
   const [sort, setSort] = useState(false);
   const [sortByPopular, setSortByPopular] = useState(false);
-  const [sortByNewest, setSortByNewest] = useState(false);
+  const [sortByNewest, setSortByNewest] = useState(true);
   const [sortByPriceLow, setSortByPriceLow] = useState(false);
   const [sortByPriceHight, setSortByPriceHight] = useState(false);
   const [sortBy, setSortBy] = useState('Newest');
+  const [colors, setColors] = useState([]);
 
   const detailProduct = (id_product) => {
     dispatch(HomeActions.detailProduct(id_product));
     navigation.navigate('Product');
     dispatch(HomeActions.detailProductReviews(id_product));
+  };
+
+  const doRefresh = () => {
+    setRefresh(true);
+    if (sortByNewest) {
+      dispatch(HomeActions.catalogSort('createdAt', 'DESC'));
+    } else if (sortByPopular) {
+      dispatch(HomeActions.catalogSort('stock', 'ASC'));
+    } else if (sortByPriceLow) {
+      dispatch(HomeActions.catalogSort('price', 'ASC'));
+    } else if (sortByPriceHight) {
+      dispatch(HomeActions.catalogSort('price', 'DESC'));
+    }
+    setRefresh(false);
+  };
+
+  const nextPage = () => {
+    if (pageInfo.pages > pageInfo.currentPage) {
+      if (sortByNewest) {
+        dispatch(
+          HomeActions.catalogSortScroll(
+            'createdAt',
+            'DESC',
+            pageInfo.currentPage + 1,
+          ),
+        );
+      } else if (sortByPopular) {
+        dispatch(
+          HomeActions.catalogSortScroll(
+            'stock',
+            'ASC',
+            pageInfo.currentPage + 1,
+          ),
+        );
+      } else if (sortByPriceLow) {
+        dispatch(
+          HomeActions.catalogSortScroll(
+            'price',
+            'ASC',
+            pageInfo.currentPage + 1,
+          ),
+        );
+      } else if (sortByPriceHight) {
+        dispatch(
+          HomeActions.catalogSortScroll(
+            'price',
+            'DESC',
+            pageInfo.currentPage + 1,
+          ),
+        );
+      }
+    }
+  };
+
+  const filterColor = (hexa) => {
+    if (colors[colors.length - 1] === hexa) {
+      colors.pop();
+    } else if (colors.length < 4) {
+      colors.push(hexa);
+    } else {
+      colors.pop();
+      colors.push(hexa);
+    }
+    console.log(colors);
   };
 
   return (
@@ -87,7 +153,9 @@ const Catalog = () => {
         {!isLoading && !isError && (
           <FlatList
             onEndReachedThreshold={0.5}
-            // onEndReached={newsNextLink}
+            onEndReached={nextPage}
+            onRefresh={doRefresh}
+            refreshing={refresh}
             data={data}
             renderItem={({item}) => (
               <TouchableOpacity onPress={() => detailProduct(item.id)}>
@@ -100,7 +168,10 @@ const Catalog = () => {
                 />
               </TouchableOpacity>
             )}
-            columnWrapperStyle={{justifyContent: 'center'}}
+            columnWrapperStyle={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             numColumns={2}
             horizontal={false}
             keyExtractor={(item) => item.id}
@@ -123,7 +194,10 @@ const Catalog = () => {
                   borderBottomColor: 'gray',
                   paddingVertical: 5,
                 }}>
-                <Text style={{fontWeight: 'bold'}}>Colors</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{fontWeight: 'bold'}}>Colors: </Text>
+                  <Text note>{colors}</Text>
+                </View>
                 <ScrollView
                   horizontal
                   style={{
@@ -137,10 +211,9 @@ const Catalog = () => {
                           borderRadius: 80,
                           padding: 3,
                           margin: 3,
-                          // borderWidth: 2,
-                          // borderColor: '#9ce47c',
                         }}>
                         <Button
+                          onPress={() => filterColor(item.hexa)}
                           style={{
                             width: 40,
                             height: 40,

@@ -45,7 +45,7 @@ const Login = () => {
             const data = {
               email: values.email,
             };
-            await dispatch(AuthActions.forgotPass(data));
+            await dispatch(AuthActions.validateForgotPass(data));
             navigation.navigate('ResetPass');
           }}>
           {({
