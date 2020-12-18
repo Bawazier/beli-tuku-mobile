@@ -48,31 +48,31 @@ const Home = ({navigation}) => {
     <>
       <StyledContent>
         <StyledView>
-          {/* {!listPopularProducts.isLoading &&
+          {!listPopularProducts.isLoading &&
             !listPopularProducts.isError &&
-            listPopularProducts.data &&
-            listPopularProducts.data[0].ProductImages && (
-              <StyledImageBackground
-                source={
-                  (listPopularProducts.data[0].ProductImages[0].picture && {
-                    uri:
-                      API_URL +
-                      '/' +
-                      listPopularProducts.data[0].ProductImages[0].picture,
-                  }) ||
-                  require('../../assets/homeProduct.png')
-                }>
-                <Row>
-                  <StyledTextWhite>
-                    {listNewProducts.data[0].Category.name || 'Street clothes'}
-                  </StyledTextWhite>
-                  <StyledButton
-                    onPress={() => navigation.navigate('Notification')}>
-                    <Icon name="bell-o" type="FontAwesome" />
-                  </StyledButton>
-                </Row>
-              </StyledImageBackground>
-            )} */}
+            listPopularProducts.data.map((items, index) => {
+              if (index === 0) {
+                return items.ProductImages.map((item) => (
+                  <StyledImageBackground
+                    source={
+                      (item.picture && {
+                        uri: API_URL + '/' + item.picture,
+                      }) ||
+                      require('../../assets/homeProduct.png')
+                    }>
+                    <Row>
+                      <StyledTextWhite>
+                        {items.Category.name || 'Street clothes'}
+                      </StyledTextWhite>
+                      <StyledButton
+                        onPress={() => navigation.navigate('Notification')}>
+                        <Icon name="bell-o" type="FontAwesome" />
+                      </StyledButton>
+                    </Row>
+                  </StyledImageBackground>
+                ));
+              }
+            })}
         </StyledView>
         <Row>
           <Col>

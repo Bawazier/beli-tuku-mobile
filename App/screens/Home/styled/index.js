@@ -14,6 +14,7 @@ export const StyledImageBackground = styled(ImageBackground)`
 `;
 
 export const StyledTextWhite = styled(H1)`
+  width: 80%;
   font-weight: bold;
   font-size: 34px;
   line-height: 34px;
@@ -22,6 +23,7 @@ export const StyledTextWhite = styled(H1)`
 `;
 
 export const StyledButton = styled(Button)`
+  width: 18%;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   align-self: flex-start;
