@@ -122,6 +122,9 @@ export default (state = initialState, action) => {
         isDeleteError: false,
       };
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }

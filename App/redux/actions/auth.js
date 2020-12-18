@@ -14,15 +14,12 @@ export default {
 
   validateForgotPass: (data) => ({
     type: 'VALIDATE_FORGOT_PASS',
-    payload: http().patch('/auth/forgot/password', qs.stringify(data)),
+    payload: http().post('/auth/forgot/password', qs.stringify(data)),
   }),
 
   forgotPass: (id_user, data) => ({
     type: 'FORGOT_PASS',
-    payload: http().patch(
-      `/auth/forgot/password/${id_user}`,
-      qs.stringify(data),
-    ),
+    payload: http().put(`/auth/forgot/password/${id_user}`, qs.stringify(data)),
   }),
 
   logout: () => ({

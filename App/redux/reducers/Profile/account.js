@@ -82,6 +82,9 @@ export default (state = initialState, action) => {
         isUpdateError: false,
       };
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }

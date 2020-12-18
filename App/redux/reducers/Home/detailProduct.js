@@ -56,6 +56,9 @@ export default (state = initialState, action) => {
         pageInfo: action.payload.data.pageInfo,
       };
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }

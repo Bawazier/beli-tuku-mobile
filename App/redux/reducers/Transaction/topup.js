@@ -53,6 +53,9 @@ export default (state = initialState, action) => {
         isTopupCreditError: false,
       };
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }

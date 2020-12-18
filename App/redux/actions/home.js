@@ -5,9 +5,16 @@ export default {
     type: 'LIST_NEW_PRODUCTS',
     payload: http().get(`/public/products/?page=${page}&limit=${limit}`),
   }),
-  popularProducts: (page = 1, limit = 10) => ({
+  popularProducts: (
+    page = 1,
+    limit = 10,
+    sortBy = 'stock',
+    sortType = 'ASC',
+  ) => ({
     type: 'LIST_POPULAR_PRODUCTS',
-    payload: http().get(`/public/products/?page=${page}&limit=${limit}`),
+    payload: http().get(
+      `/public/products/?page=${page}&limit=${limit}&sortBy=${sortBy}&sortType=${sortType}`,
+    ),
   }),
   listCategories: (search = '', page = 1, limit = 30) => ({
     type: 'LIST_CATEGORIES',

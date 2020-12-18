@@ -5,11 +5,14 @@ const initialState = {
   alertMsg: '',
 
   isSignupError: false,
+  isSignupLoading: false,
 
   isForgotPassError: false,
+  isForgotPassLoading: false,
 
   emailValidData: [],
   isEmailError: false,
+  isEmailLoading: false,
 };
 
 export default (state = initialState, action) => {
@@ -39,13 +42,13 @@ export default (state = initialState, action) => {
     case 'SIGNUP_PENDING': {
       return {
         ...state,
-        isLoading: true,
+        isSignupLoading: true,
       };
     }
     case 'SIGNUP_REJECTED': {
       return {
         ...state,
-        isLoading: false,
+        isSignupLoading: false,
         isSignupError: true,
         alertMsg: action.payload,
       };
@@ -53,20 +56,20 @@ export default (state = initialState, action) => {
     case 'SIGNUP_FULFILLED': {
       return {
         ...state,
-        isLoading: false,
+        isSignupLoading: false,
         isSignupError: false,
       };
     }
     case 'FORGOT_PASS_PENDING': {
       return {
         ...state,
-        isLoading: true,
+        isForgotPassLoading: true,
       };
     }
     case 'FORGOT_PASS_REJECTED': {
       return {
         ...state,
-        isLoading: false,
+        isForgotPassLoading: false,
         isForgotPassError: true,
         alertMsg: action.payload.data.message,
       };
@@ -74,20 +77,20 @@ export default (state = initialState, action) => {
     case 'FORGOT_PASS_FULFILLED': {
       return {
         ...state,
-        isLoading: false,
+        isForgotPassLoading: false,
         isForgotPassError: false,
       };
     }
     case 'VALIDATE_FORGOT_PASS_PENDING': {
       return {
         ...state,
-        isLoading: true,
+        isEmailLoading: true,
       };
     }
     case 'VALIDATE_FORGOT_PASS_REJECTED': {
       return {
         ...state,
-        isLoading: false,
+        isEmailLoading: false,
         isEmailError: true,
         alertMsg: action.payload.data.message,
       };
@@ -96,7 +99,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isEmailError: false,
-        isLoading: false,
+        isEmailLoading: false,
         emailValidData: action.payload.data.validate,
       };
     }
