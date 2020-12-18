@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -14,8 +14,9 @@ import {
   StyledTextAlert,
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Form, Text, Item} from 'native-base';
+import {Button, Form, Text, Item, View, Spinner} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
+import Dialog from 'react-native-dialog';
 
 // Components
 
@@ -26,13 +27,22 @@ const Login = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (!auth.isForgotPassLoading && auth.isForgotPassError) {
+      setError(!error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
+
   const validationSchema = Yup.object({
     newPassword: Yup.string()
-      .max(8, 'New Password cannot be more than 8')
+      .min(8, 'New Password cannot be less than 8')
       .required('New Password is Required'),
     confirmPassword: Yup.string()
-      .max(8, 'Confirm Password cannot be more than 8')
-      .required('Confirm Password is Required'),
+      .oneOf([Yup.ref('newPassword'), null], 'Passwords not match')
+      .required('Password confirmation is required'),
   });
 
   return (
@@ -48,13 +58,14 @@ const Login = () => {
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
-            console.log(auth.data[0].id);
             const data = {
               newPassword: values.newPassword,
-              confirmNewPassword: values.confirmNewPassword,
+              confirmNewPassword: values.confirmPassword,
             };
+            console.log(auth.emailValidData);
+            console.log(data);
             await dispatch(
-              AuthActions.forgotPass(auth.emailValidData[0].id, data),
+              AuthActions.forgotPass(auth.emailValidData.id, data),
             );
             navigation.navigate('Login');
           }}>
@@ -133,6 +144,27 @@ const Login = () => {
             </Form>
           )}
         </Formik>
+        {auth.isForgotPassLoading && !auth.isForgotPassError && (
+          <View>
+            <Dialog.Container visible={true}>
+              <Spinner color="green" />
+            </Dialog.Container>
+          </View>
+        )}
+        <View>
+          <Dialog.Container visible={error}>
+            <Dialog.Description>
+              Email has been used, please try again
+            </Dialog.Description>
+            <Dialog.Button
+              label="TRY AGAIN"
+              onPress={() => {
+                setError(false);
+                dispatch(AuthActions.logout());
+              }}
+            />
+          </Dialog.Container>
+        </View>
       </StyledContent>
     </>
   );

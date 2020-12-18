@@ -1,5 +1,5 @@
-import React from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {
@@ -15,8 +15,9 @@ import {
 } from './styled';
 import {H2White} from '../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Form, Text, Item} from 'native-base';
+import {Button, Form, Text, Item, View, Spinner} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
+import Dialog from 'react-native-dialog';
 
 // Components
 
@@ -24,16 +25,31 @@ import {useNavigation} from '@react-navigation/native';
 import AuthActions from '../../redux/actions/auth';
 
 const Login = () => {
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [error, setError] = useState(false);
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email('Input must be Email')
       .required('Email is Required'),
     password: Yup.string()
-      .max(8, 'Password cannot be more than 8')
+      .min(8, 'Password cannot be less than 8')
       .required('Password is Required'),
   });
+
+  useEffect(() => {
+    dispatch(AuthActions.logout());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!auth.isLoading && auth.isError) {
+      setError(!error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
 
   return (
     <>
@@ -47,13 +63,12 @@ const Login = () => {
             password: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
+          onSubmit={async (values) => {
             const data = {
-              name: values.name,
               email: values.email,
               password: values.password,
             };
-            dispatch(AuthActions.login(data));
+            await dispatch(AuthActions.login(data));
           }}>
           {({
             handleChange,
@@ -132,6 +147,27 @@ const Login = () => {
             </Form>
           )}
         </Formik>
+        {auth.isLoading && !auth.isError && (
+          <View>
+            <Dialog.Container visible={true}>
+              <Spinner color="green" />
+            </Dialog.Container>
+          </View>
+        )}
+        <View>
+          <Dialog.Container visible={error}>
+            <Dialog.Description>
+              Please enter your email and password correctly
+            </Dialog.Description>
+            <Dialog.Button
+              label="TRY AGAIN"
+              onPress={() => {
+                setError(false);
+                dispatch(AuthActions.logout());
+              }}
+            />
+          </Dialog.Container>
+        </View>
       </StyledContent>
     </>
   );

@@ -1,5 +1,5 @@
-import React from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {
@@ -14,8 +14,9 @@ import {
   StyledButton,
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Form, Text, Item} from 'native-base';
+import {Button, Form, Text, Item, View, Spinner} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
+import Dialog from 'react-native-dialog';
 
 // Components
 
@@ -23,8 +24,18 @@ import {useNavigation} from '@react-navigation/native';
 import AuthActions from '../../redux/actions/auth';
 
 const Login = () => {
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (!auth.isEmailLoading && auth.isEmailError) {
+      setError(!error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email('Input must be Email')
@@ -97,6 +108,27 @@ const Login = () => {
             </Form>
           )}
         </Formik>
+        {auth.isEmailLoading && !auth.isEmailError && (
+          <View>
+            <Dialog.Container visible={true}>
+              <Spinner color="green" />
+            </Dialog.Container>
+          </View>
+        )}
+        <View>
+          <Dialog.Container visible={error}>
+            <Dialog.Description>
+              Email has been used, please try again
+            </Dialog.Description>
+            <Dialog.Button
+              label="TRY AGAIN"
+              onPress={() => {
+                setError(false);
+                dispatch(AuthActions.logout());
+              }}
+            />
+          </Dialog.Container>
+        </View>
       </StyledContent>
     </>
   );

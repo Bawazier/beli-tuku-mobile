@@ -1,5 +1,5 @@
-import React from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {
@@ -14,8 +14,9 @@ import {
   StyledTextAlert,
 } from './styled';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Form, Text, Item} from 'native-base';
+import {Button, Form, Text, Item, View, Spinner} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
+import Dialog from 'react-native-dialog';
 
 // Components
 
@@ -23,12 +24,24 @@ import {useNavigation} from '@react-navigation/native';
 import AuthActions from '../../redux/actions/auth';
 
 const SignUp = () => {
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (!auth.isSignupLoading && auth.isSignupError) {
+      setError(!error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
+
   const validationSchema = Yup.object({
     name: Yup.string().max(80, 'name cannot be too long').required(),
     email: Yup.string().email('Input must be Email').required(),
-    password: Yup.string().max(8, 'Password cannot be more than 8').required(),
+    password: Yup.string()
+      .min(8, 'Password cannot be less than 8')
+      .required('Password is Required'),
   });
   return (
     <>
@@ -151,6 +164,27 @@ const SignUp = () => {
             </Form>
           )}
         </Formik>
+        {auth.isSignupLoading && !auth.isSignupError && (
+          <View>
+            <Dialog.Container visible={true}>
+              <Spinner color="green" />
+            </Dialog.Container>
+          </View>
+        )}
+        <View>
+          <Dialog.Container visible={error}>
+            <Dialog.Description>
+              Email has been used, please try again
+            </Dialog.Description>
+            <Dialog.Button
+              label="TRY AGAIN"
+              onPress={() => {
+                setError(false);
+                dispatch(AuthActions.logout());
+              }}
+            />
+          </Dialog.Container>
+        </View>
       </StyledContent>
     </>
   );

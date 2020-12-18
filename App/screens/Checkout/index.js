@@ -17,7 +17,7 @@ import {
   StyledFooter,
   StyledTextBlockButton,
 } from './styled';
-import {Icon, Text, View} from 'native-base';
+import {Icon, Text, View, Button} from 'native-base';
 import numeral from 'numeral';
 import Dialog from 'react-native-dialog';
 
@@ -86,6 +86,15 @@ const Checkout = ({navigation}) => {
                 );
               }
             })}
+          {!isLoading && isListError && (
+            <Button
+              rounded
+              warning
+              full
+              onPress={() => navigation.navigate('ShippingAddress')}>
+              <Text>create address first before order</Text>
+            </Button>
+          )}
         </StyledContainer>
         <StyledContainer>
           <StyledText>Payment</StyledText>
@@ -162,7 +171,7 @@ const Checkout = ({navigation}) => {
             ,-
           </Text>
         </Row>
-        {!cart.isLoading && (
+        {!cart.isLoading && !isListError && (
           <Row>
             <StyledButton
               bordered
@@ -191,7 +200,10 @@ const Checkout = ({navigation}) => {
           <Dialog.Button label="Discard" onPress={discardCheckout} />
           <Dialog.Button
             label="Topup"
-            onPress={() => navigation.navigate('Topup')}
+            onPress={() => {
+              setOrder(false);
+              navigation.navigate('Topup');
+            }}
           />
         </Dialog.Container>
       </View>
