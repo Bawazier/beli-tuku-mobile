@@ -74,9 +74,10 @@ const Product = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const addToCart = () => {
+  const addToCart = async () => {
     if (auth.token.length) {
-      dispatch(
+      setAddCart(!addCart);
+      await dispatch(
         transactionActions.addToCart(
           auth.token,
           dataProduct.id,
@@ -85,7 +86,7 @@ const Product = () => {
           choiceSize.id || dataProduct.ProductSizes[0].id,
         ),
       );
-      setAddCart(!addCart);
+      dispatch(transactionActions.listCart(auth.token));
     } else {
       navigation.navigate('Login');
     }
