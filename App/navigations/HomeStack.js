@@ -1,4 +1,5 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 
 import Home from '../screens/Home';
 import Notification from '../screens/Notification';
@@ -13,6 +14,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 const HomeStack = ({navigation}) => {
+  const {dataProduct} = useSelector((state) => state.detailProduct);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -63,6 +65,7 @@ const HomeStack = ({navigation}) => {
         name="Product"
         component={Product}
         options={{
+          title: dataProduct.name || '',
           headerStyle: {
             backgroundColor: '#075E54',
           },

@@ -1,44 +1,52 @@
-import {ActionSheet} from 'native-base';
-
 const initialState = {
-  data: [],
+  id: [],
+  data: {},
+  totalAmount: 0,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'PUSH_DATA': {
       return {
-        ...state,
-        data: [...state.data, ...action.payload],
+        id: [...new Set(state.id), action.id],
+        data: {...state.data, [action.id]: action.payload},
+        totalAmount: state.totalAmount + action.payload.content.price,
       };
     }
     case 'INCREMENT': {
-      state.data.map((item, index) => {
-        if (item.id === action.id) {
-          console.log(state.data[index].quantity);
-          return state.data[index].quantity + 1;
-        }
-      });
+      const price = state.totalAmount - state.data[action.id].content.price;
+      state.data[action.id] = {
+        ...state.data[action.id],
+        ...action.payload,
+      };
+      console.log(price);
+      return {
+        ...state,
+        totalAmount: price + action.payload.content.price,
+      };
     }
     case 'DECREMENT': {
-      state.data.map((item, index) => {
-        if (item.id === action.id) {
-          state.data[index].quantity - 1;
-        }
-        return {
-          ...state,
-        };
-      });
+      const price = state.totalAmount - state.data[action.id].content.price;
+      state.data[action.id] = {
+        ...state.data[action.id],
+        ...action.payload,
+      };
+      return {
+        ...state,
+        totalAmount: price + action.payload.content.price,
+      };
     }
-    case 'POP_DATA': {
-      state.data.map((item, index) => {
-        if (item.id === action.id) {
-          state.data.slice(index, 1);
-        }
-        return {
-          ...state,
-        };
+    case 'REMOVE_DATA': {
+      const filterId = state.id.filter((item) => {
+        return item !== action.id;
       });
+      const price = state.data[action.id].content.price;
+      delete state.data[action.id];
+      return {
+        id: filterId,
+        data: state.data,
+        totalAmount: state.totalAmount - price,
+      };
     }
     default: {
       return state;

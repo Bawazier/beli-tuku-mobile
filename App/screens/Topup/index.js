@@ -86,10 +86,6 @@ const Topup = ({navigation}) => {
       <View>
         <Dialog.Container visible={success}>
           <Dialog.Title>Topup Success</Dialog.Title>
-          <Dialog.Description>
-            Sorry you can't make a transaction because your balance is
-            insufficient, please do a top up first
-          </Dialog.Description>
           <Dialog.Button label="OK" onPress={() => navigation.goBack()} />
         </Dialog.Container>
       </View>

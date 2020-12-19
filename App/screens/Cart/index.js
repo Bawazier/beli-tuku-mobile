@@ -40,6 +40,11 @@ const Cart = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    setTotalAmount(quantityCounter.totalAmount);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quantityCounter]);
+
   const detailProduct = (id_product) => {
     dispatch(HomeActions.detailProduct(id_product));
     navigation.navigate('Product');
@@ -48,7 +53,14 @@ const Cart = () => {
 
   const checkout = async () => {
     await dataListCart.map(async (item) => {
-      dispatch(transactionActions.checkoutCart(auth.token, item.id));
+      await dispatch(
+        transactionActions.checkoutCart(
+          auth.token,
+          item.id,
+          quantityCounter.data[item.id].content.quantity,
+        ),
+      );
+      dispatch(transactionActions.deleteDataCart(item.id));
     });
     navigation.navigate('Checkout');
     dispatch(transactionActions.listCart(auth.token));

@@ -4,7 +4,7 @@ import qs from 'qs';
 export default {
   changePass: (token, data) => ({
     type: 'CHANGE_PASSWORD',
-    payload: http(token).post('/customer/change/password', qs.stringify(data)),
+    payload: http(token).post('/customer/change/pass', qs.stringify(data)),
   }),
 
   tryAgain: () => ({

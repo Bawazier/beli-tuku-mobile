@@ -21,39 +21,50 @@ import Dialog from 'react-native-dialog';
 import transactionActions from '../../redux/actions/transaction';
 
 const CardOrders = (props) => {
-  const [quantity, setQuantity] = useState(props.quantity);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const quantityCounter = useSelector((state) => state.quantityCounter);
+  const [quantity, setQuantity] = useState(props.quantity);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const price = props.totalPrice * quantity;
 
   useEffect(() => {
-    console.log(props.idCart);
-    dispatch(
-      transactionActions.dataCart([
-        {
+    if (quantityCounter.id[quantityCounter.id.length - 1] !== props.idCart) {
+      dispatch(
+        transactionActions.dataCart(props.idCart, {
           id: props.idCart,
-          quantity: quantity || 1,
-          price: price,
-        },
-      ]),
-    );
+          content: {
+            quantity: quantity || 1,
+            price: price,
+          },
+        }),
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const increment = () => {
-    console.log(quantityCounter.data);
+  const increment = async () => {
     if (quantity < props.stock) {
-      dispatch(transactionActions.increment(props.idCart));
-      setQuantity(quantity + 1);
+      await setQuantity(quantity + 1);
+      dispatch(
+        transactionActions.increment(props.idCart, {
+          content: {
+            quantity: quantity + 1,
+            price: props.totalPrice * (quantity + 1),
+          },
+        }),
+      );
     }
   };
 
-  const decrement = () => {
+  const decrement = async () => {
     if (quantity > 1) {
-      dispatch(transactionActions.decrement(props.idCart));
-      setQuantity(quantity - 1);
+      await setQuantity(quantity - 1);
+      dispatch(
+        transactionActions.decrement(props.idCart, {
+          content: {quantity: quantity - 1, price: price - props.totalPrice},
+        }),
+      );
     }
   };
 
@@ -61,6 +72,7 @@ const CardOrders = (props) => {
     console.log(props.idCart);
     setDeleteDialog(!deleteDialog);
     await dispatch(transactionActions.deleteCart(auth.token, props.idCart));
+    dispatch(transactionActions.deleteDataCart(props.idCart));
     dispatch(transactionActions.listCart(auth.token));
   };
 

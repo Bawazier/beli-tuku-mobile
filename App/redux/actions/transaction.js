@@ -78,23 +78,26 @@ export default {
     payload: http(token).get('/customer/order'),
   }),
 
-  dataCart: (payload) => ({
+  dataCart: (id_cart, payload) => ({
     type: 'PUSH_DATA',
+    id: id_cart,
     payload,
   }),
 
-  increment: (id_cart) => ({
+  increment: (id_cart, payload) => ({
     type: 'INCREMENT',
     id: id_cart,
+    payload,
   }),
 
-  decrement: (id_cart) => ({
+  decrement: (id_cart, payload) => ({
     type: 'DECREMENT',
     id: id_cart,
+    payload,
   }),
 
-  reset: (id_cart) => ({
-    type: 'POP_DATA',
+  deleteDataCart: (id_cart) => ({
+    type: 'REMOVE_DATA',
     id: id_cart,
   }),
 };

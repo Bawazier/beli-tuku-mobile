@@ -36,6 +36,7 @@ const Checkout = ({navigation}) => {
   );
   const {data} = useSelector((state) => state.account);
   const [order, setOrder] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -55,7 +56,13 @@ const Checkout = ({navigation}) => {
     if (data.Credit.saldo >= cart.totalAmount + 20000) {
       await dispatch(transactionActions.orderByCredit(auth.token));
       navigation.navigate('Success');
+    } else if (cart.isPostError) {
+      setErrorMsg('sorry there is a problem, please place an order again');
+      setOrder(!order);
     } else {
+      setErrorMsg(
+        "Sorry you can't make a transaction because your balance is insufficient, please do a top up first",
+      );
       setOrder(!order);
     }
   };
@@ -193,10 +200,7 @@ const Checkout = ({navigation}) => {
       </StyledFooter>
       <View>
         <Dialog.Container visible={order}>
-          <Dialog.Description>
-            Sorry you can't make a transaction because your balance is
-            insufficient, please do a top up first
-          </Dialog.Description>
+          <Dialog.Description>{errorMsg}</Dialog.Description>
           <Dialog.Button label="Discard" onPress={discardCheckout} />
           <Dialog.Button
             label="Topup"
