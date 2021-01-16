@@ -30,6 +30,7 @@ import transactionActions from '../../redux/actions/transaction';
 
 const Checkout = ({navigation}) => {
   const auth = useSelector((state) => state.auth);
+  const quantityCounter = useSelector((state) => state.quantityCounter);
   const cart = useSelector((state) => state.cart);
   const {dataList, isLoading, isListError} = useSelector(
     (state) => state.address,
@@ -48,13 +49,15 @@ const Checkout = ({navigation}) => {
   const discardCheckout = async () => {
     setOrder(false);
     await dispatch(transactionActions.discardCheckoutCart(auth.token));
+    await dispatch(transactionActions.returnDataCart());
     dispatch(transactionActions.listCart(auth.token));
     navigation.goBack();
   };
 
   const submitOrder = async () => {
-    if (data.Credit.saldo >= cart.totalAmount + 20000) {
+    if (data.Credit.saldo >= quantityCounter.exTotalAmount + 20000) {
       await dispatch(transactionActions.orderByCredit(auth.token));
+      dispatch(transactionActions.clearDataCart());
       navigation.navigate('Success');
     } else if (cart.isPostError) {
       setErrorMsg('sorry there is a problem, please place an order again');

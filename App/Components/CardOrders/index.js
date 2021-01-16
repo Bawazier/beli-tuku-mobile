@@ -22,24 +22,26 @@ import transactionActions from '../../redux/actions/transaction';
 
 const CardOrders = (props) => {
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const auth = useSelector((state) => state.auth);
   const quantityCounter = useSelector((state) => state.quantityCounter);
   const [quantity, setQuantity] = useState(props.quantity);
-  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const price = props.totalPrice * quantity;
+  const price = props.price * quantity;
 
   useEffect(() => {
-    if (quantityCounter.id[quantityCounter.id.length - 1] !== props.idCart) {
-      dispatch(
-        transactionActions.dataCart(props.idCart, {
-          id: props.idCart,
-          content: {
-            quantity: quantity || 1,
-            price: price,
-          },
-        }),
-      );
+    console.log(props.index);
+    if (props.index === 0) {
+      dispatch(transactionActions.returnDataCart());
     }
+    dispatch(
+      transactionActions.dataCart(props.idCart, {
+        id: props.idCart,
+        content: {
+          quantity: props.quantity,
+          price: props.price * props.quantity,
+        },
+      }),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -49,8 +51,9 @@ const CardOrders = (props) => {
       dispatch(
         transactionActions.increment(props.idCart, {
           content: {
-            quantity: quantity + 1,
-            price: props.totalPrice * (quantity + 1),
+            quantity: quantityCounter.data[props.idCart].content.quantity + 1,
+            price:
+              props.price + quantityCounter.data[props.idCart].content.price,
           },
         }),
       );
@@ -60,16 +63,20 @@ const CardOrders = (props) => {
   const decrement = async () => {
     if (quantity > 1) {
       await setQuantity(quantity - 1);
+      console.log(props.totalPrice);
       dispatch(
         transactionActions.decrement(props.idCart, {
-          content: {quantity: quantity - 1, price: price - props.totalPrice},
+          content: {
+            quantity: quantityCounter.data[props.idCart].content.quantity - 1,
+            price:
+              quantityCounter.data[props.idCart].content.price - props.price,
+          },
         }),
       );
     }
   };
 
   const handleDelete = async () => {
-    console.log(props.idCart);
     setDeleteDialog(!deleteDialog);
     await dispatch(transactionActions.deleteCart(auth.token, props.idCart));
     dispatch(transactionActions.deleteDataCart(props.idCart));
@@ -90,9 +97,9 @@ const CardOrders = (props) => {
           <StyledBody>
             <Row>
               <StyledTextPrimary style={{width: 170}}>
-                {props.productName.length < 28
-                  ? props.productName
-                  : props.productName.substring(0, 28).concat('...')}
+                {props.name.length < 28
+                  ? props.name
+                  : props.name.substring(0, 28).concat('...')}
               </StyledTextPrimary>
               <Icon
                 name="more-vert"
@@ -104,7 +111,11 @@ const CardOrders = (props) => {
               <StyledTextSecondary>Price:</StyledTextSecondary>
               <StyledTextPrimary>
                 Rp.
-                {numeral(price || 0)
+                {numeral(
+                  quantityCounter.data &&
+                    quantityCounter.data[props.idCart] &&
+                    quantityCounter.data[props.idCart].content.price,
+                )
                   .format(0, 0)
                   .toString()
                   .replace(',', '.')}
@@ -135,7 +146,11 @@ const CardOrders = (props) => {
                   style={{color: '#222222', fontSize: 40}}
                 />
               </StyledRow>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>{quantity}</Text>
+              <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+                {quantityCounter.data &&
+                  quantityCounter.data[props.idCart] &&
+                  quantityCounter.data[props.idCart].content.quantity}
+              </Text>
               <StyledRow>
                 <Icon
                   name="plus-square"

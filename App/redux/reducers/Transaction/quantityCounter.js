@@ -2,13 +2,21 @@ const initialState = {
   id: [],
   data: {},
   totalAmount: 0,
+
+  exId: [],
+  exData: {},
+  exTotalAmount: 0,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'PUSH_DATA': {
+      const filterId = state.id.filter((item) => {
+        return item !== action.id;
+      });
       return {
-        id: [...new Set(state.id), action.id],
+        ...state,
+        id: [...filterId, action.id],
         data: {...state.data, [action.id]: action.payload},
         totalAmount: state.totalAmount + action.payload.content.price,
       };
@@ -40,12 +48,39 @@ export default (state = initialState, action) => {
       const filterId = state.id.filter((item) => {
         return item !== action.id;
       });
-      const price = state.data[action.id].content.price;
       delete state.data[action.id];
       return {
+        ...state,
         id: filterId,
         data: state.data,
-        totalAmount: state.totalAmount - price,
+        totalAmount: 0,
+      };
+    }
+    case 'PARSING_DATA': {
+      return {
+        ...state,
+        exId: [...state.exId, ...state.id],
+        exData: {...state.exData, ...state.data},
+        exTotalAmount: state.exTotalAmount + state.totalAmount,
+        totalAmount: 0,
+      };
+    }
+    case 'RETURN_DATA': {
+      return {
+        ...state,
+        exId: [],
+        exData: {},
+        exTotalAmount: 0,
+        totalAmount: 0,
+      };
+    }
+    case 'CLEAR_DATA': {
+      return {
+        ...state,
+        exId: [],
+        exData: {},
+        exTotalAmount: 0,
+        totalAmount: 0,
       };
     }
     default: {

@@ -33,17 +33,11 @@ const Cart = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
     dispatch(transactionActions.listCart(auth.token));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    setTotalAmount(quantityCounter.totalAmount);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quantityCounter]);
 
   const detailProduct = (id_product) => {
     dispatch(HomeActions.detailProduct(id_product));
@@ -52,15 +46,15 @@ const Cart = () => {
   };
 
   const checkout = async () => {
+    await dispatch(transactionActions.parsingDataCart());
     await dataListCart.map(async (item) => {
-      await dispatch(
+      dispatch(
         transactionActions.checkoutCart(
           auth.token,
           item.id,
           quantityCounter.data[item.id].content.quantity,
         ),
       );
-      dispatch(transactionActions.deleteDataCart(item.id));
     });
     navigation.navigate('Checkout');
     dispatch(transactionActions.listCart(auth.token));
@@ -82,17 +76,19 @@ const Cart = () => {
               onRefresh={() =>
                 dispatch(transactionActions.listCart(auth.token))
               }
-              renderItem={({item}) => (
+              renderItem={({item, index}) => (
                 <TouchableOpacity
                   onPress={() => detailProduct(item.DetailProduct.Product.id)}>
                   <CardOrders
+                    index={index}
                     idCart={item.id}
-                    productName={item.DetailProduct.Product.name}
+                    picture={item.DetailProduct.ProductImage.picture}
+                    name={item.DetailProduct.Product.name}
+                    price={item.DetailProduct.Product.price}
                     color={item.DetailProduct.ProductColor.name}
                     size={item.DetailProduct.ProductSize.size}
-                    picture={item.DetailProduct.ProductImage.picture}
-                    totalPrice={item.totalPrice}
                     quantity={item.quantity}
+                    totalPrice={item.totalPrice}
                     stock={item.DetailProduct.Product.stock}
                   />
                 </TouchableOpacity>
@@ -112,7 +108,10 @@ const Cart = () => {
           <StyledTextSecondary>Total amount:</StyledTextSecondary>
           <StyledTextPrice>
             Rp.
-            {numeral(totalAmount).format(0, 0).toString().replace(',', '.')}
+            {numeral(quantityCounter.totalAmount)
+              .format(0, 0)
+              .toString()
+              .replace(',', '.')}
             ,-
           </StyledTextPrice>
         </Row>

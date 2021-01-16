@@ -31,6 +31,7 @@ const Home = ({navigation}) => {
   useEffect(() => {
     dispatch(HomeActions.newProducts());
     dispatch(HomeActions.popularProducts());
+    console.log(API_URL);
   }, []);
 
   const detailProduct = (id_product) => {
